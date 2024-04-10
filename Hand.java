@@ -28,22 +28,6 @@ class Hand {
 		playerHand.remove(card);
 	}
 	/**
-	  * This method sums the total value of all the cards in the hand for blackjack, where aces can be 1's or 11's, and returns the highest possible sum under 22
-	  * pre: none
-	  * post: returns the highest possible sum of all the card values in the hand under 22
-	  */
-	public int sumOfHandBlackjack(){
-		int sum = 0; //this will store the sum of all the card values
-		boolean containsAce = false; //will store if the hand contains an ace or not
-		for(Card card : playerHand){ //iterates through each Card in playerHand
-			if(card.getValue() > 10) sum += 10; //adds 10 if the card is a face card
-			else sum += card.getValue(); //adds the number value of the card to the sum
-			if(card.getValue() == 1) containsAce = true; //updates containsAce if the Card is 1
-		}
-		if(containsAce && sum <= 11) sum += 10; //11-1 = 10, so add ten if it won't bust the hand and there is an ace in the hand. There cannot be two aces that are 11 in a hand, so this operation is only performed at most once
-		return sum; 
-	}
-	/**
 	  * This method returns how many cards are in the hand
 	  * pre: none
 	  * post: returns the number of cards in the hand
