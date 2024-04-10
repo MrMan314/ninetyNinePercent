@@ -12,10 +12,10 @@ class Deck {
 	  */
 	public Deck(){
 		for(int i = 1; i <= 13; i++){
-			cardsInDeck.add(new PlayingCard(i, "spades"));
-			cardsInDeck.add(new PlayingCard(i, "clubs"));
-			cardsInDeck.add(new PlayingCard(i, "diamonds"));
-			cardsInDeck.add(new PlayingCard(i, "hearts"));
+			cardsInDeck.add(new PlayingCard(i, 0));
+			cardsInDeck.add(new PlayingCard(i, 1));
+			cardsInDeck.add(new PlayingCard(i, 2));
+			cardsInDeck.add(new PlayingCard(i, 3));
 		}
 	}
 	/**

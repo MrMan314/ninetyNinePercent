@@ -2,8 +2,10 @@
  * This class models a playing card
  */
 class Card {
-	private String suit; //this will store the suit of the card as a string
+	private int suit; //this will store the suit of the card as a string
 	private int numberValue; //this will store the number value of the card (Ex. 11 is a jack)
+	private final static String[] cardNames = {"ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"}; //cardNames[i-1] stores the word name of the card with number value i
+	private final static String[] cardSuits = {"diamonds", "spades", "clubs", "hearts"};
 	/**
 	  * Constructor that creates a new card with a given suit and number
 	  * pre: suit is "diamonds", "clubs", "hearts", or "spades"
@@ -35,10 +37,6 @@ class Card {
 	  * post: returns the full name of the card, including suit and number value
 	  */
 	public String getCardName(){
-		String fullCardName = ""; 
-		String[] cardNames = {"ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"}; //cardNames[i-1] stores the word name of the card with number value i
-		fullCardName += cardNames[numberValue-1]; //add the name of the card to the card name
-		fullCardName += " of " + suit; //add the " of " and the name of the suit of the card to format the name properly
-		return fullCardName;
+		return String.format("%s of %s", cardNames[numberValue - 1], cardSuits[suit]);
 	}
 }
