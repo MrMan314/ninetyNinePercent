@@ -10,14 +10,14 @@ class Hand {
 	 * pre: none
 	 * post: creates a new empty player hand 
 	 */
-	public Hand(){
+	public Hand() {
 	}
 	/**
 	 * Method that adds a Card to the hand
 	 * pre: none
 	 * post: adds the Card to the hand
 	 */
-	public void addCard(Card card){
+	public void addCard(Card card) {
 		playerHand.add(card); //adds the card to the arraylist that stores the cards in hand
 	}
 	/**
@@ -25,7 +25,7 @@ class Hand {
 	 * pre: none
 	 * post: removes the Card from the hand
 	 */
-	public void removeCard(Card card){
+	public void removeCard(Card card) {
 		playerHand.remove(card);
 	}
 	/**
@@ -33,7 +33,7 @@ class Hand {
 	 * pre: none
 	 * post: returns the number of cards in the hand
 	 */
-	public int size(){
+	public int size() {
 		return playerHand.size(); //check the size of the arraylist and return it
 	}
 	/**
@@ -41,7 +41,7 @@ class Hand {
 	 * pre: none
 	 * post: returns a String array with the full names of every card in hand
 	 */
-	public String[] listCards(){
+	public String[] listCards() {
 		String[] allCardNames = new String[playerHand.size()]; //this will store the name of each card
 		for(int i = 0; i < playerHand.size(); i++){ //iterate through each card
 			allCardNames[i] = playerHand.get(i).getCardName(); //add the card name to the array
