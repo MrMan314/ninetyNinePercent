@@ -13,17 +13,16 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class MainCasino extends ApplicationAdapter {
-	
 	SpriteBatch batch;
 	Texture allSpades;
 	private TextureRegion region;
 	private OrthographicCamera camera;
 	private float rotationSpeed;
-	private float angle = 0f;
+	private float cameraAngleOffset = 0f;
 	private void handleInput() {
-		if(angle >= 360) angle -= 360;
+		if(cameraAngleOffset >= 360) cameraAngleOffset -= 360;
 		Vector2 cameraUp = new Vector2(0, 1);
-		cameraUp.rotateDeg(-angle);
+		cameraUp.rotateDeg(-cameraAngleOffset);
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			camera.zoom += 0.02;
 			//If the A Key is pressed, add 0.02 to the Camera's Zoom
@@ -52,14 +51,12 @@ public class MainCasino extends ApplicationAdapter {
 			camera.translate(cameraUp.x, cameraUp.y, 0);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			camera.rotate(-rotationSpeed, 0, 0, 1);
-			angle -= rotationSpeed;
-			//If the W Key is pressed, rotate the cameraera by -rotationSpeed around the Z-Axis
+			camera.rotate(-rotationSpeed, 0, 0, 1);	//if the W Key is pressed, rotate the cameraera by -rotationSpeed around the Z-Axis
+			cameraAngleOffset += rotationSpeed; //update angleOffset by the amount rotated
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-			camera.rotate(rotationSpeed, 0, 0, 1);
-			angle += rotationSpeed;
-			//If the E Key is pressed, rotate the cameraera by rotationSpeed around the Z-Axis
+			camera.rotate(rotationSpeed, 0, 0, 1); //if the E Key is pressed, rotate the cameraera by rotationSpeed around the Z-Axis
+			cameraAngleOffset -= rotationSpeed; //update angleOffset by the amount rotated
 		}
 	}
 	

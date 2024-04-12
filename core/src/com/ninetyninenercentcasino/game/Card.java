@@ -1,7 +1,10 @@
+import com.badlogic.gdx.graphics.TextureRegion;
+import com.badlogic.gdx.graphics.Texture;
 /**
  * This class models a playing card
  */
 class Card {
+
 	private int suit; //this will store the suit of the card as a string
 	private int numberValue; //this will store the number value of the card (Ex. 11 is a jack)
 	private final static String[] cardNames = {"ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "jack", "queen", "king"}; //cardNames[i-1] stores the word name of the card with number value i
