@@ -42,14 +42,23 @@ public class Database {
         }
     }
     /*
-     * 
+     * Name: createUser
+     * Description: Takes username and password. Checks if username already exists. If it does, UserAlreadyExists exception thrown. If not, user is added to database.
+     * Precondition: None
+     * Postcondition: Account added to database or UserAlreadyExists exception thrown.
      */
-    public void createUser(String username, String password) throws SQLException {
-        SecureRandom secureRandom=new SecureRandom();
-        byte[] salt=new byte[32];
-        secureRandom.nextBytes(salt);
-        PreparedStatement createUser=database.prepareStatement("insert into Accounts ('Username', 'Hash', 'Salt') values ("+username+","+hash(password, salt)+","+salt+");");
-        createUser.executeQuery();
+    public void createUser(String username, String password) throws SQLException, UserAlreadyExists {
+        PreparedStatement loadUser=database.prepareStatement("select 'Username' from Accounts");
+        ResultSet result=loadUser.executeQuery();
+        if(!userExists(result, username)) { //User doesn't exist
+            SecureRandom secureRandom=new SecureRandom();
+            byte[] salt=new byte[32];
+            secureRandom.nextBytes(salt);
+            PreparedStatement createUser=database.prepareStatement("insert into Accounts ('Username', 'Hash', 'Salt') values ("+username+","+hash(password, salt)+","+salt+");");
+            createUser.executeQuery();
+        } else { //User already exists
+            throw new UserAlreadyExists();
+        }
     }
     /*
      * Name: hash
