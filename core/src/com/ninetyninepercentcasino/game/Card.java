@@ -1,4 +1,6 @@
-import com.badlogic.gdx.graphics.TextureRegion;
+package com.ninetyninepercentcasino.game;
+
+//import com.badlogic.gdx.graphics.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 /**
  * This class models a playing card
@@ -40,6 +42,6 @@ class Card {
 	 * post: returns the full name of the card, including suit and number value
 	 */
 	public String getCardName() {
-		return String.format("%s of %s", cardNames[numberValue - 1], cardSuits[suit]);
+		return cardNames[numberValue - 1] + " of " + cardSuits[suit];
 	}
 }

@@ -1,3 +1,5 @@
+package com.ninetyninepercentcasino.game;
+
 import java.util.ArrayList;
 /**
  * This class models a player's hand of cards
