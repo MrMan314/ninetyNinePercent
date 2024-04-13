@@ -7,9 +7,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class MainCasino extends ApplicationAdapter {
@@ -23,15 +21,15 @@ public class MainCasino extends ApplicationAdapter {
 	private void handleInput() {
 		if(angle >= 360) angle -= 360;
 		Vector2 cameraUp = new Vector2(0, 1);
-		cameraUp.clamp(1, 1);
+		cameraUp.clamp(3, 3);
 		cameraUp.rotateDeg(-angle);
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			camera.zoom += 0.02;
-			//If the A Key is pressed, add 0.02 to the Camera's Zoom
+			camera.zoom += 0.1f;
+			//If the A Key is pressed, add 0.1 to the Camera's Zoom
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
-			camera.zoom -= 0.02;
-			//If the Q Key is pressed, subtract 0.02 from the Camera's Zoom
+			camera.zoom -= 0.1f;
+			//If the Q Key is pressed, subtract 0.1 from the Camera's Zoom
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			Vector2 cameraLeft = new Vector2(cameraUp.x, cameraUp.y);
@@ -54,12 +52,12 @@ public class MainCasino extends ApplicationAdapter {
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 			camera.rotate(-rotationSpeed, 0, 0, 1);
 			angle += rotationSpeed;
-			//If the W Key is pressed, rotate the cameraera by -rotationSpeed around the Z-Axis
+			//If the W Key is pressed, rotate the camera by -rotationSpeed around the Z-Axis
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.E)) {
 			camera.rotate(rotationSpeed, 0, 0, 1);
 			angle -= rotationSpeed;
-			//If the E Key is pressed, rotate the cameraera by rotationSpeed around the Z-Axis
+			//If the E Key is pressed, rotate the camera by rotationSpeed around the Z-Axis
 		}
 	}
 	
@@ -75,6 +73,7 @@ public class MainCasino extends ApplicationAdapter {
 		camera = new OrthographicCamera(30, 30 * (h/w));
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 		camera.update();
+
 	}
 
 	@Override
@@ -85,6 +84,7 @@ public class MainCasino extends ApplicationAdapter {
 		ScreenUtils.clear(1, 150, 150, 150);
 		batch.begin();
 		batch.draw(region, 0, 0);
+		batch.draw(allSpades, 100, 0, 1000, 1000);
 		batch.end();
 	}	
 	@Override
