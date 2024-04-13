@@ -4,8 +4,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.ninetyninepercentcasino.game.GdxDefinition'
-    devModules 'com.ninetyninepercentcasino.game.GdxDefinitionSuperdev'
+    modules 'com.ninetyninenercentcasino.game.GdxDefinition'
+    devModules 'com.ninetyninenercentcasino.game.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {
