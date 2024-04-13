@@ -1,10 +1,8 @@
 package com.ninetyninenercentcasino.game;
 
 public class Account {
-    String username, salt, hash;
-    public Account(String username, String salt, String hash) {
+    String username;
+    public Account(String username) {
         this.username=username;
-        this.salt=salt;
-        this.hash=hash;
     }
 }
