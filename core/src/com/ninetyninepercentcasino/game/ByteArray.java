@@ -1,4 +1,4 @@
-package com.ninetyninenercentcasino.game;
+package com.ninetyninepercentcasino.game;
 
 public class ByteArray {
     public static byte[] merge(byte[] array1, byte[] array2) {

@@ -1,4 +1,4 @@
-package com.ninetyninenercentcasino.game;
+package com.ninetyninepercentcasino.game;
 
 public class AccountNonExistent extends Exception { 
     public AccountNonExistent() {
