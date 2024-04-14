@@ -7,7 +7,7 @@ public class ByteArray {
             mergedArray[i]=array1[i];
         }
         for(int i=array1.length; i<mergedArray.length; i++) {
-            mergedArray[i]=array2[i];
+            mergedArray[i]=array2[i-array1.length];
         }
         return mergedArray;
     }
