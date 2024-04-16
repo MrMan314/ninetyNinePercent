@@ -1,55 +1,56 @@
-//package com.ninetyninepercentcasino.net;
-
-import java.net.DatagramSocket;
-import java.net.DatagramPacket;
-import java.net.SocketException;
-import java.net.InetAddress;
+import java.net.Socket;
+import java.net.ServerSocket;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.IOException;
 
 public class Server extends Thread {
-	private DatagramSocket socket;
-	private boolean running;
-	private byte[] buf = new byte[256];
+	private ServerSocket serverSocket;
 
-	public static void main(String[] args) throws SocketException, IOException {
-		Server server = new Server();
-		server.start();
-	}
-
-	public Server() throws SocketException, IOException {
-		socket = new DatagramSocket(9925);
-	}
-
-	public Server(int port) throws SocketException, IOException {
-		socket = new DatagramSocket(port);
+	public Server(int port) throws IOException {
+		serverSocket = new ServerSocket(port);
 	}
 
 	public void run() {
-		running = true;
-		
+		boolean running = true;
 		while (running) {
-			DatagramPacket packet = new DatagramPacket(buf, buf.length);
 			try {
-				socket.receive(packet);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-
-			InetAddress address = packet.getAddress();
-			int port = packet.getPort();
-			packet = new DatagramPacket(buf, buf.length, address, port);
-
-			String recv = new String(packet.getData(), 0, packet.getLength()).strip();
-
-			System.out.printf("Message from %s:%d:\n", address.getHostAddress(), port);
-			System.out.printf("\t%d: %s\n", recv.length(), recv);
-
-			try {
-				socket.send(packet);
-			} catch (Exception e) {
+				new ServerThread(serverSocket.accept()).start();
+			} catch (IOException e) {
 				System.out.println(e);
 			}
 		}
-		socket.close();
+	}
+
+	public void finish() throws IOException {
+		serverSocket.close();
+	}
+
+	private class ServerThread extends Thread {
+		private Socket clientSocket;
+		private PrintWriter out;
+		private BufferedReader in;
+
+		public ServerThread(Socket socket) throws IOException {
+			this.clientSocket = socket;
+		}
+
+		public void finish() throws IOException {
+			in.close();
+			out.close();
+			clientSocket.close();
+		}
+
+		public void run() {
+			try {
+				out = new PrintWriter(clientSocket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				out.println("when the " + in.readLine());
+				finish();
+			} catch (IOException e) {
+				System.out.println(e);
+			}
+		}
 	}
 }
