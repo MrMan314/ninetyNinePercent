@@ -11,7 +11,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
 public class MainCasino extends ApplicationAdapter {
-	
+	final float VIRTUAL_HEIGHT = 2f; //camera height in meters
+
 	SpriteBatch batch;
 	Texture allSpades;
 	private TextureRegion region;
@@ -21,7 +22,7 @@ public class MainCasino extends ApplicationAdapter {
 	private void handleInput() {
 		if(angle >= 360) angle -= 360;
 		Vector2 cameraUp = new Vector2(0, 1);
-		cameraUp.clamp(3, 3);
+		cameraUp.clamp(0.5f, 0.5f);
 		cameraUp.rotateDeg(-angle);
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 			camera.zoom += 0.1f;
@@ -68,10 +69,10 @@ public class MainCasino extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		allSpades = new Texture("PokerAssets/Top-Down/Cards/SpadesRemovedBackground.png");
 		region = new TextureRegion(allSpades, 0, 0, 88, 124);
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		camera = new OrthographicCamera(30, 30 * (h/w));
-		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
+		camera = new OrthographicCamera(VIRTUAL_HEIGHT * screenWidth / screenHeight, VIRTUAL_HEIGHT);
+		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); //set camera to center of the world
 		camera.update();
 
 	}
@@ -84,7 +85,7 @@ public class MainCasino extends ApplicationAdapter {
 		ScreenUtils.clear(1, 150, 150, 150);
 		batch.begin();
 		batch.draw(region, 0, 0);
-		batch.draw(allSpades, 100, 0, 1000, 1000);
+		batch.draw(allSpades, 0.5f, 0.5f, 1, 1);
 		batch.end();
 	}	
 	@Override

@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.setTitle("99% Casino");
 		config.useVsync(true);
 		config.setWindowedMode(1920, 1080);
+		config.setWindowIcon("DesktopWindowIcon.png");
 		new Lwjgl3Application(new MainCasino(), config);
 	}
 }
