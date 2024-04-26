@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -7,8 +7,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
 public class GameSelect extends GameScreen {
+    private Stage stage;
 
-    public GameSelect(final Game game) {
+    public GameSelect(Game game) {
         super(game);
         stage = new Stage(new ScreenViewport());
     }

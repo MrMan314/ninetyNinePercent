@@ -25,4 +25,4 @@ public class Deck {
     public void drawDeck(SpriteBatch batch){
         batch.draw(deckTexture, -1, -1, 0, 0, 1, 1 * ((float)140/(float)88), 0, 0, 0, 0, 0, 88, 140, false, false);
     }
-}
+};

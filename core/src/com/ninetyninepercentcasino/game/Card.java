@@ -1,5 +1,9 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
 /**
  * Grant Liang
  * Mr. Gonzalez
@@ -7,7 +11,8 @@ package com.ninetyninepercentcasino.game;
  * This class models a playing card
  */
 
-public class Card {
+public class Card extends Actor {
+    private Sprite sprite;
     private final Suit suit;
     private final CardValue cardValue;
     /**
@@ -18,6 +23,7 @@ public class Card {
     public Card(CardValue cardValue, Suit suit){
         this.suit = suit;
         this.cardValue = cardValue;
+        sprite = new Sprite();
     }
     /**
      * Accessor method that returns the number value of a card
@@ -34,5 +40,8 @@ public class Card {
      */
     public Suit getSuit(){
         return suit;
+    }
+    public void draw(Batch batch, float parentAlpha){
+        sprite.draw(batch);
     }
 }

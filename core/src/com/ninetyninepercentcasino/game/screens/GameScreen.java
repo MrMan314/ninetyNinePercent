@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public abstract class GameScreen implements Screen {
     Game game;
-    Stage stage;
 
     public GameScreen(Game game){
         this.game = game;
