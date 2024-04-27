@@ -12,7 +12,7 @@ public class Deck {
         deck = new ArrayList<Card>();
         for(int i = 0; i < 4; i++) {
             for (int j = 12; j >= 0; j--) {
-                deck.add(new Card(CardValue.values()[j], Suit.values()[i]));
+                deck.add(new Card(i, j));
             }
         }
     }

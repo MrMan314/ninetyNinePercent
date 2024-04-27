@@ -6,8 +6,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 
-public class GameSelect extends GameScreen {
-    private Stage stage;
+public class GameSelect extends CasinoScreen {
 
     public GameSelect(Game game) {
         super(game);
@@ -16,15 +15,11 @@ public class GameSelect extends GameScreen {
 
     @Override
     public void show() {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+
     }
     @Override
     public void render(float delta){
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-    }
-
-    @Override
-    public void resize(int width, int height) {
+        ScreenUtils.clear(0, 0, 0f, 1);
     }
 
     @Override
