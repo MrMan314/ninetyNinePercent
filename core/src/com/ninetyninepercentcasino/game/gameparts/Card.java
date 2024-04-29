@@ -1,23 +1,16 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.gameparts;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Grant Liang
- * Mr. Gonzalez
- * ICS4Ud
- * This class models a playing card
+ * Models a card with a suit and card number
+ * @author Grant Liang
  */
-
-public class Card extends Actor {
-    private Sprite sprite;
+public class Card {
     private final int suit; //0 spades, 1 diamonds, 2 clubs, 3 hearts
     private final int cardNum;
-    private final String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"};
+    private final String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"}; //TODO move these to another class
     private final String[] numberNames = {"ZERO_ERROR", "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
     /**
      * Constructor that initializes a new card with a given suit and number
@@ -27,7 +20,7 @@ public class Card extends Actor {
     public Card(int cardNum, int suit){
         this.suit = suit;
         this.cardNum = cardNum;
-        sprite = new Sprite(findTexture());
+
     }
     /**
      * Accessor method that returns the number of a card
@@ -48,13 +41,11 @@ public class Card extends Actor {
     public String getSuitName(){
         return suitNames[suit];
     }
-    public void draw(Batch batch, float parentAlpha){
-        sprite.draw(batch);
-    }
+
     /**
      * Finds and returns the TextureRegion that represents the correct card
      */
-    private TextureRegion findTexture(){
+    public TextureRegion findTexture(){
         //each card is 88 wide and 124 tall
         int textureRegionX = 0;
         int textureRegionY = 0;

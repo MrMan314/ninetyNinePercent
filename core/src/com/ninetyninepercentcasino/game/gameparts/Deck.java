@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.gameparts;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,7 +12,7 @@ public class Deck {
         deck = new ArrayList<Card>();
         for(int i = 0; i < 4; i++) {
             for (int j = 12; j >= 0; j--) {
-                deck.add(new Card(i, j));
+                deck.add(new Card(j, i));
             }
         }
     }
@@ -25,4 +25,4 @@ public class Deck {
     public void drawDeck(SpriteBatch batch){
         batch.draw(deckTexture, -1, -1, 0, 0, 1, 1 * ((float)140/(float)88), 0, 0, 0, 0, 0, 88, 140, false, false);
     }
-};
+}

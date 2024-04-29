@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -13,18 +14,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ninetyninepercentcasino.game.MainCasino;
 
-
+/**
+ * Screen for settings menu
+ * @author Grant Liang
+ */
 public class SettingsMenu extends CasinoScreen {
     private Texture background;
-    private SpriteBatch batch;
-    public SettingsMenu(Game game) {
+
+    public SettingsMenu(MainCasino game) {
         super(game);
         stage = new Stage(new ScreenViewport());
     }
 
     @Override
     public void show() {
+        game.music.setVolume(0.1f);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -50,7 +56,18 @@ public class SettingsMenu extends CasinoScreen {
         stage.addActor(root);
 
         background = new Texture("MainMenu/Background.jpg");
-        batch = new SpriteBatch();
+
+        stage.addCaptureListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                System.out.println("Capture listener.");
+                if(keycode == 111) { //key pressed was the escape key (111 is keycode for ESCAPE)
+                    game.setScreen(new MainMenu(game));
+                    return true;
+                }
+                return false;
+            }
+        });
 
         ClickListener buttonDown = new ClickListener() {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -73,9 +90,10 @@ public class SettingsMenu extends CasinoScreen {
     @Override
     public void render(float delta){
         ScreenUtils.clear(0, 0, 0f, 1);
-        batch.begin();
-        batch.draw(background, 0, 0, 2000, 2000*((float) 2/3));
-        batch.end();
+        stage.getBatch().begin();
+        stage.getBatch().setColor(1, 1,1 ,1f);
+        stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
+        stage.getBatch().end();
         stage.draw();
         stage.act();
     }
@@ -92,11 +110,12 @@ public class SettingsMenu extends CasinoScreen {
 
     @Override
     public void hide() {
-
+        game.music.setVolume(1f);
     }
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        background.dispose();
     }
 }

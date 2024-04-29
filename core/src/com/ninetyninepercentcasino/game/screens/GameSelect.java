@@ -4,11 +4,15 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.ninetyninepercentcasino.game.MainCasino;
 
-
+/**
+ * Game screen for casino game selection
+ * @author Grant Liang
+ */
 public class GameSelect extends CasinoScreen {
 
-    public GameSelect(Game game) {
+    public GameSelect(MainCasino game) {
         super(game);
         stage = new Stage(new ScreenViewport());
     }

@@ -3,12 +3,13 @@ package com.ninetyninepercentcasino.game.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.ninetyninepercentcasino.game.MainCasino;
 
 public abstract class CasinoScreen implements Screen {
-    Game game;
+    MainCasino game;
     Stage stage;
 
-    public CasinoScreen(Game game){
+    public CasinoScreen(MainCasino game){
         this.game = game;
     }
     @Override

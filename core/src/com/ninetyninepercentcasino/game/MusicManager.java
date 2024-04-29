@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.audio.Music;
 
 public class MusicManager implements Music.OnCompletionListener {
-    int currentTrack = MathUtils.random(22)+1;
-    Music music;
+    private int currentTrack = MathUtils.random(22)+1;
+    private Music music;
     public MusicManager(){
         setTrack();
         music.setOnCompletionListener(this);
@@ -19,6 +19,9 @@ public class MusicManager implements Music.OnCompletionListener {
     }
     private void setTrack(){
         music = Gdx.audio.newMusic(Gdx.files.internal("Music/Track" + currentTrack + ".mp3"));
+    }
+    public void setVolume(float volume){
+        music.setVolume(volume);
     }
     @Override
     public void onCompletion(Music music) {

@@ -1,9 +1,7 @@
 package com.ninetyninepercentcasino.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,20 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.MainCasino;
 
-
+/**
+ * Main menu of the game
+ * @author Grant Liang
+ */
 public class MainMenu extends CasinoScreen {
     private Texture background;
-    private SpriteBatch batch;
-    private Card testCard;
 
-    public MainMenu(Game game) {
+    public MainMenu(MainCasino game) {
         super(game);
     }
     @Override
     public void show() {
-        testCard = new Card(13, 1);
+
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -45,7 +44,6 @@ public class MainMenu extends CasinoScreen {
 
         Table root = new Table();
         root.setFillParent(true);
-        //root.setDebug(true);
         root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().align(Align.top).padBottom(100).top();
         root.row();
         root.add(middleMenu);
@@ -53,7 +51,6 @@ public class MainMenu extends CasinoScreen {
         stage.addActor(root);
 
         background = new Texture("MainMenu/Background.jpg");
-        batch = new SpriteBatch();
 
         ClickListener buttonDown = new ClickListener() {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -63,37 +60,34 @@ public class MainMenu extends CasinoScreen {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(1, 1, 1, 1f);
+                System.out.println(event.getTarget());
             }
         }; //makes the button fade a little when hovering over it
 
-        playButton.addListener(new ChangeListener(){
-            public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new GameSelect(game));
-            }
-        });
-        playButton.addListener(buttonDown);
-
-        settingsButton.addListener(buttonDown);
         settingsButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
                 game.setScreen(new SettingsMenu(game));
             }
         });
+        settingsButton.addListener(buttonDown);
+        playButton.addListener(new ChangeListener(){
+            public void changed (ChangeEvent event, Actor actor) {
+                game.setScreen(new PokerScreen(game));
+            }
+        });
+        playButton.addListener(buttonDown);
+
+
     }
     @Override
     public void render(float delta){
         ScreenUtils.clear(0, 0, 0f, 1);
-        batch.begin();
-        batch.draw(background, 0, 0, 2000, 2000*((float) 2/3));
-        testCard.draw(batch, 0);
-        batch.end();
+        stage.getBatch().begin();
+        stage.getBatch().setColor(1, 1,1 ,1f);
+        stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
+        stage.getBatch().end();
         stage.draw();
         stage.act();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
     }
 
     @Override

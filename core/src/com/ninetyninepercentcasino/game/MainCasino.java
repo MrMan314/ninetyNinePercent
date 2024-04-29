@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.ninetyninepercentcasino.game.screens.MainMenu;
 
 public class MainCasino extends Game {
-	MusicManager music;
+	public MusicManager music;
 	@Override
 	public void create () {
 		music = new MusicManager();
