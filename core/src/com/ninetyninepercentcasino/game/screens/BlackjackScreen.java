@@ -1,6 +1,5 @@
 package com.ninetyninepercentcasino.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.ninetyninepercentcasino.game.MainCasino;
 
 public class BlackjackScreen extends CasinoScreen {
