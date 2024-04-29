@@ -1,4 +1,4 @@
-package com.ninetyninenercentcasino.game;
+package com.ninetyninepercentcasino.game;
 
 public class Account {
     String username;

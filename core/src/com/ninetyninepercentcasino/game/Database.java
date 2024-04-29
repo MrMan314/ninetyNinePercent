@@ -1,4 +1,4 @@
-package com.ninetyninenercentcasino.game;
+package com.ninetyninepercentcasino.game;
 import java.sql.*;
 import java.security.*;
 import java.nio.charset.StandardCharsets;
