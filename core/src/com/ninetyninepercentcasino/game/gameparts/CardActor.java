@@ -13,8 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  */
 public class CardActor extends ImageButton {
     final float POPDISTANCE = 20;
+    boolean selectable;
 
-    public CardActor(Card card){
+    public CardActor(Card card, boolean selectable){
         super(new TextureRegionDrawable(card.findTexture()));
         setTouchable(Touchable.enabled);
         this.setBounds(getX(), getY(), getWidth(), getHeight());
@@ -28,6 +29,7 @@ public class CardActor extends ImageButton {
                 popIn();
             }
         });
+        this.selectable = selectable;
     }
     public void popOut(){
         moveBy(0, POPDISTANCE);

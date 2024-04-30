@@ -13,11 +13,6 @@ public class Hand extends HorizontalGroup {
      * post: initializes a new empty player hand
      */
     public Hand(){
-        this.debug();
-        this.padBottom(200);
-        this.padLeft(200);
-        this.padRight(200);
-        this.space(88);
     }
     /**
      * Method that adds a Card to the hand
