@@ -1,6 +1,7 @@
 package com.ninetyninepercentcasino.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -60,7 +61,6 @@ public class MainMenu extends CasinoScreen {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(1, 1, 1, 1f);
-                System.out.println(event.getTarget());
             }
         }; //makes the button fade a little when hovering over it
 
@@ -81,7 +81,7 @@ public class MainMenu extends CasinoScreen {
     }
     @Override
     public void render(float delta){
-        ScreenUtils.clear(0, 0, 0f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.getBatch().begin();
         stage.getBatch().setColor(1, 1,1 ,1f);
         stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));

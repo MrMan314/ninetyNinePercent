@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.database;
 
 public class PasswordIncorrect extends Exception{
     public PasswordIncorrect() {

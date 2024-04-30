@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.game.MainCasino;
 import com.ninetyninepercentcasino.game.gameparts.CardActor;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
@@ -25,23 +26,34 @@ public class PokerScreen extends CasinoScreen {
 
     @Override
     public void show() {
-        stage = new Stage(new FillViewport(880, 620));
+        stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
         pokerTable = new Texture("PokerAssets/PokerTable.png");
         Hand playerHand = new Hand();
+        Hand computerHand = new Hand();
         Deck deck = new Deck();
         deck.shuffle();
-        playerHand.addCard(new CardActor(deck.drawCard()));
-        playerHand.addCard(new CardActor(deck.drawCard()));
+        deck.setX(screenWidth/2);
+        deck.setY(screenHeight/2);
+        playerHand.addCard(new CardActor(deck.drawCard(), true));
+        playerHand.addCard(new CardActor(deck.drawCard(), true));
+        computerHand.addCard(new CardActor(deck.drawCard(), true));
+        computerHand.addCard(new CardActor(deck.drawCard(), true));
 
+        computerHand.setX(440);
+        computerHand.setY(400);
+        computerHand.debug();
+        computerHand.center();
         playerHand.debug();
         playerHand.setX(440);
-        playerHand.setY(225);
-        playerHand.padTop(20);
+        playerHand.setY(200);
         playerHand.center();
+        playerHand.top();
 
+        stage.addActor(deck);
         stage.addActor(playerHand);
+        stage.addActor(computerHand);
 
         stage.addCaptureListener(new InputListener(){
             @Override
@@ -60,7 +72,7 @@ public class PokerScreen extends CasinoScreen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1f);
         stage.getBatch().begin();
-        stage.getBatch().draw(pokerTable, 0, 0, 880, 620);
+        stage.getBatch().draw(pokerTable, 0, 0);
         stage.getBatch().end();
         stage.draw();
         stage.act();
