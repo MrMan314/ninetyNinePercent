@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Card {
     private final int suit; //0 spades, 1 diamonds, 2 clubs, 3 hearts
     private final int cardNum;
-    private final String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"}; //TODO move these to another class
-    private final String[] numberNames = {"ZERO_ERROR", "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
+    private final static String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"}; //TODO move these to another class
+    private final static String[] numberNames = {"ZERO_ERROR", "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
     /**
      * Constructor that initializes a new card with a given suit and number
      * pre: suit is number from 0-3

@@ -45,9 +45,9 @@ public class MainMenu extends CasinoScreen {
 
         Table root = new Table();
         root.setFillParent(true);
-        root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().align(Align.top).padBottom(100).top();
+        root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
         root.row();
-        root.add(middleMenu);
+        root.add(middleMenu).padBottom(200);
 
         stage.addActor(root);
 
