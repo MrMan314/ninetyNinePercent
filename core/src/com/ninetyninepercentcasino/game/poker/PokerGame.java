@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 /**
- * Models a poker game
+ * Models a poker game, does not manage graphics
  * @author Grant Liang
  */
 public class PokerGame {
@@ -19,7 +19,7 @@ public class PokerGame {
     int round;
     int dealerIndex;
     ArrayList<PokerPlayer> players;
-    ArrayList<Card> communityCards = new ArrayList<>();
+    public ArrayList<Card> communityCards = new ArrayList<>();
     PokerPlayer dealer;
     PokerPlayer smallBlind;
     PokerPlayer bigBlind;
@@ -47,6 +47,7 @@ public class PokerGame {
             smallBlind = tempPlayerStack.pop();
             bigBlind = tempPlayerStack.pop();
         }
+        //TODO less than 3 player game
         preFlop();
     }
     public void preFlop(){
@@ -76,9 +77,10 @@ public class PokerGame {
     }
     public void betPhase(){
         int numChecks = 0;
-        while(numChecks < numPlayers){
-
-        }
+        int currentPlayerIndex;
+//        while(numChecks < numPlayers){
+//
+//        }
     }
     public void endRound(){
         dealerIndex++;
@@ -86,5 +88,11 @@ public class PokerGame {
     }
     public Stage getStage(){
         return stage;
+    }
+    public Deck getDeck(){
+        return deck;
+    }
+    public ArrayList<Card> getCommunityCards(){
+        return communityCards;
     }
 }

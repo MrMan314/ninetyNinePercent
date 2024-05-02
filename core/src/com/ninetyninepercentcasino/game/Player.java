@@ -9,14 +9,8 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
  */
 public class Player {
     protected double balance;
-    Hand hand = new Hand(true, true);
     public Player(){
 
     }
-    public Hand getHand(){
-        return hand;
-    }
-    public void drawCard(Deck deck){
-        hand.drawCard(deck);
-    }
+
 }

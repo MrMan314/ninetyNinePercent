@@ -19,7 +19,7 @@ public class PokerButton extends Actor {
         addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                buttonSprite.setColor(65, 65, 65, 0.7f);
+                buttonSprite.setColor(65, 65, 65, 0.8f);
             }
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
@@ -28,6 +28,6 @@ public class PokerButton extends Actor {
         });
     }
     public void draw(Batch batch, float parentAlpha){
-        batch.draw(buttonSprite, getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
+        buttonSprite.draw(batch);
     }
 }

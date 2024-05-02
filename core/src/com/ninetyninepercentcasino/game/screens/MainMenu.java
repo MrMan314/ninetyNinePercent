@@ -57,7 +57,6 @@ public class MainMenu extends CasinoScreen {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(65, 65, 65, 0.7f);
             }
-
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(1, 1, 1, 1f);
