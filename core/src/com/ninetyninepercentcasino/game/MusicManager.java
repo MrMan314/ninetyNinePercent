@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.audio.Music;
 
+/**
+ * Class to manage game music
+ * @author Grant Liang
+ */
 public class MusicManager implements Music.OnCompletionListener {
     private int currentTrack = MathUtils.random(22)+1;
     private Music music;
@@ -18,7 +22,7 @@ public class MusicManager implements Music.OnCompletionListener {
         music.pause();
     }
     private void setTrack(){
-        music = Gdx.audio.newMusic(Gdx.files.internal("Music/Track" + currentTrack + ".mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("Sound/Music/Track" + currentTrack + ".mp3"));
     }
     public void setVolume(float volume){
         music.setVolume(volume);

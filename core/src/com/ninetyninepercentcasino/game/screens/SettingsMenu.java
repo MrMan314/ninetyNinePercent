@@ -1,6 +1,7 @@
 package com.ninetyninepercentcasino.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -59,7 +60,7 @@ public class SettingsMenu extends CasinoScreen {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 System.out.println("Capture listener.");
-                if(keycode == 111) { //key pressed was the escape key (111 is keycode for ESCAPE)
+                if(keycode == Input.Keys.ESCAPE) {
                     game.setScreen(new MainMenu(game));
                     return true;
                 }
