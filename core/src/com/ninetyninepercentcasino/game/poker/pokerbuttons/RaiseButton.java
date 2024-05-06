@@ -7,15 +7,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.game.poker.PokerPlayer;
+import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
+
 
 /**
  * Models a raising button in a poker game
  * @author Grant Liang
  */
-public class RaiseButton extends PokerButton {
+public class RaiseButton extends CasinoButton {
     public RaiseButton(PokerPlayer player){
         super();
-        buttonSprite = new Sprite(new TextureRegion(new Texture("PokerAssets/PokerButtons.png"), 64, 0, 64, 72));
+        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 64, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
         buttonSprite.setPosition(getX(), getY());

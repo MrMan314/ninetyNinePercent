@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.game.MainCasino;
-import com.ninetyninepercentcasino.game.gameparts.CardActor;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.Input;
+import com.ninetyninepercentcasino.game.gameparts.CardActor;
+import com.ninetyninepercentcasino.game.gameparts.CardGroup;
+import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.poker.PokerGame;
 import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 import com.ninetyninepercentcasino.game.poker.pokerbuttons.*;
@@ -42,18 +42,19 @@ public class PokerScreen extends CasinoScreen {
         players.add(new PokerPlayer());
 
         PokerGame pokerGame = new PokerGame(players);
-        pokerGame.setupRound();
+        pokerGame.playRound();
 
         Deck deck = pokerGame.getDeck();
 
-        background = new Texture("PokerAssets/PokerTable.png");
-        Hand localHand = localPlayer.getHand();
+        background = new Texture("GameAssets/PokerTable.png");
+        CardGroup localHand = new CardGroup(localPlayer.getHand(), true, true);
 
         Table pokerTable = new Table();
+        pokerTable.debug();
         pokerTable.setX(WORLD_WIDTH / 2);
         pokerTable.setY(WORLD_HEIGHT / 2);
         for(int i = 0; i < pokerGame.communityCards.size(); i++){
-            pokerTable.add(new CardActor(pokerGame.communityCards.get(i), false, true)).pad(6);
+            pokerTable.add(new CardActor(pokerGame.communityCards.get(i), false, false)).pad(6);
         }
         pokerTable.add(deck).padLeft(200);
 
@@ -78,23 +79,23 @@ public class PokerScreen extends CasinoScreen {
                     game.setScreen(new MainMenu(game));
                     return true;
                 }
-//                float distance = 100f;
-//                if(keycode == Input.Keys.W){
-//                    stage.getCamera().translate(0, distance, 0);
-//                    return true;
-//                }
-//                if(keycode == Input.Keys.A){
-//                    stage.getCamera().translate(-distance, 0, 0);
-//                    return true;
-//                }
-//                if(keycode == Input.Keys.S){
-//                    stage.getCamera().translate(0, -distance, 0);
-//                    return true;
-//                }
-//                if(keycode == Input.Keys.D){
-//                    stage.getCamera().translate(distance, 0, 0);
-//                    return true;
-//                }
+                float distance = 100f;
+                if(keycode == Input.Keys.W){
+                    stage.getCamera().translate(0, distance, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.A){
+                    stage.getCamera().translate(-distance, 0, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.S){
+                    stage.getCamera().translate(0, -distance, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.D){
+                    stage.getCamera().translate(distance, 0, 0);
+                    return true;
+                }
 //                if(keycode == Input.Keys.E){
 //                    ((OrthographicCamera)stage.getCamera()).zoom += 5;
 //                    return true;
@@ -106,7 +107,6 @@ public class PokerScreen extends CasinoScreen {
                 return false;
             }
         });
-        Gdx.graphics.requestRendering();
     }
 
     @Override
@@ -115,8 +115,8 @@ public class PokerScreen extends CasinoScreen {
         stage.getBatch().begin();
         stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
         stage.getBatch().end();
+        stage.act(delta);
         stage.draw();
-        stage.act();
     }
 
     @Override

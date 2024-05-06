@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.poker.pokerbuttons;
+package com.ninetyninepercentcasino.game.blackjack.blackjackbuttons;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,8 +13,8 @@ import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
  * Models a calling button in a poker game
  * @author Grant Liang
  */
-public class CallButton extends CasinoButton {
-    public CallButton(PokerPlayer player){
+public class HitButton extends CasinoButton {
+    public HitButton(PokerPlayer player){
         super();
         buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 192, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));

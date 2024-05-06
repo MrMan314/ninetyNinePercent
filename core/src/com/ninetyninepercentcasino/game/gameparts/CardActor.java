@@ -14,23 +14,22 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * @author Grant Liang
  */
 public class CardActor extends Actor {
-    private boolean faceUp;
     private Card card;
+    private boolean faceUp;
 
     boolean popped = false;
     final static float POPDISTANCE = 20;
 
-    final static TextureRegion faceDownTex = new TextureRegion(new Texture("PokerAssets/Top-Down/Cards/Card_Back-88x124.png"), 0, 0, 88, 124);
+    final static TextureRegion faceDownTex = new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_Back-88x124.png"), 0, 0, 88, 124);
     final TextureRegion faceUpTex;
     private Sprite sprite;
 
-    public CardActor(Card card, boolean isUserHand, boolean faceUp){
+    public CardActor(Card card, boolean faceUp, boolean isUICard){
         this.card = card;
-        faceUpTex = new TextureRegion(card.findTexture());
+        faceUpTex = new TextureRegion(findTexture(card));
         if(faceUp) sprite = new Sprite(faceUpTex);
         else sprite = new Sprite(faceDownTex);
-        if(isUserHand) {
-            setTouchable(Touchable.enabled);
+        if(isUICard){
             sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
         }
         else setTouchable(Touchable.disabled);
@@ -53,11 +52,35 @@ public class CardActor extends Actor {
             sprite = new Sprite(faceUpTex);
         }
     }
+    public void hide(){
+        if(faceUp){
+            faceUp = false;
+            sprite = new Sprite(faceDownTex);
+        }
+    }
     public void draw(Batch batch, float parentAlpha){
         if(popped) batch.draw(sprite, getX(), getY()+POPDISTANCE, sprite.getWidth(), sprite.getHeight());
         else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
     }
     public Card getCard(){
         return card;
+    }
+    /**
+     * Finds and returns the TextureRegion that represents the correct card
+     */
+    private TextureRegion findTexture(Card card){
+        int cardNum = card.getNum();
+        String suit = card.getSuitName();
+        //each card is 88 wide and 124 tall
+        int textureRegionX = 0;
+        int textureRegionY = 0;
+        for(int i = 1; i < cardNum; i++){
+            textureRegionX += 88;
+            if(textureRegionX > 88*4){
+                textureRegionX = 0;
+                textureRegionY += 124;
+            }
+        }
+        return new TextureRegion(new Texture("GameAssets/Top-Down/Cards/" + suit + ".png"), textureRegionX, textureRegionY, 88, 124);
     }
 }

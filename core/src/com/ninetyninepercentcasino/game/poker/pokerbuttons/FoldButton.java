@@ -7,15 +7,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.game.poker.PokerPlayer;
-
+import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
 /**
  * Models a folding button in a poker game
  * @author Grant Liang
  */
-public class FoldButton extends PokerButton {
+public class FoldButton extends CasinoButton {
     public FoldButton(PokerPlayer player){
         super();
-        buttonSprite = new Sprite(new TextureRegion(new Texture("PokerAssets/PokerButtons.png"), 128, 0, 64, 72));
+        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 128, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
         buttonSprite.setPosition(getX(), getY());

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.ninetyninepercentcasino.game.Player;
 import com.ninetyninepercentcasino.game.SFXManager;
 
 /**
@@ -15,8 +16,9 @@ import com.ninetyninepercentcasino.game.SFXManager;
  * @author Grant Liang
  */
 public class Deck extends Actor {
+    //TODO seperate Deck from DeckActor
     private ArrayList<Card> deck;
-    static Sprite sprite = new Sprite(new TextureRegion(new Texture("PokerAssets/Top-Down/Cards/Card_DeckA-88x140.png"), 88, 0, 88, 140));
+    static Sprite sprite = new Sprite(new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_DeckA-88x140.png"), 88, 0, 88, 140));
     SFXManager sfxManager;
 
     public Deck(){
@@ -39,5 +41,8 @@ public class Deck extends Actor {
     }
     public void draw(Batch batch, float parentAlpha){
         batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
+    }
+    public void deal(Hand hand){
+        hand.addCard(deck.remove(0));
     }
 }
