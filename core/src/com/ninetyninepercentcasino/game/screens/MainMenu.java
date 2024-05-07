@@ -47,7 +47,7 @@ public class MainMenu extends CasinoScreen {
         root.setFillParent(true);
         root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
         root.row();
-        root.add(middleMenu).padBottom(200);
+        root.add(middleMenu).padBottom(160);
 
         stage.addActor(root);
 

@@ -12,7 +12,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  */
 public class CardGroup extends Table {
     private Hand hand;
-    private boolean faceUp;
+    private final boolean faceUp; //any new CardActors added will be faceUp or faceDown according to this variable
     private boolean isUIHand;
     /**
      * Constructor that initializes a new empty player hand
@@ -68,7 +68,6 @@ public class CardGroup extends Table {
      * Hides the hand by hiding all CardActors
      */
     public void hide(){
-        faceUp = false;
         for(Actor cardActor: getChildren()){
             ((CardActor)cardActor).hide();
         }
@@ -77,7 +76,6 @@ public class CardGroup extends Table {
      * Reveals the hand by revealing all CardActors
      */
     public void reveal(){
-        faceUp = true;
         for(Actor cardActor: getChildren()){
             ((CardActor)cardActor).reveal();
         }

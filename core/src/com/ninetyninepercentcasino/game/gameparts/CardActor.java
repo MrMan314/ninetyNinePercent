@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class CardActor extends Actor {
     private Card card;
-    private boolean faceUp;
+    private boolean faceUp; //stores the current state of the card
 
     boolean popped = false;
     final static float POPDISTANCE = 20;
