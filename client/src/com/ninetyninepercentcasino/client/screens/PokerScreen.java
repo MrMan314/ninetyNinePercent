@@ -15,9 +15,8 @@ import com.ninetyninepercentcasino.client.poker.pokerbuttons.RaiseButton;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.Input;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.poker.PokerGame;
 import com.ninetyninepercentcasino.game.poker.PokerPlayer;
-import com.ninetyninepercentcasino.game.poker.pokerbuttons.*;
+import com.ninetyninepercentcasino.client.poker.pokerbuttons.*;
 
 import java.util.ArrayList;
 
@@ -44,22 +43,19 @@ public class PokerScreen extends CasinoScreen {
         players.add(new PokerPlayer());
         players.add(new PokerPlayer());
 
-        PokerGame pokerGame = new PokerGame(players);
-        pokerGame.playRound();
-
-        Deck deck = pokerGame.getDeck();
-
-        background = new Texture("GameAssets/PokerTable.png");
-        CardGroup localHand = new CardGroup(localPlayer.getHand(), true, true);
-
-        Table pokerTable = new Table();
-        pokerTable.debug();
-        pokerTable.setX(WORLD_WIDTH / 2);
-        pokerTable.setY(WORLD_HEIGHT / 2);
-        for(int i = 0; i < pokerGame.communityCards.size(); i++){
-            pokerTable.add(new CardActor(pokerGame.communityCards.get(i), false, false)).pad(6);
-        }
-        pokerTable.add(deck).padLeft(200);
+//        Deck deck = pokerGame.getDeck();
+//
+//        background = new Texture("GameAssets/PokerTable.png");
+//        CardGroup localHand = new CardGroup(localPlayer.getHand(), true, true);
+//
+//        Table pokerTable = new Table();
+//        pokerTable.debug();
+//        pokerTable.setX(WORLD_WIDTH / 2);
+//        pokerTable.setY(WORLD_HEIGHT / 2);
+//        for(int i = 0; i < pokerGame.communityCards.size(); i++){
+//            pokerTable.add(new CardActor(pokerGame.communityCards.get(i), false, false)).pad(6);
+//        }
+//        pokerTable.add(deck).padLeft(200);
 
         Table pokerButtons = new Table();
         pokerButtons.add(new RaiseButton(localPlayer));
@@ -70,9 +66,9 @@ public class PokerScreen extends CasinoScreen {
         bottomUI.setPosition(WORLD_WIDTH/2, 0);
         bottomUI.debug();
         bottomUI.add(pokerButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
-        bottomUI.add(localHand).padRight(WORLD_WIDTH/16);
-
-        stage.addActor(pokerTable);
+//        bottomUI.add(localHand).padRight(WORLD_WIDTH/16);
+//
+//        stage.addActor(pokerTable);
         stage.addActor(bottomUI);
 
         stage.addCaptureListener(new InputListener(){

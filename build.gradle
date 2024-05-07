@@ -48,6 +48,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+        implementation project(":client")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -61,9 +62,9 @@ project(":html") {
     apply plugin: "war"
     apply plugin: "org.gretty"
 
-
     dependencies {
         implementation project(":core")
+        implementation project(":client")
         api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
@@ -92,6 +93,7 @@ project(":client") {
 
 
     dependencies {
+        implementation project(":core")
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
