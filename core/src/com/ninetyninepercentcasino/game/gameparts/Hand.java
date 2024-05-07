@@ -1,8 +1,5 @@
 package com.ninetyninepercentcasino.game.gameparts;
 
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
 import java.util.ArrayList;
 
 /**
