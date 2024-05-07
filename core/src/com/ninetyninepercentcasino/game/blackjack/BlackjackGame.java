@@ -85,7 +85,6 @@ public class BlackjackGame {
                 }
             }, delay);
         }
-        return dealer.calculateScore() < 17;
     }
     private void endGame(){
         CasinoButton.isAvailable = false;
