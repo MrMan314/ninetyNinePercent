@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.ninetyninepercentcasino.game.blackjack.BlackjackGame;
 import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
 
 /**
@@ -14,10 +13,8 @@ import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
  * @author Grant Liang
  */
 public class StandButton extends CasinoButton {
-    private BlackjackGame blackjackGame;
-    public StandButton(BlackjackGame blackjackGame){
+    public StandButton(){
         super();
-        this.blackjackGame = blackjackGame;
         buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 128, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
@@ -36,8 +33,8 @@ public class StandButton extends CasinoButton {
     }
     /**
      * called when the button is clicked
+     * should send signal to server about player action
      */
     public void signalStand(){
-        blackjackGame.stand();
     }
 }

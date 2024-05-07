@@ -28,8 +28,7 @@ public class BlackjackGame {
         Timer.schedule(new Timer.Task(){
             @Override
             public void run() {
-                dealer.drawCard(deck);
-                dealer.getCardGroup().reveal();
+                dealer.drawCard(deck); //TODO reveal this card
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
@@ -90,7 +89,6 @@ public class BlackjackGame {
     private void endGame(){
         CasinoButton.isAvailable = false;
         BlackjackPlayer winner = findWinner();
-        dealer.getCardGroup().reveal();
         winner.addBalance(pot);
         if(winner == dealer) System.out.println("dealer won.");
         else System.out.println("i won.");

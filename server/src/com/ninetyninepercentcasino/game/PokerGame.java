@@ -1,14 +1,14 @@
-package com.ninetyninepercentcasino.game.poker;
+package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
+import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 
 import java.util.*;
 
 /**
- * Models a poker game, does not manage graphics
+ * Models a poker game on server side
  * @author Grant Liang
  */
 public class PokerGame {
@@ -88,7 +88,6 @@ public class PokerGame {
         bigBlind.bet(BIG_BLIND);
     }
     public void flop(){
-        System.out.println("reached");
         communityCards.add(deck.drawCard());
         communityCards.add(deck.drawCard());
         communityCards.add(deck.drawCard());

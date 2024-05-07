@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.game.MainCasino;
-import com.ninetyninepercentcasino.game.blackjack.BlackjackGame;
 import com.ninetyninepercentcasino.game.blackjack.BlackjackPlayer;
 import com.ninetyninepercentcasino.game.blackjack.blackjackbuttons.HitButton;
 import com.ninetyninepercentcasino.game.blackjack.blackjackbuttons.StandButton;
@@ -39,25 +38,20 @@ public class BlackjackScreen extends CasinoScreen {
         background = new Texture("GameAssets/PokerTable.png");
 
         BlackjackPlayer player = new BlackjackPlayer(true);
-        BlackjackGame blackjackGame = new BlackjackGame(player);
-        CardGroup playerHand = player.getCardGroup();
-        CardGroup dealerHand = blackjackGame.getDealer().getCardGroup();
 
-        dealerHand.setPosition(WORLD_WIDTH/2, 4 * WORLD_HEIGHT/6);
-        playerHand.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/24);
-        Table blackjackButtons = new Table();
-        blackjackButtons.add(new HitButton(blackjackGame));
-        blackjackButtons.add(new StandButton(blackjackGame));
+//        dealerHand.setPosition(WORLD_WIDTH/2, 4 * WORLD_HEIGHT/6);
+//        playerHand.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/24);
+//        Table blackjackButtons = new Table();
+//        blackjackButtons.add(new HitButton(blackjackGame));
+//        blackjackButtons.add(new StandButton(blackjackGame));
 
         Table bottomUI = new Table();
         bottomUI.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/3.5f);
-        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
-
-        blackjackGame.playRound();
-
-        stage.addActor(bottomUI);
-        stage.addActor(playerHand);
-        stage.addActor(dealerHand);
+//        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
+//
+//        stage.addActor(bottomUI);
+//        stage.addActor(playerHand);
+//        stage.addActor(dealerHand);
 
         stage.addCaptureListener(new InputListener(){
             @Override
@@ -65,9 +59,6 @@ public class BlackjackScreen extends CasinoScreen {
                 if(keycode == Input.Keys.ESCAPE) {
                     game.setScreen(new MainMenu(game));
                     return true;
-                }
-                else if(keycode == Input.Keys.SPACE){
-                    blackjackGame.playRound();
                 }
                 return false;
             }
