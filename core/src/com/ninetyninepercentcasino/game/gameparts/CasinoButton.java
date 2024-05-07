@@ -13,9 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  */
 public class CasinoButton extends Actor {
     protected Sprite buttonSprite;
-    protected boolean isAvailable;
+    public static boolean isAvailable;
 
     public CasinoButton(){
+        isAvailable = false;
         setTouchable(Touchable.enabled);
         addListener(new ClickListener(){
             @Override

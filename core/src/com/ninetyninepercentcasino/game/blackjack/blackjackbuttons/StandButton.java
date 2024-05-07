@@ -13,19 +13,19 @@ import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
  * Models a calling button in a poker game
  * @author Grant Liang
  */
-public class HitButton extends CasinoButton {
+public class StandButton extends CasinoButton {
     private BlackjackGame blackjackGame;
-    public HitButton(BlackjackGame blackjackGame){
+    public StandButton(BlackjackGame blackjackGame){
         super();
         this.blackjackGame = blackjackGame;
-        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 192, 0, 64, 72));
+        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 128, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
         buttonSprite.setPosition(getX(), getY());
         addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(isAvailable) signalHit();
+                if(isAvailable) signalStand();
                 return true;
             }
         });
@@ -37,7 +37,7 @@ public class HitButton extends CasinoButton {
     /**
      * called when the button is clicked
      */
-    public void signalHit(){
-        blackjackGame.hit();
+    public void signalStand(){
+        blackjackGame.stand();
     }
 }
