@@ -5,6 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.ninetyninepercentcasino.game.MainCasino;
 
+/**
+ * Describes general characteristics of screens used in the project
+ * @author Grant Liang
+ */
 public abstract class CasinoScreen implements Screen {
     MainCasino game;
     Stage stage;

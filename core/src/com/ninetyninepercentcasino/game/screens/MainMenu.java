@@ -45,9 +45,9 @@ public class MainMenu extends CasinoScreen {
 
         Table root = new Table();
         root.setFillParent(true);
-        root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().align(Align.top).padBottom(100).top();
+        root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
         root.row();
-        root.add(middleMenu);
+        root.add(middleMenu).padBottom(200);
 
         stage.addActor(root);
 
@@ -57,7 +57,6 @@ public class MainMenu extends CasinoScreen {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(65, 65, 65, 0.7f);
             }
-
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 (event.getTarget()).setColor(1, 1, 1, 1f);
@@ -66,13 +65,13 @@ public class MainMenu extends CasinoScreen {
 
         settingsButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new SettingsMenu(game));
+                game.setScreen(new PokerScreen(game));
             }
         });
         settingsButton.addListener(buttonDown);
         playButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new PokerScreen(game));
+                game.setScreen(new BlackjackScreen(game));
             }
         });
         playButton.addListener(buttonDown);
