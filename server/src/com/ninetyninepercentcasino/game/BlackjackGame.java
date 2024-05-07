@@ -1,6 +1,7 @@
-package com.ninetyninepercentcasino.game.blackjack;
+package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.utils.Timer;
+import com.ninetyninepercentcasino.game.blackjack.BlackjackPlayer;
 import com.ninetyninepercentcasino.game.blackjack.blackjackbuttons.HitButton;
 import com.ninetyninepercentcasino.game.gameparts.CasinoButton;
 import com.ninetyninepercentcasino.game.gameparts.Deck;

@@ -3,21 +3,21 @@ package com.ninetyninepercentcasino.game.blackjack;
 import com.ninetyninepercentcasino.game.Player;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.CardGroup;
+import com.ninetyninepercentcasino.game.gameparts.Hand;
 
 /**
  * Models a blackjack player that manages a CardGroup
  */
 public class BlackjackPlayer extends Player {
-    private CardGroup hand;
+    private Hand hand;
     private double balanceInPot;
     public BlackjackPlayer(boolean isLocalPlayer){
         super();
-        hand = new CardGroup(isLocalPlayer, isLocalPlayer);
+        hand = new Hand();
         balance = 0;
         balanceInPot = 0;
     }
-    public CardGroup getCardGroup(){
+    public Hand getHand(){
         return hand;
     }
     public void drawCard(Deck deck){
@@ -31,7 +31,7 @@ public class BlackjackPlayer extends Player {
     public int calculateScore(){
         int score = 0;
         int numAces = 0;
-        for(Card card : hand.getHand().getCards()){
+        for(Card card : hand.getCards()){
             int cardValue = card.getNum();
             if(cardValue == 1) numAces++;
             else if(cardValue > 10) cardValue = 10;

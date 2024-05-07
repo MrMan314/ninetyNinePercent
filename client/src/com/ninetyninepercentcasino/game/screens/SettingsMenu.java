@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.game.MainCasino;
-
 /**
  * Screen for settings menu
  * @author Grant Liang
