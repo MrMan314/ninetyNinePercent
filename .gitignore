@@ -3,6 +3,7 @@ bin/
 .gradle/
 **/build/
 !src/**/build/
+html/war
 
 gradle-app.setting
 !gradle-wrapper.jar
