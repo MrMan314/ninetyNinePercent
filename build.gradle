@@ -45,7 +45,6 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
 
-
     dependencies {
         implementation project(":core")
         implementation project(":client")
@@ -91,7 +90,6 @@ project(":core") {
 project(":client") {
     apply plugin: "java-library"
 
-
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -103,4 +101,8 @@ project(":client") {
 
 project(":server") {
     apply plugin: "java-library"
+    
+	dependencies {
+        implementation project(":core")
+	}
 }
