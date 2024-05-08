@@ -20,12 +20,13 @@ public class Hand {
         this.hand = hand;
     }
     /**
-     * Method that adds a Card to the hand
+     * Method that adds a Card to the hand and returns the card added
      * pre: none
      * post: adds the Card to the hand
      */
-    public void addCard(Card card){
+    public Card addCard(Card card){
         hand.add(card);
+        return card;
     }
     /**
      * Method that removes a Card from the hand

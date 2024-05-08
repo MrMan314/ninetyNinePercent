@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.ninetyninepercentcasino.game.Player;
 import com.ninetyninepercentcasino.game.SFXManager;
 
@@ -15,15 +14,12 @@ import com.ninetyninepercentcasino.game.SFXManager;
  * Class to simulate a deck of cards
  * @author Grant Liang
  */
-public class Deck extends Actor {
-    //TODO seperate Deck from DeckActor
+public class Deck {
     private ArrayList<Card> deck;
-    static Sprite sprite = new Sprite(new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_DeckA-88x140.png"), 88, 0, 88, 140));
     SFXManager sfxManager;
 
     public Deck(){
         deck = new ArrayList<>();
-        setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 
         for(int i = 0; i < 4; i++) {
             for (int j = 13; j >= 1; j--) {
@@ -39,9 +35,7 @@ public class Deck extends Actor {
         sfxManager.playSlideSound();
         return deck.remove(0);
     }
-    public void draw(Batch batch, float parentAlpha){
-        batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
-    }
+
     public void deal(Hand hand){
         hand.addCard(deck.remove(0));
     }
