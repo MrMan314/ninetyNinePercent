@@ -2,13 +2,15 @@ package com.ninetyninepercentcasino.net;
 
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.ninetyninepercentcasino.net.NetMessage;
 
 public class Server extends Thread {
 	private ServerSocket serverSocket;
@@ -41,7 +43,7 @@ public class Server extends Thread {
 		serverSocket.close();
 	}
 
-	public void sendAll(String message) {
+	public void sendAll(NetMessage message) throws IOException {
 		for (ServerThread client: clients) {
 			client.message(message);
 		}
@@ -49,8 +51,8 @@ public class Server extends Thread {
 
 	private class ServerThread extends Thread {
 		private Socket clientSocket;
-		private PrintWriter out;
-		private BufferedReader in;
+		private ObjectInputStream in;
+		private ObjectOutputStream out;
 
 		private String aliveMessage = "";
 
@@ -59,13 +61,15 @@ public class Server extends Thread {
 		public ServerThread(Socket socket) throws IOException {
 			this.clientSocket = socket;
 			alive = true;
-			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+			in = new ObjectInputStream(clientSocket.getInputStream());
 			System.out.printf("New connection from %s\n", clientSocket.getRemoteSocketAddress().toString());
 		}
 
 		public void finish() throws IOException {
 			alive = false;
+			timer.cancel();
+			timer.purge();
 			clientSocket.close();
 			Thread.currentThread().interrupt();
 			in.close();
@@ -77,27 +81,31 @@ public class Server extends Thread {
 			return clientSocket;
 		}
 
-		public void message(String message) {
-			out.println(message);
+		public void message(NetMessage message) throws IOException {
+			out.writeObject(message);
 		}
 
+		private Timer timer = new Timer();
 		public void run() {
 			try {
-				Timer timer = new Timer();
 				TimerTask keepAliveTimeout = new TimerTask() {
 					public void run() {
 						new Thread() {
 							public void run() {
 								try {
+									if(!clientSocket.isConnected()) {
+										finish();
+										return;
+									}
 									synchronized (aliveMessage) {
 										aliveMessage.notify();
-										out.println("hello vro1!!!");
+										NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "my balls itch");
+										out.writeObject(pingMessage);
 										aliveMessage = "";
 										aliveMessage.wait();
 									}
 
 									if(aliveMessage == "") {
-										timer.cancel();
 										finish();
 										return;
 									}
@@ -107,6 +115,13 @@ public class Server extends Thread {
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 									return;
+								} catch (NullPointerException e) {
+									try {
+										finish();
+									} catch (IOException f) {
+										f.printStackTrace();
+									}
+									return;
 								}
 							}
 						}.start();
@@ -114,8 +129,19 @@ public class Server extends Thread {
 				};
 				timer.scheduleAtFixedRate(keepAliveTimeout, 0, 5000);
 				while (alive) {
-					aliveMessage = in.readLine();
-					message(aliveMessage);
+					if(!clientSocket.isConnected()) {
+						alive = false;
+					}
+					try {
+						NetMessage message = (NetMessage) in.readObject();
+						System.out.printf("%s: %s\n",  message.getType(), message.getMessage());
+					} catch (EOFException e) {
+						alive = false;
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}//					message(aliveMessage);
 				}
 				finish();
 			} catch (IOException e) {
