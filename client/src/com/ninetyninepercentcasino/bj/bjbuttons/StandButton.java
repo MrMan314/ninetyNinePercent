@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.blackjack.blackjackbuttons;
+package com.ninetyninepercentcasino.bj.bjbuttons;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;

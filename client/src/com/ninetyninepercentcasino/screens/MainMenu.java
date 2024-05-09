@@ -69,7 +69,7 @@ public class MainMenu extends CasinoScreen {
         settingsButton.addListener(buttonDown);
         playButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new BlackjackScreen(game));
+                game.setScreen(new BJScreen(game));
             }
         });
         playButton.addListener(buttonDown);
