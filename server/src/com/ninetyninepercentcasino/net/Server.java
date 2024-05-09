@@ -41,6 +41,12 @@ public class Server extends Thread {
 		serverSocket.close();
 	}
 
+	public void sendAll(String message) {
+		for (ServerThread client: clients) {
+			client.message(message);
+		}
+	}
+
 	private class ServerThread extends Thread {
 		private Socket clientSocket;
 		private PrintWriter out;
@@ -71,44 +77,45 @@ public class Server extends Thread {
 			return clientSocket;
 		}
 
-		public void message() {
+		public void message(String message) {
+			out.println(message);
 		}
 
 		public void run() {
 			try {
-				while (alive) {
-					out.println("hello vro1!!!");
-					aliveMessage = "";
+				Timer timer = new Timer();
+				TimerTask keepAliveTimeout = new TimerTask() {
+					public void run() {
+						new Thread() {
+							public void run() {
+								try {
+									synchronized (aliveMessage) {
+										aliveMessage.notify();
+										out.println("hello vro1!!!");
+										aliveMessage = "";
+										aliveMessage.wait();
+									}
 
-					TimerTask keepAliveTimeout = new TimerTask() {
-						public void run() {
-							try {
-								if(aliveMessage == "") {
-									finish();
+									if(aliveMessage == "") {
+										timer.cancel();
+										finish();
+										return;
+									}
+								} catch (IOException e) {
+									e.printStackTrace();
+									return;
+								} catch (InterruptedException e) {
+									e.printStackTrace();
 									return;
 								}
-								synchronized (this) {
-									notify();
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-								return;
 							}
-						}
-					};
-
-					Timer timer = new Timer();
-					timer.schedule(keepAliveTimeout, 5000);
-
-					synchronized (keepAliveTimeout) {
-						try {
-							aliveMessage = in.readLine();
-							keepAliveTimeout.wait();
-						} catch (InterruptedException e) {
-							System.out.println("interrupted!!!11");
-							break;
-						}
+						}.start();
 					}
+				};
+				timer.scheduleAtFixedRate(keepAliveTimeout, 0, 5000);
+				while (alive) {
+					aliveMessage = in.readLine();
+					message(aliveMessage);
 				}
 				finish();
 			} catch (IOException e) {
