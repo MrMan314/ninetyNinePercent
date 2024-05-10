@@ -116,7 +116,7 @@ public class Server extends Thread {
 										return;
 									}
 								} catch (IllegalMonitorStateException e) {
-									System.out.println("womp womp");
+									return;
 								} catch (IOException | InterruptedException e) {
 									e.printStackTrace();
 									return;
