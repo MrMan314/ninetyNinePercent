@@ -15,5 +15,8 @@ public class BJPlayer extends Player {
     public void addBalance(double amountAdded){
         balance += amountAdded;
     }
-
+    public void withdraw(double withdrawAmount){
+        if(withdrawAmount < 0) System.out.println("NEGATIVE WITHDRAWAL");
+        else balance -= withdrawAmount;
+    }
 }

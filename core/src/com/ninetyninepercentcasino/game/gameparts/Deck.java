@@ -2,12 +2,6 @@ package com.ninetyninepercentcasino.game.gameparts;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.ninetyninepercentcasino.game.Player;
 import com.ninetyninepercentcasino.game.SFXManager;
 
 /**
@@ -16,23 +10,31 @@ import com.ninetyninepercentcasino.game.SFXManager;
  */
 public class Deck {
     private ArrayList<Card> deck;
-    SFXManager sfxManager;
 
+    /**
+     * initializes a new, unshuffled deck
+     */
     public Deck(){
         deck = new ArrayList<>();
-
         for(int i = 0; i < 4; i++) {
             for (int j = 13; j >= 1; j--) {
                 deck.add(new Card(j, i));
             }
         }
-        sfxManager = new SFXManager();
     }
+
+    /**
+     * shuffles the deck randomly
+     */
     public void shuffle(){
         Collections.shuffle(deck);
     }
+
+    /**
+     * removes a card from the top of the deck and returns it
+     * @return the card that was drawn
+     */
     public Card drawCard(){
-        sfxManager.playSlideSound();
         return deck.remove(0);
     }
 

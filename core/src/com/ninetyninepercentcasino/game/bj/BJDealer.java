@@ -8,12 +8,16 @@ public class BJDealer {
     private Hand hand;
     private Deck deck;
 
-    public BJDealer(Hand hand, Deck deck){
-        this.hand = hand;
+    public BJDealer(Deck deck){
         this.deck = deck;
+        hand = new Hand();
+    }
+    public void setup(){
+        hand.drawCard(deck);
+        hand.drawCard(deck);
     }
     public void play(){
-        while(calculateScore() < 17){
+        while(getScore() < 17){
             hand.drawCard(deck);
         }
     }
@@ -21,7 +25,7 @@ public class BJDealer {
      * calculates the highest possible bj score of a hand that doesn't bust
      * @return score of the hand
      */
-    private int calculateScore(){
+    public int getScore(){
         int score = 0;
         int numAces = 0;
         for(Card card : hand.getCards()){
@@ -36,4 +40,13 @@ public class BJDealer {
         }
         return score;
     }
+    public boolean hasAce(){
+        for(Card card : hand.getCards()){
+            if(card.getNum() == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

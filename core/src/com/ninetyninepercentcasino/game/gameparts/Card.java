@@ -23,7 +23,7 @@ public class Card {
 
     }
     /**
-     * Accessor method that returns the number of a card
+     * Accessor method that returns the number of a card (ace 1, king 13)
      * pre: none
      * post: returns the number of the card
      */

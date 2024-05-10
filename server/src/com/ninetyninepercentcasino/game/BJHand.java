@@ -11,40 +11,39 @@ import java.util.HashMap;
 /**
  * models a bj hand that the player bets on
  */
-public class BJHand {
+public class BJHand extends Hand {
     private BJPlayer player;
-    private HashMap<BJAction, Boolean> availableActions = new HashMap<>();
-    private Hand hand;
+    private HashMap<BJAction, Boolean> availableActions;
     private double amountBet;
 
     public BJHand(BJPlayer player){
         this.player = player;
+        availableActions = new HashMap<>();
         for(BJAction action : BJAction.values()){
             availableActions.put(action, false);
         }
     }
     public BJHand(BJPlayer player, Card card1, Card card2){
         this(player);
-        hand.addCard(card1);
-        hand.addCard(card2);
-    }
-    public Hand getHand(){
-        return hand;
+        addCard(card1);
+        addCard(card2);
     }
     public Card drawCard(Deck deck){
-        return hand.addCard(deck.drawCard());
+        return addCard(deck.drawCard());
     }
-    public void play(){
+    public BJAction act(){
         giveOptions();
+        BJAction playerAction = BJAction.SPLIT; //take in client input, temporarily permanently set to split
+        return playerAction;
     }
     /**
      * calculates the highest possible bj score of a hand that doesn't bust
      * @return score of the hand
      */
-    public int calculateScore(){
+    public int getScore(){
         int score = 0;
         int numAces = 0;
-        for(Card card : hand.getCards()){
+        for(Card card : getCards()){
             int cardValue = card.getNum();
             if(cardValue == 1) numAces++;
             else if(cardValue > 10) cardValue = 10;
@@ -57,27 +56,36 @@ public class BJHand {
         return score;
     }
     private void giveOptions(){
-        int score = calculateScore();
-        if(score >= 21) endHand(); //someone has busted, so end the game
+        int score = getScore();
         for(BJAction action : availableActions.keySet()){
             availableActions.replace(action, false);
         }
-        availableActions.replace(BJAction.STAND, true);
-        availableActions.replace(BJAction.HIT, true);
-        if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
-        if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
+        if(score < 21) {
+            availableActions.replace(BJAction.STAND, true);
+            availableActions.replace(BJAction.HIT, true);
+            if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
+            if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
+            //TODO send the player their available actions
+        }
+        //else resolve the hand bc player has busted.
+
     }
-    public boolean canSplit(){
-        return hand.getCards().get(0).getNum() == hand.getCards().get(1).getNum();
+    private boolean canSplit(){
+        return getCards().get(0).getNum() == getCards().get(1).getNum();
     }
-    public boolean canDoubleDown(){
-        Card card1 = hand.getCards().get(0);
-        Card card2 = hand.getCards().get(1);
-        int score = calculateScore();
+    private boolean canDoubleDown(){
+        Card card1 = getCards().get(0);
+        Card card2 = getCards().get(1);
+        int score = getScore();
         return 9 <= score && score <= 11 && card1.getNum() != 1 && card2.getNum() != 1;
     }
-    private void endHand(){
-
+    public void setBet(double amountBet){
+        player.withdraw(amountBet-this.amountBet);
+        this.amountBet = amountBet;
+    }
+    public void doubleBet(){
+        player.withdraw(amountBet);
+        amountBet *= 2;
     }
 
 }
