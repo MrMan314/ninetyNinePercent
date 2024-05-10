@@ -2,13 +2,16 @@ package com.ninetyninepercentcasino.net;
 
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.EOFException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.lang.IllegalMonitorStateException;
 
 import com.ninetyninepercentcasino.net.NetMessage;
 
@@ -16,7 +19,7 @@ public class Server extends Thread {
 	private ServerSocket serverSocket;
 	private int port = 9925;
 
-	private ArrayList<ServerThread> clients = new ArrayList<ServerThread>();
+	private List<ServerThread> clients = new ArrayList<ServerThread>();
 
 	public Server() throws IOException {
 		serverSocket = new ServerSocket(this.port);
@@ -43,9 +46,11 @@ public class Server extends Thread {
 		serverSocket.close();
 	}
 
-	public void sendAll(NetMessage message) throws IOException {
+	public void sendAll(NetMessage message, ServerThread origin) throws IOException {
 		for (ServerThread client: clients) {
-			client.message(message);
+			if (client != origin) {
+				client.message(message);
+			}
 		}
 	}
 
@@ -74,6 +79,7 @@ public class Server extends Thread {
 			Thread.currentThread().interrupt();
 			in.close();
 			out.close();
+			clients.remove(this);
 			System.out.printf("Connection closed from %s\n", clientSocket.getRemoteSocketAddress().toString());
 		}
 
@@ -109,10 +115,9 @@ public class Server extends Thread {
 										finish();
 										return;
 									}
-								} catch (IOException e) {
-									e.printStackTrace();
-									return;
-								} catch (InterruptedException e) {
+								} catch (IllegalMonitorStateException e) {
+									System.out.println("womp womp");
+								} catch (IOException | InterruptedException e) {
 									e.printStackTrace();
 									return;
 								} catch (NullPointerException e) {
@@ -134,12 +139,16 @@ public class Server extends Thread {
 					}
 					try {
 						NetMessage message = (NetMessage) in.readObject();
-						System.out.printf("%s: %s\n",  message.getType(), message.getMessage());
-					} catch (EOFException e) {
+						message.setOrigin(clientSocket.getRemoteSocketAddress());
+						if (message.getType() == NetMessage.MessageType.ACK) {
+							aliveMessage = (String) message.getContent();
+						} else if (message.getContent() != null) {
+							System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
+							sendAll(message, this);
+						}
+					} catch (EOFException | SocketException e) {
 						alive = false;
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
+					} catch (IOException | ClassNotFoundException e) {
 						e.printStackTrace();
 					}//					message(aliveMessage);
 				}

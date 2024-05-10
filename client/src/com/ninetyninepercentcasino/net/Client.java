@@ -4,7 +4,10 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.EOFException;
 
 import com.ninetyninepercentcasino.net.NetMessage;
 
@@ -12,14 +15,20 @@ public class Client extends Thread {
 	private Socket clientSocket;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
+	private BufferedReader consoleIn;
+
+	private boolean alive = true;
 
 	public Client(String ip, int port) throws IOException {
 		clientSocket = new Socket(ip, port);
 		in = new ObjectInputStream(clientSocket.getInputStream());
 		out = new ObjectOutputStream(clientSocket.getOutputStream());
+		consoleIn = new BufferedReader(new InputStreamReader(System.in));
 	}
 
 	public void finish() throws IOException {
+		System.out.println("Connection Closed.");
+		alive = false;
 		clientSocket.close();
 		Thread.currentThread().interrupt();
 		in.close();
@@ -28,13 +37,33 @@ public class Client extends Thread {
 
 	public void run() {
 		try {
-			NetMessage testMessage = (NetMessage) in.readObject();
-			System.out.printf("%s: %s\n", testMessage.getType(), testMessage.getMessage());
-			out.writeObject(new NetMessage(NetMessage.MessageType.NORMAL, "hello vro!"));
+			new Thread() {
+				public void run() {
+					while (alive) {
+						try {
+							NetMessage message = (NetMessage) in.readObject();
+							if (message.getType() == NetMessage.MessageType.PING) {
+								out.writeObject(new NetMessage(NetMessage.MessageType.ACK, message.getContent()));
+							} else if (message.getContent() != null) {
+								System.out.printf("[%s] %s: %s\n", message.getType(), message.getOrigin().toString(), message.getContent());
+							}
+						} catch (EOFException e) {
+							try {
+								finish();
+							} catch (IOException f) {
+								f.printStackTrace();
+							}
+						} catch (IOException | ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}.start();
+			while (alive) {
+				out.writeObject(new NetMessage(NetMessage.MessageType.NORMAL, consoleIn.readLine()));
+			}
 			finish();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

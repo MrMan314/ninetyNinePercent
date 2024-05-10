@@ -1,6 +1,7 @@
 package com.ninetyninepercentcasino.net;
 
 import java.io.Serializable;
+import java.net.SocketAddress;
 
 public class NetMessage implements Serializable {
 	enum MessageType {
@@ -10,19 +11,34 @@ public class NetMessage implements Serializable {
 		NORMAL
 	}
 
-	MessageType type;
-	String message;
+	private MessageType type;
+	private Object content;
+	private SocketAddress origin;
 
-	public NetMessage(MessageType type, String message) {
+	public NetMessage(MessageType type, Object content) {
 		this.type = type;
-		this.message = message;
+		this.content = content;
+	}
+	
+	public NetMessage(MessageType type, Object content, SocketAddress origin) {
+		this.type = type;
+		this.content = content;
+		this.origin = origin;
 	}
 
 	public MessageType getType() {
 		return type;
 	}
 
-	public String getMessage() {
-		return message;
+	public Object getContent() {
+		return content;
+	}
+
+	public SocketAddress getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(SocketAddress origin) {
+		this.origin = origin;
 	}
 }
