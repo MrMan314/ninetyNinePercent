@@ -48,5 +48,8 @@ public class BJDealer {
         }
         return false;
     }
+    public int getNumCards(){
+        return hand.getCards().size();
+    }
 
 }

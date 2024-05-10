@@ -36,36 +36,28 @@ public class Client extends Thread {
 	}
 
 	public void run() {
-		try {
-			new Thread() {
-				public void run() {
-					while (alive) {
-						try {
-							NetMessage message = (NetMessage) in.readObject();
-							if (message.getType() == NetMessage.MessageType.PING) {
-								out.writeObject(new NetMessage(NetMessage.MessageType.ACK, message.getContent()));
-							} else if (message.getContent() != null) {
-								System.out.printf("[%s] %s: %s\n", message.getType(), message.getOrigin().toString(), message.getContent());
-							}
-						} catch (EOFException e) {
-							try {
-								finish();
-							} catch (IOException f) {
-								f.printStackTrace();
-							}
-						} catch (IOException | ClassNotFoundException e) {
-							e.printStackTrace();
+		new Thread() {
+			public void run() {
+				while (alive) {
+					try {
+						NetMessage message = (NetMessage) in.readObject();
+						if (message.getType() == NetMessage.MessageType.PING) {
+							out.writeObject(new NetMessage(NetMessage.MessageType.ACK, message.getContent()));
+						} else if (message.getContent() != null) {
+							System.out.printf("[%s] %s: %s\n", message.getType(), message.getOrigin().toString(), message.getContent());
 						}
+					} catch (EOFException e) {
+						try {
+							finish();
+						} catch (IOException f) {
+							f.printStackTrace();
+						}
+					} catch (IOException | ClassNotFoundException e) {
+						e.printStackTrace();
 					}
 				}
-			}.start();
-			while (alive) {
-				out.writeObject(new NetMessage(NetMessage.MessageType.NORMAL, consoleIn.readLine()));
 			}
-			finish();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		}.start();
 	}
 
 	public static void main(String[] args) throws IOException {

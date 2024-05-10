@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.net.SocketAddress;
 
 public class NetMessage implements Serializable {
-	enum MessageType {
+	public enum MessageType {
 		PING,
 		ACK,
 		INFO,

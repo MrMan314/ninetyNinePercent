@@ -22,6 +22,10 @@ public class Server extends Thread {
 	private ServerSocket serverSocket;
 	private int port = 9925;
 
+	public List<ServerThread> getClients() {
+		return clients;
+	}
+
 	private List<ServerThread> clients = new ArrayList<ServerThread>();
 
 	public Server() throws IOException {
@@ -49,11 +53,17 @@ public class Server extends Thread {
 		serverSocket.close();
 	}
 
-	public void sendAll(NetMessage message, ServerThread origin) throws IOException {
+	private void sendAll(NetMessage message, ServerThread origin) throws IOException {
 		for (ServerThread client: clients) {
 			if (client != origin) {
 				client.message(message);
 			}
+		}
+	}
+
+	public void sendAll(NetMessage message) throws IOException {
+		for (ServerThread client: clients) {
+			client.message(message);
 		}
 	}
 

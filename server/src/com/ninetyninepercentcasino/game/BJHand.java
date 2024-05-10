@@ -87,5 +87,8 @@ public class BJHand extends Hand {
         player.withdraw(amountBet);
         amountBet *= 2;
     }
+    public double getAmountBet(){
+        return amountBet;
+    }
 
 }

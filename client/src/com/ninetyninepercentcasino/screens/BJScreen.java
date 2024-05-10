@@ -13,6 +13,9 @@ import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
 import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
+import com.ninetyninepercentcasino.net.Client;
+
+import java.io.IOException;
 
 /**
  * Screen that renders a BJ game
@@ -39,31 +42,41 @@ public class BJScreen extends CasinoScreen {
         CardGroup playerHand = new CardGroup(true, true);
         CardGroup dealerHand = new CardGroup(false, true);
 
-        playerHand.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/24);
-        dealerHand.setPosition(WORLD_WIDTH/2, 4 * WORLD_HEIGHT/6);
+        playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
+        dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
 
         Table blackjackButtons = new Table();
         blackjackButtons.add(new HitButton());
         blackjackButtons.add(new StandButton());
 
         Table bottomUI = new Table();
-        bottomUI.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/3.5f);
-        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
+        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 3.5f);
+        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).top().padBottom(230);
 
         stage.addActor(bottomUI);
         stage.addActor(playerHand);
         stage.addActor(dealerHand);
 
-        stage.addCaptureListener(new InputListener(){
+        stage.addCaptureListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                if(keycode == Input.Keys.ESCAPE) {
+                if (keycode == Input.Keys.ESCAPE) {
                     game.setScreen(new MainMenu(game));
                     return true;
                 }
                 return false;
             }
         });
+
+        Client client;
+        try {
+            client = new Client("127.0.0.1", 9925);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        client.start();
+
+
     }
 
     @Override
