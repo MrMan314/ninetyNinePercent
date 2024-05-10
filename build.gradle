@@ -33,6 +33,7 @@ allprojects {
 	}
 
     version = getGitHash()
+	properties.version = getGitHash()
 
     ext {
         appName = "ninety-nine-percent-casino"
