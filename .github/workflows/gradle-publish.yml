@@ -12,14 +12,12 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
       repository-projects: write
       packages: write
-      releases: write
 
     steps:
     - uses: actions/checkout@v4
