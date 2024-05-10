@@ -10,7 +10,7 @@ name: Gradle Package
 on:
   push:
     tags:
-	  - '*'
+      - '*'
 
 jobs:
   build:
@@ -75,12 +75,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         id: ${{ steps.create_release.outputs.id }}
-
-# do this later
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-#    - name: Publish to GitHub Packages
-#      run: ./gradlew publish
-#      env:
-#        USERNAME: ${{ github.actor }}
-#        TOKEN: ${{ secrets.GITHUB_TOKEN }}
