@@ -1,33 +1,31 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.bj;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 
-/**
- * Models a blackjack player that manages a CardGroup
- */
-public class BlackjackPlayer extends Player {
+public class BJDealer {
     private Hand hand;
-    private double balanceInPot;
-    public BlackjackPlayer(boolean isLocalPlayer){
-        super();
-        hand = new Hand();
-        balance = 0;
-        balanceInPot = 0;
-    }
-    public Hand getHand(){
-        return hand;
-    }
-    public Card drawCard(Deck deck){
-        return hand.addCard(deck.drawCard());
-    }
+    private Deck deck;
 
+    public BJDealer(Deck deck){
+        this.deck = deck;
+        hand = new Hand();
+    }
+    public void setup(){
+        hand.drawCard(deck);
+        hand.drawCard(deck);
+    }
+    public void play(){
+        while(getScore() < 17){
+            hand.drawCard(deck);
+        }
+    }
     /**
-     * calculates the highest possible blackjack score of a hand that doesn't bust
+     * calculates the highest possible bj score of a hand that doesn't bust
      * @return score of the hand
      */
-    public int calculateScore(){
+    public int getScore(){
         int score = 0;
         int numAces = 0;
         for(Card card : hand.getCards()){
@@ -42,7 +40,13 @@ public class BlackjackPlayer extends Player {
         }
         return score;
     }
-    public void addBalance(double amountAdded){
-        balance += amountAdded;
+    public boolean hasAce(){
+        for(Card card : hand.getCards()){
+            if(card.getNum() == 1){
+                return true;
+            }
+        }
+        return false;
     }
+
 }

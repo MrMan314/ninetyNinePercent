@@ -34,8 +34,8 @@ public class SettingsMenu extends CasinoScreen {
         Gdx.input.setInputProcessor(stage);
 
         Skin skins = new Skin();
-        skins.add("titleBanner", new Texture("MainMenu/TitleBanner.png"));
-        skins.add("settingsButton", new Texture("MainMenu/SettingsButton.png"));
+        skins.add("titleBanner", new Texture("Menus/TitleBanner.png"));
+        skins.add("settingsButton", new Texture("Menus/SettingsButton.png"));
 
         Image titleBanner = new Image(skins.getDrawable("titleBanner"));
 //        Slider masterVolumeSlider = new Slider(0f, 100f, 5f, false, skins);
@@ -54,7 +54,7 @@ public class SettingsMenu extends CasinoScreen {
 
         stage.addActor(root);
 
-        background = new Texture("MainMenu/Background.jpg");
+        background = new Texture("Menus/Background.jpg");
 
         stage.addCaptureListener(new InputListener(){
             @Override

@@ -10,17 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.game.BlackjackPlayer;
+import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
+import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
+import com.ninetyninepercentcasino.gameparts.CardGroup;
 
 /**
- * Screen that renders a Blackjack game
+ * Screen that renders a BJ game
  * @author Grant Liang
  */
-public class BlackjackScreen extends CasinoScreen {
+public class BJScreen extends CasinoScreen {
     private Texture background;
     private boolean firstRender;
 
-    public BlackjackScreen(MainCasino game) {
+    public BJScreen(MainCasino game) {
         super(game);
     }
 
@@ -34,21 +36,23 @@ public class BlackjackScreen extends CasinoScreen {
 
         background = new Texture("GameAssets/PokerTable.png");
 
-        BlackjackPlayer player = new BlackjackPlayer(true);
+        CardGroup playerHand = new CardGroup(true, true);
+        CardGroup dealerHand = new CardGroup(false, true);
 
-//        dealerHand.setPosition(WORLD_WIDTH/2, 4 * WORLD_HEIGHT/6);
-//        playerHand.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/24);
-//        Table blackjackButtons = new Table();
-//        blackjackButtons.add(new HitButton(blackjackGame));
-//        blackjackButtons.add(new StandButton(blackjackGame));
+        playerHand.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/24);
+        dealerHand.setPosition(WORLD_WIDTH/2, 4 * WORLD_HEIGHT/6);
+
+        Table blackjackButtons = new Table();
+        blackjackButtons.add(new HitButton());
+        blackjackButtons.add(new StandButton());
 
         Table bottomUI = new Table();
         bottomUI.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/3.5f);
-//        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
-//
-//        stage.addActor(bottomUI);
-//        stage.addActor(playerHand);
-//        stage.addActor(dealerHand);
+        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH/16).padLeft(WORLD_WIDTH/16).top().padBottom(230);
+
+        stage.addActor(bottomUI);
+        stage.addActor(playerHand);
+        stage.addActor(dealerHand);
 
         stage.addCaptureListener(new InputListener(){
             @Override

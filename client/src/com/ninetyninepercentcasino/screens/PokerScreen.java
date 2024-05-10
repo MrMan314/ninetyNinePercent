@@ -12,9 +12,7 @@ import com.ninetyninepercentcasino.poker.pokerbuttons.FoldButton;
 import com.ninetyninepercentcasino.poker.pokerbuttons.RaiseButton;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.Input;
-import com.ninetyninepercentcasino.game.PokerPlayer;
-
-import java.util.ArrayList;
+import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 
 /**
  * Screen that renders poker screen

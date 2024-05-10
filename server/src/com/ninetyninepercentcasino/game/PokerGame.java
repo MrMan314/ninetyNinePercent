@@ -2,6 +2,7 @@ package com.ninetyninepercentcasino.game;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
+import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 
 import java.util.*;
 

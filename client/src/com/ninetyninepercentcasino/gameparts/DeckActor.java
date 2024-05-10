@@ -11,6 +11,7 @@ import com.ninetyninepercentcasino.game.gameparts.Deck;
 public class DeckActor extends Actor {
     private Deck deck;
     static Sprite sprite = new Sprite(new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_DeckA-88x140.png"), 88, 0, 88, 140));
+    
 
     public DeckActor(){
         deck = new Deck();

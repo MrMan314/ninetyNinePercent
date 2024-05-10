@@ -36,12 +36,21 @@ public class Hand {
     public void removeCard(Card card){
         hand.remove(card);
     }
-    public void drawCard(Deck deck){
-        hand.add(deck.drawCard());
+    public Card drawCard(Deck deck){
+        Card card = deck.drawCard();
+        hand.add(card);
+        return card;
     }
     public ArrayList<Card> getCards(){
         return hand;
     }
-
+    /**
+     * retrieves and returns the card at the given index of the hand
+     * @param index 0-indexed location of the card. 0 will always be the first card in
+     * @return the card at that index in the hand
+     */
+    public Card getCard(int index){
+        return hand.get(index);
+    }
 
 }
