@@ -37,6 +37,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew :server:dist :desktop:dist # html broken rn
 
+    - name: Set environment variable for branch
+      run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
@@ -55,8 +58,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./desktop/build/libs/desktop-$(git rev-parse --short HEAD).jar
-        asset_name: desktop-$(git rev-parse --short HEAD).jar
+        asset_path: ./desktop/build/libs/desktop-${{ env.COMMIT_HASH }}.jar
+        asset_name: desktop-${{ env.COMMIT_HASH }}.jar
         asset_content_type: application/java-archive
 
     - name: Upload release asset for server
@@ -65,8 +68,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./server/build/libs/server-$(git rev-parse --short HEAD).jar
-        asset_name: server-$(git rev-parse --short HEAD).jar
+        asset_path: ./server/build/libs/server-${{ env.COMMIT_HASH }}.jar
+        asset_name: server-${{ env.COMMIT_HASH }}.jar
         asset_content_type: application/java-archive
 
     - name: Publish release
