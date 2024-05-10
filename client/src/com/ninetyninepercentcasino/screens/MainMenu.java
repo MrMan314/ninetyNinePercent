@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.MainCasino;
 
@@ -24,14 +25,13 @@ public class MainMenu extends CasinoScreen {
     }
     @Override
     public void show() {
-
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         Skin skins = new Skin();
-        skins.add("titleBanner", new Texture("MainMenu/TitleBanner.png"));
-        skins.add("playButton", new Texture("MainMenu/PlayButton.png"));
-        skins.add("settingsButton", new Texture("MainMenu/SettingsButton.png"));
+        skins.add("titleBanner", new Texture("Menus/TitleBanner.png"));
+        skins.add("playButton", new Texture("Menus/PlayButton.png"));
+        skins.add("settingsButton", new Texture("Menus/SettingsButton.png"));
 
         Image titleBanner = new Image(skins.getDrawable("titleBanner"));
         Button playButton = new Button(skins.getDrawable("playButton"));
@@ -49,7 +49,7 @@ public class MainMenu extends CasinoScreen {
 
         stage.addActor(root);
 
-        background = new Texture("MainMenu/Background.jpg");
+        background = new Texture("Menus/Background.jpg");
 
         ClickListener buttonDown = new ClickListener() {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -63,13 +63,13 @@ public class MainMenu extends CasinoScreen {
 
         settingsButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new PokerScreen(game));
+                game.setScreen(new SettingsMenu(game));
             }
         });
         settingsButton.addListener(buttonDown);
         playButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new BJScreen(game));
+                game.setScreen(new GameSelect(game));
             }
         });
         playButton.addListener(buttonDown);
