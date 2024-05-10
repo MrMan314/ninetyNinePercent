@@ -8,7 +8,9 @@
 name: Gradle Package
 
 on:
-  push
+  push:
+    tags:
+	  - '*'
 
 jobs:
   build:
@@ -43,21 +45,29 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: |
-          Changes in this Release
-          - i pooped on the floor!
+        body_path: ./CHANGES.md
         draft: true
         prerelease: false
 
-    - name: Upload release asset
+    - name: Upload release asset for desktop
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./testfile
-        asset_name: testfile
-        asset_content_type: text/plain
+        asset_path: ./desktop/build/libs/desktop-$(git rev-parse --short HEAD).jar
+        asset_name: desktop-$(git rev-parse --short HEAD).jar
+        asset_content_type: application/java-archive
+
+    - name: Upload release asset for server
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./server/build/libs/server-$(git rev-parse --short HEAD).jar
+        asset_name: server-$(git rev-parse --short HEAD).jar
+        asset_content_type: application/java-archive
 
     - name: Publish release
       uses: StuYarrow/publish-release@v1.1.2
