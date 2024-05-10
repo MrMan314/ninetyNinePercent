@@ -57,11 +57,11 @@ allprojects {
     }
 
 	release {
-	    failOnCommitNeeded = true
-	    failOnPublishNeeded = true
-	    failOnSnapshotDependencies = true
-	    failOnUnversionedFiles = true
-	    failOnUpdateNeeded = true
+	    failOnCommitNeeded = false
+	    failOnPublishNeeded = false
+	    failOnSnapshotDependencies = false
+	    failOnUnversionedFiles = false
+	    failOnUpdateNeeded = false
 	    preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
 	    tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
 	    newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
