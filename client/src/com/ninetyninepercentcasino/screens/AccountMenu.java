@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.MainCasino;
@@ -21,8 +23,15 @@ public class AccountMenu extends CasinoScreen {
         stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
+        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
+        Table infoInput = new Table();
+        TextField usernameEntry = new TextField("usernameEntry", skin);
+        infoInput.add(usernameEntry);
+
         Table root = new Table();
         root.setFillParent(true);
+        root.add(infoInput);
 
         stage.addActor(root);
 
@@ -36,6 +45,8 @@ public class AccountMenu extends CasinoScreen {
         stage.getBatch().setColor(1, 1,1 ,1f);
         stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
         stage.getBatch().end();
+        stage.draw();
+        stage.act();
     }
 
     @Override
