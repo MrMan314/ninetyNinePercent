@@ -42,7 +42,6 @@ tasks.register('dist', Jar) {
     with jar
 }
 
-
 dist.dependsOn classes
 
 eclipse.project.name = appName + "-server"

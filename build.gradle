@@ -16,9 +16,12 @@ buildscript {
     }
 }
 
+plugins {
+	id 'eclipse'
+	id 'net.researchgate.release' version '3.0.2'
+}
+
 allprojects {
-    apply plugin: "eclipse"
-	apply plugin: "maven-publish"
 
 	def getGitHash = { ->
 		def stdout = new ByteArrayOutputStream()
@@ -52,28 +55,21 @@ allprojects {
         maven { url "https://central.sonatype.com/artifact/" }
     }
 
-	publishing {
-		repositories {
-			maven {
-				name = "GitHubPackages"
-				url = uri("https://maven.pkg.github.com/MrMan314/ninetyNinePercent")
-				credentials {
-					username = System.getenv("USERNAME")
-					password = System.getenv("TOKEN")
-				}
-			}
-		}
-
-		publications {
-			register("jar", MavenPublication) {
-				configurations.each { println it.name }
-//				from(components["dist"])
-//				pom {
-//					url.set("https://github.com/MrMan314/ninetyNinePercent.git")
-				}
-//			}
-		}
+	release {
+	    failOnCommitNeeded = true
+	    failOnPublishNeeded = true
+	    failOnSnapshotDependencies = true
+	    failOnUnversionedFiles = true
+	    failOnUpdateNeeded = true
+	    preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
+	    tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
+	    newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
+	    tagTemplate = '${version}'
+	    versionPropertyFile = 'gradle.properties'
+	    snapshotSuffix = '-SNAPSHOT'
+    	buildTasks = []
 	}
+
 }
 
 project(":desktop") {
