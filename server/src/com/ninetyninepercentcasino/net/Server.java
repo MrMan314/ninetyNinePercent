@@ -7,11 +7,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 import java.io.EOFException;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.lang.IllegalStateException;
 import java.lang.IllegalMonitorStateException;
+import java.lang.NullPointerException;
 
 import com.ninetyninepercentcasino.net.NetMessage;
 
@@ -37,7 +40,7 @@ public class Server extends Thread {
 				clients.add(new ServerThread(serverSocket.accept()));
 				clients.get(clients.size() - 1).start();
 			} catch (IOException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -63,21 +66,72 @@ public class Server extends Thread {
 
 		private boolean alive;
 
+		private TimerTask keepAliveTimeout = new TimerTask() {
+			public void run() {
+				new Thread() {
+					public void run() {
+						try {
+							if(!clientSocket.isConnected()) {
+								finish();
+								return;
+							}
+							synchronized (aliveMessage) {
+								aliveMessage.notify();
+								NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "my balls itch");
+								out.writeObject(pingMessage);
+								aliveMessage = "";
+								aliveMessage.wait();
+							}
+
+							if(aliveMessage == "") {
+								finish();
+								return;
+							}
+						} catch (IllegalMonitorStateException e) {
+							return;
+						} catch (IOException | InterruptedException e) {
+							e.printStackTrace();
+							return;
+						} catch (NullPointerException e) {
+							try {
+								finish();
+							} catch (IOException f) {
+								f.printStackTrace();
+							}
+							return;
+						}
+					}
+				}.start();
+			}
+		};
 		public ServerThread(Socket socket) throws IOException {
-			this.clientSocket = socket;
-			alive = true;
-			out = new ObjectOutputStream(clientSocket.getOutputStream());
-			in = new ObjectInputStream(clientSocket.getInputStream());
-			System.out.printf("New connection from %s\n", clientSocket.getRemoteSocketAddress().toString());
+			try {
+				this.clientSocket = socket;
+				alive = true;
+				out = new ObjectOutputStream(clientSocket.getOutputStream());
+				in = new ObjectInputStream(clientSocket.getInputStream());
+				System.out.printf("New connection from %s\n", clientSocket.getRemoteSocketAddress().toString());
+				timer.scheduleAtFixedRate(keepAliveTimeout, 0, 5000);
+			} catch (StreamCorruptedException e) {
+				this.finish();
+			}	
 		}
 
 		public void finish() throws IOException {
 			alive = false;
-			timer.cancel();
-			timer.purge();
+			try {
+				timer.cancel();
+				timer.purge();
+			} catch (IllegalStateException e) {
+
+			}
 			clientSocket.close();
 			Thread.currentThread().interrupt();
-			in.close();
+			try {
+				in.close();
+			} catch (NullPointerException e) {
+
+			}
 			out.close();
 			clients.remove(this);
 			System.out.printf("Connection closed from %s\n", clientSocket.getRemoteSocketAddress().toString());
@@ -92,50 +146,12 @@ public class Server extends Thread {
 		}
 
 		private Timer timer = new Timer();
+
 		public void run() {
 			try {
-				TimerTask keepAliveTimeout = new TimerTask() {
-					public void run() {
-						new Thread() {
-							public void run() {
-								try {
-									if(!clientSocket.isConnected()) {
-										finish();
-										return;
-									}
-									synchronized (aliveMessage) {
-										aliveMessage.notify();
-										NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "my balls itch");
-										out.writeObject(pingMessage);
-										aliveMessage = "";
-										aliveMessage.wait();
-									}
-
-									if(aliveMessage == "") {
-										finish();
-										return;
-									}
-								} catch (IllegalMonitorStateException e) {
-									return;
-								} catch (IOException | InterruptedException e) {
-									e.printStackTrace();
-									return;
-								} catch (NullPointerException e) {
-									try {
-										finish();
-									} catch (IOException f) {
-										f.printStackTrace();
-									}
-									return;
-								}
-							}
-						}.start();
-					}
-				};
-				timer.scheduleAtFixedRate(keepAliveTimeout, 0, 5000);
 				while (alive) {
 					if(!clientSocket.isConnected()) {
-						alive = false;
+						finish();
 					}
 					try {
 						NetMessage message = (NetMessage) in.readObject();
@@ -147,14 +163,13 @@ public class Server extends Thread {
 							sendAll(message, this);
 						}
 					} catch (EOFException | SocketException e) {
-						alive = false;
+						finish();
 					} catch (IOException | ClassNotFoundException e) {
 						e.printStackTrace();
-					}//					message(aliveMessage);
+					}
 				}
-				finish();
 			} catch (IOException e) {
-				System.out.println(e);
+				e.printStackTrace();
 			}
 		}
 	}
