@@ -18,8 +18,19 @@ buildscript {
 
 allprojects {
     apply plugin: "eclipse"
+	apply plugin: "maven-publish"
 
-    version = '1.0'
+	def getGitHash = { ->
+		def stdout = new ByteArrayOutputStream()
+		exec {
+			commandLine 'git', 'rev-parse', '--short', 'HEAD'
+			standardOutput = stdout
+		}
+		return stdout.toString().trim()
+	}
+
+    version = getGitHash()
+
     ext {
         appName = "ninety-nine-percent-casino"
         gdxVersion = '1.12.2-SNAPSHOT'
@@ -40,6 +51,29 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://central.sonatype.com/artifact/" }
     }
+
+	publishing {
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = uri("https://maven.pkg.github.com/MrMan314/ninetyNinePercent")
+				credentials {
+					username = System.getenv("USERNAME")
+					password = System.getenv("TOKEN")
+				}
+			}
+		}
+
+		publications {
+			register("jar", MavenPublication) {
+				configurations.each { println it.name }
+//				from(components["dist"])
+//				pom {
+//					url.set("https://github.com/MrMan314/ninetyNinePercent.git")
+				}
+//			}
+		}
+	}
 }
 
 project(":desktop") {
