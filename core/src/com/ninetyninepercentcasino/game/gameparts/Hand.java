@@ -1,40 +1,56 @@
 package com.ninetyninepercentcasino.game.gameparts;
 
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import java.util.ArrayList;
 
 /**
  * Models a player hand that manages Cards
  * @author Grant Liang
  */
-public class Hand extends HorizontalGroup {
+public class Hand {
+    private ArrayList<Card> hand;
     /**
      * Constructor that initializes a new empty player hand
      * pre: none
      * post: initializes a new empty player hand
      */
     public Hand(){
-        this.debug();
-        this.padBottom(200);
-        this.padLeft(200);
-        this.padRight(200);
-        this.space(88);
+        hand = new ArrayList<>();
+    }
+    public Hand(ArrayList<Card> hand){
+        this.hand = hand;
     }
     /**
-     * Method that adds a Card to the hand
+     * Method that adds a Card to the hand and returns the card added
      * pre: none
      * post: adds the Card to the hand
      */
-    public void addCard(CardActor card){
-        this.addActor(card);
+    public Card addCard(Card card){
+        hand.add(card);
+        return card;
     }
     /**
      * Method that removes a Card from the hand
      * pre: none
      * post: removes the Card from the hand
      */
-    public void removeCard(CardActor card){
-        this.removeActor(card);
+    public void removeCard(Card card){
+        hand.remove(card);
     }
-
+    public Card drawCard(Deck deck){
+        Card card = deck.drawCard();
+        hand.add(card);
+        return card;
+    }
+    public ArrayList<Card> getCards(){
+        return hand;
+    }
+    /**
+     * retrieves and returns the card at the given index of the hand
+     * @param index 0-indexed location of the card. 0 will always be the first card in
+     * @return the card at that index in the hand
+     */
+    public Card getCard(int index){
+        return hand.get(index);
+    }
 
 }

@@ -79,6 +79,7 @@ tasks.register('dist') {
 tasks.register('addSource') {
     doLast {
         sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
+        sourceSets.main.compileClasspath += files(project(':client').sourceSets.main.allJava.srcDirs)
     }
 }
 

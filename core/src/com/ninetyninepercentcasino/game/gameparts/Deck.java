@@ -1,28 +1,44 @@
 package com.ninetyninepercentcasino.game.gameparts;
 import java.util.ArrayList;
 import java.util.Collections;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
 
+import com.ninetyninepercentcasino.game.SFXManager;
+
+/**
+ * Class to simulate a deck of cards
+ * @author Grant Liang
+ */
 public class Deck {
     private ArrayList<Card> deck;
-    Texture deckTexture;
+
+    /**
+     * initializes a new, unshuffled deck
+     */
     public Deck(){
-        deckTexture = new Texture("PokerAssets/Top-Down/Cards/Card_DeckA-88x140.png");
-        deck = new ArrayList<Card>();
+        deck = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
-            for (int j = 12; j >= 0; j--) {
+            for (int j = 13; j >= 1; j--) {
                 deck.add(new Card(j, i));
             }
         }
     }
+
+    /**
+     * shuffles the deck randomly
+     */
     public void shuffle(){
         Collections.shuffle(deck);
     }
+
+    /**
+     * removes a card from the top of the deck and returns it
+     * @return the card that was drawn
+     */
     public Card drawCard(){
         return deck.remove(0);
     }
-    public void drawDeck(SpriteBatch batch){
-        batch.draw(deckTexture, -1, -1, 0, 0, 1, 1 * ((float)140/(float)88), 0, 0, 0, 0, 0, 88, 140, false, false);
+
+    public void deal(Hand hand){
+        hand.addCard(deck.remove(0));
     }
 }

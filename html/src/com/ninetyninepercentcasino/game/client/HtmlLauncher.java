@@ -3,7 +3,7 @@ package com.ninetyninepercentcasino.game.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.ninetyninepercentcasino.game.MainCasino;
+import com.ninetyninepercentcasino.MainCasino;
 
 public class HtmlLauncher extends GwtApplication {
 
