@@ -1,11 +1,16 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.Net;
 import com.ninetyninepercentcasino.game.bj.BJDealer;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.net.BJAction;
+import com.ninetyninepercentcasino.net.BJBetRequest;
+import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.Server;
 
+import java.io.IOException;
 import java.util.Stack;
 
 /**
@@ -13,16 +18,28 @@ import java.util.Stack;
  * @author Grant Liang
  */
 public class BJGame {
+    private static final int PLAYER_WON = 0;
+    private static final int DEALER_WON = 1;
+    private static final int TIE = 3;
+    private static final int PLAYER_BLACKJACK = 4;
+
     private Deck deck;
     private BJPlayer player;
     private BJDealer dealer;
     private Stack<BJHand> hands;
     private Stack<BJHand> resolved;
+    private Server server;
 
     public BJGame(BJPlayer player){
         this.player = player;
         hands = new Stack<>();
         resolved = new Stack<>();
+        try {
+            server = new Server();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        server.start();
     }
     public void startRound(){
         getInitialBet();
@@ -68,6 +85,20 @@ public class BJGame {
         int dealerScore = dealer.getScore();
         while (!resolved.isEmpty()) {
             BJHand currentHand = resolved.pop();
+            int outcome = findWinner(currentHand, dealer);
+            switch(outcome){
+                case PLAYER_BLACKJACK:
+                    player.addBalance(currentHand.getAmountBet()*2.5);
+                    break;
+                case PLAYER_WON:
+                    player.addBalance(currentHand.getAmountBet()*2);
+                    break;
+                case TIE:
+                    player.addBalance(currentHand.getAmountBet());
+                    break;
+                case DEALER_WON:
+                    break;
+            }
         }
 
     }
@@ -81,24 +112,34 @@ public class BJGame {
 
     }
     private void getInitialBet(){
-        //TODO send to client a BJBet request object and get the amount they bet in return
+        NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
+        try {
+            server.sendAll(getBet);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * determines the winner of a blackjack game between the dealer and a player hand
      * @param playerHand the hand of the player to be compared with the dealer
      * @param dealer the dealer's hand
-     * @return true if the player won the hand, false otherwise
+     * @return 0 if the player won, 1 if the dealer won, 2 for a tie
      */
-    private boolean playerWonHand(BJHand playerHand, BJDealer dealer){
-//        if((playerScore > 21 && dealerScore > 21)) winner = dealer;
-//        else if(playerScore == dealerScore) winner = dealer;
-//        else if(playerScore > 21) winner = dealer;
-//        else if(dealerScore > 21) winner = player;
-//        else if(playerScore > dealerScore) winner = player;
-//        else winner = dealer;
-//        return winner;
-        return true;
+    private int findWinner(BJHand playerHand, BJDealer dealer){
+        int playerScore = playerHand.getScore();
+        int dealerScore = dealer.getScore();
+        if(playerScore == 21 && dealerScore == 21){
+            if(playerHand.getCards().size() == 2 && dealer.getNumCards() == 2) return TIE;
+            else if(playerHand.getCards().size() == 2) return PLAYER_BLACKJACK;
+            else return DEALER_WON;
+        }
+        else if((playerScore > 21 && dealerScore > 21)) return DEALER_WON;
+        else if(playerScore == dealerScore) return TIE;
+        else if(playerScore > 21) return DEALER_WON;
+        else if(dealerScore > 21) return PLAYER_WON;
+        else if(playerScore > dealerScore) return PLAYER_WON;
+        else return DEALER_WON;
     }
 
     /**

@@ -26,8 +26,13 @@ public class AccountMenu extends CasinoScreen {
         Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         Table infoInput = new Table();
-        TextField usernameEntry = new TextField("usernameEntry", skin);
+        TextField usernameEntry = new TextField("", skin);
+        TextField passwordEntry = new TextField("", skin);
+        usernameEntry.setMessageText("Username");
+        passwordEntry.setMessageText("Password");
+        passwordEntry.setPasswordMode(true);
         infoInput.add(usernameEntry);
+        infoInput.add(passwordEntry);
 
         Table root = new Table();
         root.setFillParent(true);
