@@ -9,67 +9,35 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.EOFException;
 
+import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
 
-public class Client extends Thread {
-	private Socket clientSocket;
-	private ObjectInputStream in;
-	private ObjectOutputStream out;
+public class Client extends Connection {
 	private BufferedReader consoleIn;
 
-	private boolean alive = true;
-
 	public Client(String ip, int port) throws IOException {
-		clientSocket = new Socket(ip, port);
-		in = new ObjectInputStream(clientSocket.getInputStream());
-		out = new ObjectOutputStream(clientSocket.getOutputStream());
+		super.clientSocket = new Socket(ip, port);
+		super.alive = true;
+		super.out = new ObjectOutputStream(clientSocket.getOutputStream());
+		super.in = new ObjectInputStream(clientSocket.getInputStream());
 		consoleIn = new BufferedReader(new InputStreamReader(System.in));
+		super.timer.scheduleAtFixedRate(super.keepAliveTimeout, 5000, 5000);
+		System.out.println("Connection Opened.");
 	}
 
 	public void finish() throws IOException {
 		System.out.println("Connection Closed.");
-		alive = false;
-		clientSocket.close();
+		super.alive = false;
+		super.clientSocket.close();
 		Thread.currentThread().interrupt();
-		in.close();
-		out.close();
-	}
-
-	public void run() {
-		try {
-			new Thread() {
-				public void run() {
-					while (alive) {
-						try {
-							NetMessage message = (NetMessage) in.readObject();
-							if (message.getType() == NetMessage.MessageType.PING) {
-								out.writeObject(new NetMessage(NetMessage.MessageType.ACK, message.getContent()));
-							} else if (message.getContent() != null) {
-								System.out.printf("[%s] %s: %s\n", message.getType(), message.getOrigin().toString(), message.getContent());
-							}
-						} catch (EOFException e) {
-							try {
-								finish();
-							} catch (IOException f) {
-								f.printStackTrace();
-							}
-						} catch (IOException | ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}.start();
-			while (alive) {
-				out.writeObject(new NetMessage(NetMessage.MessageType.NORMAL, consoleIn.readLine()));
-			}
-			finish();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		super.in.close();
+		super.out.close();
+		consoleIn.close();
 	}
 
 	public static void main(String[] args) throws IOException {
 		Client client = new Client("127.0.0.1", 9925);
 		client.start();
+//		client.message(new NetMessage(NetMessage.MessageType.NORMAL, "balls"));
 	}
 }
