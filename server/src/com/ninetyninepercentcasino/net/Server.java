@@ -51,6 +51,12 @@ public class Server extends Thread {
 		serverSocket.close();
 	}
 
+	public void sendAll(NetMessage message) throws IOException {
+		for (ServerThread client: clients) {
+			client.message(message);
+		}
+	}
+	
 	public void sendAll(NetMessage message, ServerThread origin) throws IOException {
 		for (ServerThread client: clients) {
 			if (client != origin) {
