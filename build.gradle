@@ -1,6 +1,4 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -11,14 +9,11 @@ buildscript {
     dependencies {
         classpath 'org.docstr:gwt-gradle-plugin:1.1.29'
         classpath 'org.gretty:gretty:3.1.0'
-        
-
     }
 }
 
 plugins {
 	id 'eclipse'
-	id 'net.researchgate.release' version '3.0.2'
 }
 
 allprojects {
@@ -33,7 +28,6 @@ allprojects {
 	}
 
     version = getGitHash()
-	properties.version = getGitHash()
 
     ext {
         appName = "ninety-nine-percent-casino"
@@ -55,22 +49,6 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://central.sonatype.com/artifact/" }
     }
-
-	release {
-	    failOnCommitNeeded = false
-	    failOnPublishNeeded = false
-	    failOnSnapshotDependencies = false
-	    failOnUnversionedFiles = false
-	    failOnUpdateNeeded = false
-	    preTagCommitMessage = '[Gradle Release Plugin] - pre tag commit: '
-	    tagCommitMessage = '[Gradle Release Plugin] - creating tag: '
-	    newVersionCommitMessage = '[Gradle Release Plugin] - new version commit: '
-	    tagTemplate = '${version}'
-	    versionPropertyFile = 'gradle.properties'
-	    snapshotSuffix = '-SNAPSHOT'
-    	buildTasks = []
-	}
-
 }
 
 project(":desktop") {
