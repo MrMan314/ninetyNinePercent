@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: configuration ':server:runtimeClasspath'
-Main-Class: com.ninetyninepercentcasino.game.ServerLauncher
-
