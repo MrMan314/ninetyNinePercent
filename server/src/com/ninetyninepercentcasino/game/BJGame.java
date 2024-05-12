@@ -1,6 +1,5 @@
 package com.ninetyninepercentcasino.game;
 
-import com.badlogic.gdx.Net;
 import com.ninetyninepercentcasino.game.bj.BJDealer;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
