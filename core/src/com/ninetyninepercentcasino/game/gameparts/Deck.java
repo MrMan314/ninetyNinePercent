@@ -2,8 +2,6 @@ package com.ninetyninepercentcasino.game.gameparts;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.ninetyninepercentcasino.game.SFXManager;
-
 /**
  * Class to simulate a deck of cards
  * @author Grant Liang
