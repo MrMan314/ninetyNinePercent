@@ -10,7 +10,7 @@ import java.util.*;
  * Models a poker game on server side
  * @author Grant Liang
  */
-public class PokerGame {
+public class  PokerGame {
     private final double SMALL_BLIND = 4;
     private final double BIG_BLIND = 8;
     private Deck deck;

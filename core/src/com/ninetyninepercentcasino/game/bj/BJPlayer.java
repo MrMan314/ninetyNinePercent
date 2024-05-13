@@ -3,7 +3,7 @@ package com.ninetyninepercentcasino.game.bj;
 import com.ninetyninepercentcasino.game.Player;
 
 /**
- * Models a bj player that manages a CardGroup
+ * Models a blackjack player that manages a CardGroup
  */
 public class BJPlayer extends Player {
 

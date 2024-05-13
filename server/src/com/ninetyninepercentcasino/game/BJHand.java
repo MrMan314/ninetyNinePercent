@@ -12,7 +12,7 @@ import java.util.HashMap;
  * models a bj hand that the player bets on
  */
 public class BJHand extends Hand {
-    private BJPlayer player;
+    private BJPlayer player; //owner of the hand
     private HashMap<BJAction, Boolean> availableActions;
     private double amountBet;
 
@@ -32,9 +32,14 @@ public class BJHand extends Hand {
         return addCard(deck.drawCard());
     }
     public BJAction act(){
-        giveOptions();
+        updateOptions();
+        //TODO send the player their available actions
         BJAction playerAction = BJAction.SPLIT; //take in client input, temporarily permanently set to split
         return playerAction;
+    }
+    public double getInsurance(){
+        //ask user if they want insurance
+        return 0; //TODO
     }
     /**
      * calculates the highest possible bj score of a hand that doesn't bust
@@ -55,7 +60,7 @@ public class BJHand extends Hand {
         }
         return score;
     }
-    private void giveOptions(){
+    private void updateOptions(){
         int score = getScore();
         for(BJAction action : availableActions.keySet()){
             availableActions.replace(action, false);
@@ -65,7 +70,6 @@ public class BJHand extends Hand {
             availableActions.replace(BJAction.HIT, true);
             if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
-            //TODO send the player their available actions
         }
         //else resolve the hand bc player has busted.
 

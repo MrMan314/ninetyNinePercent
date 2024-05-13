@@ -1,6 +1,5 @@
 package com.ninetyninepercentcasino.game;
 
-import com.badlogic.gdx.Net;
 import com.ninetyninepercentcasino.game.bj.BJDealer;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
@@ -42,19 +41,22 @@ public class BJGame {
         server.start();
     }
     public void startRound(){
-        getInitialBet();
+        double firstBet = getInitialBet();
         deck = new Deck();
         deck.shuffle();
         dealer = new BJDealer(deck);
 
         dealer.setup();
-        //if(dealer.hasAce()) //send player a BJActionUpdate object with BJAction.INSURANCE available
 
         BJHand firstHand = new BJHand(player);
-        hands.push(new BJHand(player));
+        firstHand.setBet(firstBet);
+        hands.push(firstHand);
+
+        if(dealer.hasVisibleAce()) dealer.setInsuranceBet(firstHand.getInsurance());
 
         drawCardUpdate(firstHand.drawCard(deck), player);
         drawCardUpdate(firstHand.drawCard(deck), player);
+
 
         while(!hands.isEmpty()){
             BJHand currentHand = hands.peek();
@@ -97,6 +99,7 @@ public class BJGame {
                     player.addBalance(currentHand.getAmountBet());
                     break;
                 case DEALER_WON:
+                    if(dealer.getNumCards() == 2) player.addBalance(dealer.getInsuranceBet()*3);
                     break;
             }
         }
@@ -111,13 +114,14 @@ public class BJGame {
     private void dealerAction(){
 
     }
-    private void getInitialBet(){
+    private double getInitialBet(){
         NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
         try {
             server.sendAll(getBet);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return 0; //TODO
     }
 
     /**

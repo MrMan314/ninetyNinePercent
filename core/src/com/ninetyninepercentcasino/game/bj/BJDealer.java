@@ -7,10 +7,12 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
 public class BJDealer {
     private Hand hand;
     private Deck deck;
+    private double insuranceBet;
 
     public BJDealer(Deck deck){
         this.deck = deck;
         hand = new Hand();
+        insuranceBet = 0;
     }
     public void setup(){
         hand.drawCard(deck);
@@ -40,16 +42,16 @@ public class BJDealer {
         }
         return score;
     }
-    public boolean hasAce(){
-        for(Card card : hand.getCards()){
-            if(card.getNum() == 1){
-                return true;
-            }
-        }
-        return false;
+    public boolean hasVisibleAce(){
+        return hand.getCard(0).getNum() == 1;
     }
     public int getNumCards(){
         return hand.getCards().size();
     }
-
+    public void setInsuranceBet(double insuranceBet){
+        this.insuranceBet = insuranceBet;
+    }
+    public double getInsuranceBet(){
+        return insuranceBet;
+    }
 }
