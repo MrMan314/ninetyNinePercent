@@ -13,9 +13,10 @@ import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
 import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
-import com.ninetyninepercentcasino.net.Client;
+import com.ninetyninepercentcasino.net.Connection;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Screen that renders a BJ game
@@ -68,9 +69,9 @@ public class BJScreen extends CasinoScreen {
             }
         });
 
-        Client client;
+        Connection client;
         try {
-            client = new Client("127.0.0.1", 9925);
+            client = new Connection(new Socket("127.0.0.1", 9925));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

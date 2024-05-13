@@ -1,8 +1,5 @@
 package com.ninetyninepercentcasino.game.gameparts;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 /**
  * Models a card with a suit and card number
  * @author Grant Liang
