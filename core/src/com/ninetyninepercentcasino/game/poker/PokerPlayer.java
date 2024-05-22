@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.game.poker;
 
-import com.ninetyninepercentcasino.game.Player;
+import com.ninetyninepercentcasino.game.gameparts.Player;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 

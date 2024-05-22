@@ -1,15 +1,14 @@
 package com.ninetyninepercentcasino.game;
 
+import com.ninetyninepercentcasino.game.BJMessageListener;
 import com.ninetyninepercentcasino.game.bj.BJDealer;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.Server;
+import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.Stack;
 
 /**
@@ -25,23 +24,34 @@ public class BJGame {
     private Deck deck;
     private BJPlayer player;
     private BJDealer dealer;
+    private boolean waiting;
     private Stack<BJHand> hands;
     private Stack<BJHand> resolved;
     private Server server;
+    private BJMessageListener bjMessageListener;
 
-    public BJGame(BJPlayer player){
+
+
+    private final BJSynchronizer bjSynchronizer;
+    private double firstBet;
+
+    public BJGame(BJPlayer player) throws IOException {
         this.player = player;
         hands = new Stack<>();
         resolved = new Stack<>();
+        waiting = false;
+        bjSynchronizer = new BJSynchronizer();
+        bjMessageListener = new BJMessageListener(new Socket("127.0.0.1", 9925), this);
         try {
             server = new Server();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         server.start();
+
     }
-    public void startRound(){
-        double firstBet = getInitialBet();
+    public void startRound() throws InterruptedException {
+        getInitialBet();
         deck = new Deck();
         deck.shuffle();
         dealer = new BJDealer(deck);
@@ -54,9 +64,8 @@ public class BJGame {
 
         if(dealer.hasVisibleAce()) dealer.setInsuranceBet(firstHand.getInsurance());
 
-        drawCardUpdate(firstHand.drawCard(deck), player);
-        drawCardUpdate(firstHand.drawCard(deck), player);
-
+        drawCardUpdate(firstHand.drawCard(deck), player, true);
+        drawCardUpdate(firstHand.drawCard(deck), player, true);
 
         while(!hands.isEmpty()){
             BJHand currentHand = hands.peek();
@@ -114,14 +123,16 @@ public class BJGame {
     private void dealerAction(){
 
     }
-    private double getInitialBet(){
+    private void getInitialBet() throws InterruptedException {
         NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
         try {
             server.sendAll(getBet);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return 0; //TODO
+        synchronized(bjSynchronizer) {
+            bjSynchronizer.wait(); //waits until the client returns the amount bet
+        }
     }
 
     /**
@@ -149,6 +160,19 @@ public class BJGame {
     /**
      * called when the client needs to be updated about a card that was drawn
      */
-    private void drawCardUpdate(Card card, BJPlayer player){
+    private void drawCardUpdate(Card card, BJPlayer player, boolean visible){
+        NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, player, visible));
+        try {
+            server.sendAll(cardUpdate);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public BJSynchronizer getBjSynchronizer() {
+        return bjSynchronizer;
+    }
+    public void setFirstBet(double firstBet){
+        this.firstBet = firstBet;
     }
 }

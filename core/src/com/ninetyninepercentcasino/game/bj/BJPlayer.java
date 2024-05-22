@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.Player;
+import com.ninetyninepercentcasino.game.gameparts.Player;
 
 /**
  * Models a blackjack player that manages a CardGroup

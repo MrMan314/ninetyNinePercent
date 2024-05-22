@@ -5,6 +5,8 @@ import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
+import com.ninetyninepercentcasino.net.BJActionUpdate;
+import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.util.HashMap;
 
@@ -72,6 +74,8 @@ public class BJHand extends Hand {
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
         }
         //else resolve the hand bc player has busted.
+        NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJActionUpdate(availableActions));
+
 
     }
     private boolean canSplit(){
