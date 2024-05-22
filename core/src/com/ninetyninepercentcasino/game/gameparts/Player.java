@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.gameparts;
 
 /**
  * Models a player of a game

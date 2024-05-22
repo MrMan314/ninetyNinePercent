@@ -12,8 +12,13 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
 import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
+import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
+import com.ninetyninepercentcasino.bj.BJClient;
+import com.ninetyninepercentcasino.gameparts.ChipActor;
+import com.ninetyninepercentcasino.gameparts.ChipStack;
 import com.ninetyninepercentcasino.net.Connection;
+import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -25,6 +30,7 @@ import java.net.Socket;
 public class BJScreen extends CasinoScreen {
     private Texture background;
     private boolean firstRender;
+    private BJClient client;
 
     public BJScreen(MainCasino game) {
         super(game);
@@ -54,6 +60,13 @@ public class BJScreen extends CasinoScreen {
         bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 3.5f);
         bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).top().padBottom(230);
 
+        ChipStack chips = new ChipStack();
+        chips.addChip(new ChipActor(new Chip(1)));
+        chips.addChip(new ChipActor(new Chip(5)));
+        chips.addChip(new ChipActor(new Chip(10)));
+        chips.debug();
+
+        stage.addActor(chips);
         stage.addActor(bottomUI);
         stage.addActor(playerHand);
         stage.addActor(dealerHand);
@@ -69,13 +82,17 @@ public class BJScreen extends CasinoScreen {
             }
         });
 
-        Connection client;
-        try {
-            client = new Connection(new Socket("127.0.0.1", 9925));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        client.start();
+//        try {
+//            client = new BJClient(new Socket("127.0.0.1", 9925));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        client.start();
+//        try {
+//            client.message(new NetMessage(NetMessage.MessageType.INFO, "begin game."));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
     }
