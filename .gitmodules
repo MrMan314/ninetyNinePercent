@@ -1,0 +1,3 @@
+[submodule "core/src/com/ninetyninepercentcasino/chain"]
+	path = core/src/com/ninetyninepercentcasino/chain
+	url = git@github.com:Icy262/ninetyNinePercentChain
