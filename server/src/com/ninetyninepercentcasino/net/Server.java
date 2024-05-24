@@ -68,7 +68,7 @@ public class Server extends Thread {
 	 */
 	public void finish() throws IOException {
 		for (Connection client: clients) {
-			client.close();
+			client.finish();
 		}
 		serverSocket.close();
 	}
