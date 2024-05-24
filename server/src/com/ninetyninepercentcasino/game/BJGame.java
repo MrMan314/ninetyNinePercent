@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
+import com.ninetyninepercentcasino.database.Account;
 import com.ninetyninepercentcasino.game.BJMessageListener;
 import com.ninetyninepercentcasino.game.bj.BJDealer;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
@@ -22,7 +23,7 @@ public class BJGame {
     private static final int PLAYER_BLACKJACK = 4;
 
     private Deck deck;
-    private BJPlayer player;
+    private Account player;
     private BJDealer dealer;
     private boolean waiting;
     private Stack<BJHand> hands;
@@ -35,7 +36,7 @@ public class BJGame {
     private final BJSynchronizer bjSynchronizer;
     private double firstBet;
 
-    public BJGame(BJPlayer player) throws IOException {
+    public BJGame(Account player) throws IOException {
         this.player = player;
         hands = new Stack<>();
         resolved = new Stack<>();

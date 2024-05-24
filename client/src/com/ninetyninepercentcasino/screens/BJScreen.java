@@ -56,17 +56,17 @@ public class BJScreen extends CasinoScreen {
         blackjackButtons.add(new HitButton());
         blackjackButtons.add(new StandButton());
 
-        Table bottomUI = new Table();
-        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 3.5f);
-        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).top().padBottom(230);
-
         ChipStack chips = new ChipStack();
         chips.addChip(new ChipActor(new Chip(1)));
-        chips.addChip(new ChipActor(new Chip(5)));
-        chips.addChip(new ChipActor(new Chip(10)));
+        chips.addChip(new ChipActor(new Chip(1)));
+        chips.addChip(new ChipActor(new Chip(1)));
         chips.debug();
 
-        stage.addActor(chips);
+        Table bottomUI = new Table();
+        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/7);
+        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).bottom();
+        bottomUI.add(chips);
+
         stage.addActor(bottomUI);
         stage.addActor(playerHand);
         stage.addActor(dealerHand);
@@ -81,18 +81,53 @@ public class BJScreen extends CasinoScreen {
                 return false;
             }
         });
+        stage.addCaptureListener(new InputListener(){
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if(keycode == Input.Keys.ESCAPE) {
+                    game.setScreen(new MainMenu(game));
+                    return true;
+                }
+                float distance = 100f;
+                if(keycode == Input.Keys.W){
+                    stage.getCamera().translate(0, distance, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.A){
+                    stage.getCamera().translate(-distance, 0, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.S){
+                    stage.getCamera().translate(0, -distance, 0);
+                    return true;
+                }
+                if(keycode == Input.Keys.D){
+                    stage.getCamera().translate(distance, 0, 0);
+                    return true;
+                }
+//                if(keycode == Input.Keys.E){
+//                    ((OrthographicCamera)stage.getCamera()).zoom += 5;
+//                    return true;
+//                }
+//                if(keycode == Input.Keys.F){
+//                    ((OrthographicCamera)stage.getCamera()).zoom -= 5;
+//                    return true;
+//                }
+                return false;
+            }
+        });
 
-//        try {
-//            client = new BJClient(new Socket("127.0.0.1", 9925));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        client.start();
-//        try {
-//            client.message(new NetMessage(NetMessage.MessageType.INFO, "begin game."));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            client = new BJClient(new Socket("127.0.0.1", 9925));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        client.start();
+        try {
+            client.message(new NetMessage(NetMessage.MessageType.INFO, "begin game."));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }

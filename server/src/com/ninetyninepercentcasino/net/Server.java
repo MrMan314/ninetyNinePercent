@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ninetyninepercentcasino.game.ServerConnection;
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
 
@@ -51,7 +52,7 @@ public class Server extends Thread {
 		while (running) {
 			try {
 				// Accept a new client connection from the next client
-				clients.add(new Connection(serverSocket.accept(), clients));
+				clients.add(new ServerConnection(serverSocket.accept(), clients));
 				// Start the client connection thread
 				clients.get(clients.size() - 1).start();
 			} catch (IOException e) {
