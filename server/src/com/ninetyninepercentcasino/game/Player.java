@@ -14,4 +14,10 @@ public class Player {
         this.account = account;
         this.connection = connection;
     }
+    public ServerConnection getConnection(){
+        return connection;
+    }
+    public Account getAccount(){
+        return account;
+    }
 }

@@ -7,6 +7,7 @@ import com.ninetyninepercentcasino.net.BJAction;
 import com.ninetyninepercentcasino.net.BJActionUpdate;
 import com.ninetyninepercentcasino.net.NetMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -34,7 +35,7 @@ public class BJHand extends Hand {
     }
     public BJAction act(){
         updateOptions();
-        //TODO send the player their available actions
+        sendOptions();
         BJAction playerAction = BJAction.SPLIT; //take in client input, temporarily permanently set to split
         return playerAction;
     }
@@ -73,9 +74,14 @@ public class BJHand extends Hand {
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
         }
         //else resolve the hand bc player has busted.
+    }
+    private void sendOptions() {
         NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJActionUpdate(availableActions));
-
-
+        try {
+            player.getConnection().message(actionUpdate);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private boolean canSplit(){
         return getCards().get(0).getNum() == getCards().get(1).getNum();

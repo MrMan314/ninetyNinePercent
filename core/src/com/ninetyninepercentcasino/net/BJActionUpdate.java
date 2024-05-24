@@ -3,7 +3,7 @@ package com.ninetyninepercentcasino.net;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class BJActionUpdate {
+public class BJActionUpdate extends DTO {
     private HashMap<BJAction, Boolean> actions;
     public BJActionUpdate(HashMap<BJAction, Boolean> actions){
         this.actions = actions;

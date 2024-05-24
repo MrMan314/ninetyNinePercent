@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
-public class BJGameEnd {
+public class BJGameEnd extends DTO {
 
 
     private double netMoney;

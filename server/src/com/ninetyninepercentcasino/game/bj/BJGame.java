@@ -1,7 +1,5 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.database.Account;
-import com.ninetyninepercentcasino.net.ServerConnection;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.net.*;
@@ -13,7 +11,7 @@ import java.util.Stack;
  * Runs logic for a bj game
  * @author Grant Liang
  */
-public class BJGame {
+public class BJGame extends Thread {
     private static final int PLAYER_WON = 0;
     private static final int DEALER_WON = 1;
     private static final int TIE = 3;
@@ -24,7 +22,6 @@ public class BJGame {
     private BJDealer dealer;
     private Stack<BJHand> hands;
     private Stack<BJHand> resolved;
-    private Server server;
 
     private final BJSynchronizer bjSynchronizer;
     private double firstBet;
@@ -34,15 +31,13 @@ public class BJGame {
         hands = new Stack<>();
         resolved = new Stack<>();
         bjSynchronizer = new BJSynchronizer();
+    }
+    public void run() {
         try {
-            server = new Server();
-        } catch (IOException e) {
+            getInitialBet();
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        server.start();
-    }
-    public void startRound() throws InterruptedException {
-        getInitialBet();
         deck = new Deck();
         deck.shuffle();
         dealer = new BJDealer(deck);
@@ -117,7 +112,7 @@ public class BJGame {
     private void getInitialBet() throws InterruptedException {
         NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
         try {
-            server.sendAll(getBet);
+            player.getConnection().message(getBet);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -154,7 +149,7 @@ public class BJGame {
     private void drawCardUpdate(Card card, boolean visible){
         NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible));
         try {
-            server.sendAll(cardUpdate);
+            player.getConnection().message(cardUpdate);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

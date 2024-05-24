@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
-public class BJBetRequest {
+public class BJBetRequest extends DTO{
     private double amountBet;
     public BJBetRequest(){
 

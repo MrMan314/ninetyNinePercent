@@ -2,7 +2,7 @@ package com.ninetyninepercentcasino.net;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 
-public class BJCardUpdate {
+public class BJCardUpdate extends DTO {
     private Card card;
     private boolean visible;
 

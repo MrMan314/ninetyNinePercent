@@ -118,7 +118,7 @@ public class BJScreen extends CasinoScreen {
         });
 
         try {
-            client = new BJClient(new Socket("127.0.0.1", 9925));
+            client = new BJClient(new Socket("127.0.0.1", 9926));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

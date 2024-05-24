@@ -40,6 +40,8 @@ public class ServerConnection extends Connection {
                                 if(message.getContent() instanceof String){
                                     if(message.getContent().equals("begin game.")){
                                         bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
+                                        bjGame.start();
+                                        System.out.println("GAME BEGUN");
                                     }
                                 }
                                 if(message.getContent() instanceof BJBetRequest) {
@@ -47,6 +49,7 @@ public class ServerConnection extends Connection {
                                         bjGame.getBjSynchronizer().notify();
                                     }
                                     bjGame.setFirstBet(((BJBetRequest)message.getContent()).getAmountBet());
+                                    System.out.println("BET PLACED: " + ((BJBetRequest)message.getContent()).getAmountBet());
                                 }
                             default:
                         }
