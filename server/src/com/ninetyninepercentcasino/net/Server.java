@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ninetyninepercentcasino.game.ServerConnection;
+import com.ninetyninepercentcasino.net.ServerConnection;
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
 

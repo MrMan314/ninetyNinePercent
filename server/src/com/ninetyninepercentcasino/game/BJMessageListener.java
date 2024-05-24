@@ -2,6 +2,7 @@ package com.ninetyninepercentcasino.game;
 
 import com.ninetyninepercentcasino.game.BJSynchronizer;
 import com.ninetyninepercentcasino.net.BJBetRequest;
+import com.ninetyninepercentcasino.net.ServerConnection;
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
 
