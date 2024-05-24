@@ -22,7 +22,7 @@ public class Database {
     }
     /**
      * Name: loadUser
-     * Description: Takes a username and password. Checks if the username coresponds to a real account. Checks if the password supplied is the correct password for that account. If the account exists and the password is correct, it returns a Account object.
+     * Description: Takes a username and password. Checks if the username corresponds to a real account. Checks if the password supplied is the correct password for that account. If the account exists and the password is correct, it returns a Account object.
      * Precondition: None
      * Postcondition: None
      */

@@ -1,6 +1,5 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;

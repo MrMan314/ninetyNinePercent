@@ -19,7 +19,6 @@ import com.ninetyninepercentcasino.game.poker.PokerPlayer;
  * @author Grant Liang
  */
 public class PokerScreen extends CasinoScreen {
-    PokerPlayer localPlayer = new PokerPlayer();
     private Texture background;
 
     public PokerScreen(MainCasino game) {

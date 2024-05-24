@@ -1,6 +1,5 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.net.Server;
 import java.io.IOException;
 
 public class ServerLauncher {

@@ -1,6 +1,5 @@
 package com.ninetyninepercentcasino.game.poker;
 
-import com.ninetyninepercentcasino.game.gameparts.Player;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 
@@ -8,8 +7,9 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
  * Models a poker player
  * @author Grant Liang
  */
-public class PokerPlayer extends Player {
+public class PokerPlayer {
     Hand hand;
+    private double balance;
     boolean folded;
     private double balanceInPot; //stores how much money the player has bet during a street
     public enum Actions{
