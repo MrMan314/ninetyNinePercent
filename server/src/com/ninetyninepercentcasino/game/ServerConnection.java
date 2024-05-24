@@ -1,23 +1,21 @@
 package com.ninetyninepercentcasino.game;
 
-import com.ninetyninepercentcasino.game.BJSynchronizer;
 import com.ninetyninepercentcasino.net.BJBetRequest;
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.OptionalDataException;
+import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
-public class BJMessageListener extends ServerConnection {
-
-    private final BJGame game;
-    public BJMessageListener(Socket clientSocket, BJGame game) throws IOException {
+public class ServerConnection extends Connection {
+    private BJGame bjGame;
+    public ServerConnection(Socket clientSocket) throws IOException {
         super(clientSocket);
-        this.game = game;
     }
-
+    public ServerConnection(Socket clientSocket, List<Connection> clients) throws IOException {
+        super(clientSocket, clients);
+    }
     @Override
     public void run(){
         try {
@@ -39,18 +37,17 @@ public class BJMessageListener extends ServerConnection {
                                 out.writeObject(message);
                                 break;
                             case INFO:
+                                if(message.getContent() instanceof String){
+                                    if(message.getContent().equals("begin game.")){
+                                        bjGame = new BJGame();
+                                    }
+                                }
                                 if(message.getContent() instanceof BJBetRequest) {
-                                    synchronized(game.getBjSynchronizer()) {
-                                        game.getBjSynchronizer().notify();
+                                    synchronized(bjGame.getBjSynchronizer()) {
+                                        bjGame.getBjSynchronizer().notify();
                                     }
-                                    game.setFirstBet(((BJBetRequest)message.getContent()).getAmountBet());
+                                    bjGame.setFirstBet(((BJBetRequest)message.getContent()).getAmountBet());
                                 }
-                                if(message.getContent() instanceof String) {
-                                    if(message.getContent().equals("begin game.")) {
-                                        game.startRound();
-                                    }
-                                }
-
                             default:
                         }
                     }
@@ -60,8 +57,6 @@ public class BJMessageListener extends ServerConnection {
                     finish();
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
             }
         } catch (IOException e) {

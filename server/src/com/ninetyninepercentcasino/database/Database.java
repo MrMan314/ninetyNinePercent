@@ -4,14 +4,14 @@ import java.security.*;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
-/*
+/**
  * Class: Database
  * Purpose: to handle database operations. Database stores user account information.
  */
 public class Database {
     private Connection database; //This is our database connection
 
-    /*
+    /**
      * Name: Database
      * Description: Constructor. Initializes the database connection.
      * Precondition: None
@@ -20,7 +20,7 @@ public class Database {
     public Database() throws SQLException {
         database=DriverManager.getConnection("jdbc:mysql://localhost:3306/ninetyNinePercent", "root", "password");
     }
-    /*
+    /**
      * Name: loadUser
      * Description: Takes a username and password. Checks if the username coresponds to a real account. Checks if the password supplied is the correct password for that account. If the account exists and the password is correct, it returns a Account object.
      * Precondition: None
@@ -40,7 +40,7 @@ public class Database {
             throw new AccountNonExistent(); //Account does not exist
         }
     }
-    /*
+    /**
      * Name: createUser
      * Description: Takes username and password. Checks if username already exists. If it does, UserAlreadyExists exception thrown. If not, user is added to database.
      * Precondition: None
@@ -59,7 +59,7 @@ public class Database {
             throw new UserAlreadyExists();
         }
     }
-    /*
+    /**
      * Name: hash
      * Description: Computes the hash. For use in verify user passwords. Hash algorithim is SHA-256.
      * Preconditon: None
@@ -75,7 +75,7 @@ public class Database {
         }
         return hashedValue;
     }
-    /*
+    /**
      * Name: userExists
      * Description: Checks if the username exists in the database.
      * Precondition: None

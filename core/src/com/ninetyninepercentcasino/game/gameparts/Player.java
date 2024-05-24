@@ -6,6 +6,7 @@ package com.ninetyninepercentcasino.game.gameparts;
  */
 public class Player {
     protected double balance;
+    protected int whiteChips, redChips, blueChips, greenChips, blackChips;
     public Player(){
 
     }
