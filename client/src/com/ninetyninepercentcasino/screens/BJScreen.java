@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
+import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
 import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
@@ -17,7 +18,9 @@ import com.ninetyninepercentcasino.gameparts.CardGroup;
 import com.ninetyninepercentcasino.bj.BJClient;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipStack;
+import com.ninetyninepercentcasino.net.BJCardUpdate;
 import com.ninetyninepercentcasino.net.Connection;
+import com.ninetyninepercentcasino.net.DTO;
 import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
@@ -30,46 +33,35 @@ import java.net.Socket;
 public class BJScreen extends CasinoScreen {
     private Texture background;
     private boolean firstRender;
+    private boolean updateNeeded;
     private BJClient client;
+    private BJGameStage stage;
+    private DTO latestUpdate;
 
     public BJScreen(MainCasino game) {
         super(game);
     }
 
+    /**
+     * called whenever the application is resized
+     * @param width the width of the new window
+     * @param height the height of the new window
+     */
+    @Override
+    public void resize(int width, int height){
+        stage.getViewport().update(width, height, true); //update the viewport of the screen's stage to accurately represent the screen size change
+        screenHeight = Gdx.graphics.getHeight(); //update screenHeight and screenWidth variables as needed
+        screenWidth = Gdx.graphics.getWidth();
+    }
+
     @Override
     public void show() {
+        updateNeeded = false;
         firstRender = true;
-        stage = new Stage(new ExtendViewport(1312, 738, 1312, 738));
+        stage = new BJGameStage(new ExtendViewport(1312, 738, 1312, 738));
         Gdx.input.setInputProcessor(stage);
-        final float WORLD_WIDTH = stage.getViewport().getWorldWidth();
-        final float WORLD_HEIGHT = stage.getViewport().getWorldHeight();
 
         background = new Texture("GameAssets/PokerTable.png");
-
-        CardGroup playerHand = new CardGroup(true, true);
-        CardGroup dealerHand = new CardGroup(false, true);
-
-        playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
-        dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
-
-        Table blackjackButtons = new Table();
-        blackjackButtons.add(new HitButton());
-        blackjackButtons.add(new StandButton());
-
-        ChipStack chips = new ChipStack();
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.debug();
-
-        Table bottomUI = new Table();
-        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/7);
-        bottomUI.add(blackjackButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).bottom();
-        bottomUI.add(chips);
-
-        stage.addActor(bottomUI);
-        stage.addActor(playerHand);
-        stage.addActor(dealerHand);
 
         stage.addCaptureListener(new InputListener() {
             @Override
@@ -118,15 +110,15 @@ public class BJScreen extends CasinoScreen {
         });
 
         try {
-            client = new BJClient(new Socket("127.0.0.1", 9926));
+            client = new BJClient(new Socket("127.0.0.1", 9925), this);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println();
         }
         client.start();
         try {
             client.message(new NetMessage(NetMessage.MessageType.INFO, "begin game."));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println();
         }
 
 
@@ -137,6 +129,12 @@ public class BJScreen extends CasinoScreen {
         if(firstRender) {
             Gdx.graphics.requestRendering();
             firstRender = false;
+        }
+        if(updateNeeded){
+            if(latestUpdate instanceof BJCardUpdate){
+                stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
+                updateNeeded = false;
+            }
         }
         ScreenUtils.clear(0, 0, 0, 1f);
         stage.getBatch().begin();
@@ -165,5 +163,9 @@ public class BJScreen extends CasinoScreen {
     public void dispose() {
         background.dispose();
         stage.dispose();
+    }
+    public void requestUpdate(DTO latestUpdate){
+        updateNeeded = true;
+        this.latestUpdate = latestUpdate;
     }
 }

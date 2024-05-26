@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Server extends Thread {
 	private ServerSocket serverSocket;
-	private int port = 9926;
+	private int port = 9925;
 
 	private List<Connection> clients = new ArrayList<Connection>();
 

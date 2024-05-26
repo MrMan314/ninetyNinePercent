@@ -150,7 +150,8 @@ public class BJGame extends Thread {
         NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible));
         try {
             player.getConnection().message(cardUpdate);
-        } catch (IOException e) {
+            Thread.sleep(1000);
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

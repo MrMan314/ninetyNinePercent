@@ -29,10 +29,7 @@ public class CardGroup extends Table {
         hand = new Hand();
     }
     public CardGroup(Hand hand, boolean faceUp, boolean isUIHand){
-        this.faceUp = faceUp;
-        this.isUIHand = isUIHand;
-        if(isUIHand) setTouchable(Touchable.enabled);
-        else setTouchable(Touchable.disabled);
+        this(faceUp, isUIHand);
         for(Card card : hand.getCards()){
             add(new CardActor(card, faceUp, isUIHand));
         }

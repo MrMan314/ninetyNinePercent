@@ -15,7 +15,7 @@ import com.ninetyninepercentcasino.gameparts.CasinoButton;
 public class HitButton extends CasinoButton {
     public HitButton(){
         super();
-        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 256, 0, 64, 72));
+        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 192, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
         buttonSprite.setPosition(getX(), getY());

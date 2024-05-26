@@ -5,6 +5,7 @@ import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
 import com.ninetyninepercentcasino.net.BJActionUpdate;
+import com.ninetyninepercentcasino.net.BJInsuranceRequest;
 import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
@@ -40,8 +41,13 @@ public class BJHand extends Hand {
         return playerAction;
     }
     public double getInsurance(){
-        //ask user if they want insurance
-        return 0; //TODO
+        NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
+        try {
+            player.getConnection().message(insuranceMessage);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return 100; //TODO actuallg et insurance
     }
     /**
      * calculates the highest possible bj score of a hand that doesn't bust

@@ -1,9 +1,9 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.NetMessage;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.ninetyninepercentcasino.game.gameparts.Card;
+import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.screens.BJScreen;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -15,8 +15,10 @@ import java.net.Socket;
  */
 public class BJClient extends Connection {
 
-    public BJClient(Socket clientSocket) throws IOException {
+    private BJScreen screen;
+    public BJClient(Socket clientSocket, BJScreen screen) throws IOException {
         super(clientSocket);
+        this.screen = screen;
     }
 
     @Override
@@ -45,6 +47,10 @@ public class BJClient extends Connection {
                                     out.writeObject(message);
                                 }
                                 else if(message.getContent() instanceof BJCardUpdate){
+                                    screen.requestUpdate((DTO)message.getContent());
+                                }
+                                else if(message.getContent() instanceof BJInsuranceRequest){
+
                                 }
                             default:
                         }
