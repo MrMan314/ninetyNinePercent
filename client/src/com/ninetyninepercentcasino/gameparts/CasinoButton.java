@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
- * Models an interactive game button for normal player actions in a poker game
+ * Models an interactive game button for normal player actions in a casino game
  * @author Grant Liang
  */
 public class CasinoButton extends Actor {
     protected Sprite buttonSprite;
-    public static boolean isAvailable;
+    protected boolean isAvailable;
 
     public CasinoButton(){
         isAvailable = false;
@@ -25,11 +25,19 @@ public class CasinoButton extends Actor {
             }
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                buttonSprite.setColor(1, 1,1 ,1f);
+                if(isAvailable) buttonSprite.setColor(1, 1,1 ,1f);
             }
         });
     }
     public void draw(Batch batch, float parentAlpha){
         buttonSprite.draw(batch);
+    }
+    public void disable(){
+        isAvailable = false;
+        buttonSprite.setColor(65, 65, 65, 0.8f);
+    }
+    public void enable(){
+        isAvailable = true;
+        buttonSprite.setColor(1, 1,1 ,1f);
     }
 }

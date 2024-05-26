@@ -4,7 +4,6 @@ import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJActionUpdate;
 import com.ninetyninepercentcasino.net.BJInsuranceRequest;
 import com.ninetyninepercentcasino.net.NetMessage;
 
@@ -34,12 +33,6 @@ public class BJHand extends Hand {
     public Card drawCard(Deck deck){
         return addCard(deck.drawCard());
     }
-    public BJAction act(){
-        updateOptions();
-        sendOptions();
-        BJAction playerAction = BJAction.SPLIT; //take in client input, temporarily permanently set to split
-        return playerAction;
-    }
     public double getInsurance(){
         NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
         try {
@@ -68,7 +61,7 @@ public class BJHand extends Hand {
         }
         return score;
     }
-    private void updateOptions(){
+    public  HashMap<BJAction, Boolean> updateOptions(){
         int score = getScore();
         for(BJAction action : availableActions.keySet()){
             availableActions.replace(action, false);
@@ -80,15 +73,9 @@ public class BJHand extends Hand {
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
         }
         //else resolve the hand bc player has busted.
+        return availableActions;
     }
-    private void sendOptions() {
-        NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJActionUpdate(availableActions));
-        try {
-            player.getConnection().message(actionUpdate);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     private boolean canSplit(){
         return getCards().get(0).getNum() == getCards().get(1).getNum();
     }

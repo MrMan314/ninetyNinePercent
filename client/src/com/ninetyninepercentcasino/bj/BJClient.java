@@ -1,7 +1,5 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.screens.BJScreen;
 
@@ -51,6 +49,9 @@ public class BJClient extends Connection {
                                 }
                                 else if(message.getContent() instanceof BJInsuranceRequest){
 
+                                }
+                                else if(message.getContent() instanceof BJAvailActionUpdate){
+                                    screen.requestUpdate((DTO)message.getContent());
                                 }
                             default:
                         }

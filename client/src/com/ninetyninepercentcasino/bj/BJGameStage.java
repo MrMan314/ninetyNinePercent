@@ -1,23 +1,22 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
-import com.ninetyninepercentcasino.bj.bjbuttons.InsureButton;
-import com.ninetyninepercentcasino.bj.bjbuttons.SplitButton;
-import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
+import com.mysql.cj.xdevapi.AddResultBuilder;
+import com.ninetyninepercentcasino.bj.bjbuttons.*;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
-import com.ninetyninepercentcasino.gameparts.CardActor;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipStack;
+import com.ninetyninepercentcasino.net.BJAction;
+import com.ninetyninepercentcasino.net.BJActionUpdate;
+import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
+import com.ninetyninepercentcasino.net.NetMessage;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -27,6 +26,12 @@ import java.util.Scanner;
 public class BJGameStage extends Stage {
     private CardGroup playerHand;
     private CardGroup dealerHand;
+    private HitButton hitButton;
+    private InsureButton insureButton;
+    private SplitButton splitButton;
+    private StandButton standButton;
+    private DDButton doubleDownButton;
+    private BJClient client;
     private ChipStack whiteChips, redChips, blueChips, greenChips, blackChips;
 
     public BJGameStage(Viewport viewport){
@@ -41,10 +46,16 @@ public class BJGameStage extends Stage {
         dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
 
         Table bjButtons = new Table();
-        bjButtons.add(new HitButton());
-        bjButtons.add(new StandButton());
-        bjButtons.add(new InsureButton());
-        bjButtons.add(new SplitButton());
+        hitButton = new HitButton();
+        insureButton = new InsureButton();
+        splitButton = new SplitButton();
+        standButton = new StandButton();
+        doubleDownButton = new DDButton();
+        bjButtons.add(hitButton);
+        bjButtons.add(standButton);
+        bjButtons.add(insureButton);
+        bjButtons.add(splitButton);
+        bjButtons.add(doubleDownButton);
 
         Table bottomUI = new Table();
         bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/7);
@@ -55,10 +66,17 @@ public class BJGameStage extends Stage {
         chips.addChip(new ChipActor(new Chip(1)));
         chips.addChip(new ChipActor(new Chip(1)));
         chips.debug();
+
+        Table root = new Table();
+        root.setFillParent(true);
+        root.add(dealerHand);
+        root.row();
+        root.add(bottomUI);
+        root.row();
+        root.add(playerHand);
+
         addActor(chips);
-        addActor(bottomUI);
-        addActor(playerHand);
-        addActor(dealerHand);
+        addActor(root);
     }
 
     public double placeBet(){
@@ -82,7 +100,58 @@ public class BJGameStage extends Stage {
     public CardGroup getPlayerHand(){
         return playerHand;
     }
-    public void update(){
+    public void updateButtons(HashMap<BJAction, Boolean> actions){
+        if(actions.get(BJAction.HIT)) hitButton.enable();
+        else hitButton.disable();
+        if(actions.get(BJAction.STAND)) standButton.enable();
+        else standButton.disable();
+        if(actions.get(BJAction.SPLIT)) splitButton.enable();
+        else splitButton.disable();
+        if(actions.get(BJAction.INSURANCE)) insureButton.enable();
+        else insureButton.disable();
+        if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
+        else doubleDownButton.disable();
+    }
+    public void hit() {
+        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.HIT);
+        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+        try {
+            client.message(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void stand() {
+        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.STAND);
+        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+        try {
+            client.message(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void doubleDown(){
+        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
+        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+        try {
+            client.message(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void disableAllButtons(){
+        hitButton.disable();
+        standButton.disable();
+        splitButton.disable();
+        insureButton.disable();
+        doubleDownButton.disable();
+    }
 
+    /**
+     * this method NEEDS TO BE CALLED to set the client of a stage if the stage is to communicate with server
+     * @param client the client of the stage that communicates with the server
+     */
+    public void setClient(BJClient client){
+        this.client = client;
     }
 }

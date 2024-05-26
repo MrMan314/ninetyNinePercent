@@ -5,6 +5,7 @@ import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -16,6 +17,7 @@ public class BJGame extends Thread {
     private static final int DEALER_WON = 1;
     private static final int TIE = 3;
     private static final int PLAYER_BLACKJACK = 4;
+    private static final long pauseTime = 1000;
 
     private Deck deck;
     private BJPlayer player;
@@ -25,6 +27,7 @@ public class BJGame extends Thread {
 
     private final BJSynchronizer bjSynchronizer;
     private double firstBet;
+    private BJAction action;
 
     public BJGame(BJPlayer player) throws IOException {
         this.player = player;
@@ -55,10 +58,14 @@ public class BJGame extends Thread {
 
         while(!hands.isEmpty()){
             BJHand currentHand = hands.peek();
-            BJAction clientAction = currentHand.act();
-            switch(clientAction){
+            try {
+                sendOptions(currentHand.updateOptions());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            switch(action){
                 case HIT:
-                    currentHand.drawCard(deck);
+                    drawCardUpdate(currentHand.drawCard(deck), true);
                     break;
                 case STAND:
                     resolved.push(hands.pop());
@@ -72,7 +79,7 @@ public class BJGame extends Thread {
                     hands.push(hand2);
                     break;
                 case DOUBLE_DOWN:
-                    currentHand.drawCard(deck);
+                    drawCardUpdate(currentHand.drawCard(deck), true);
                     currentHand.doubleBet();
                     resolved.push(hands.pop());
                     break;
@@ -109,6 +116,7 @@ public class BJGame extends Thread {
     private void dealerAction(){
 
     }
+
     private void getInitialBet() throws InterruptedException {
         NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
         try {
@@ -150,10 +158,22 @@ public class BJGame extends Thread {
         NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible));
         try {
             player.getConnection().message(cardUpdate);
-            Thread.sleep(1000);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        pause();
+    }
+    private void sendOptions(HashMap<BJAction, Boolean> availableActions) throws InterruptedException {
+        NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
+        try {
+            player.getConnection().message(actionUpdate);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        synchronized(bjSynchronizer) {
+            bjSynchronizer.wait(); //waits until the client returns the action
+        }
+
     }
 
     public BJSynchronizer getBjSynchronizer() {
@@ -161,5 +181,12 @@ public class BJGame extends Thread {
     }
     public void setFirstBet(double firstBet){
         this.firstBet = firstBet;
+    }
+    public void setAction(BJAction action){
+        this.action = action;
+    }
+    private void pause(){
+        try { Thread.sleep(pauseTime);
+        } catch (InterruptedException e) { throw new RuntimeException(e);}
     }
 }

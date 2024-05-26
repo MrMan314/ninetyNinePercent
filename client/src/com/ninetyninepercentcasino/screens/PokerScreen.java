@@ -42,8 +42,9 @@ public class PokerScreen extends CasinoScreen {
 //        pokerTable.add(deck).padLeft(200);
 
         Table pokerButtons = new Table();
+        CallButton callButton = new CallButton();
         pokerButtons.add(new RaiseButton());
-        pokerButtons.add(new CallButton());
+        pokerButtons.add(callButton);
         pokerButtons.add(new FoldButton());
 
         Table bottomUI = new Table();

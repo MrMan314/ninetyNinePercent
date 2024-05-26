@@ -5,23 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.BJGameStage;
-import com.ninetyninepercentcasino.bj.bjbuttons.HitButton;
-import com.ninetyninepercentcasino.bj.bjbuttons.StandButton;
-import com.ninetyninepercentcasino.game.gameparts.Chip;
-import com.ninetyninepercentcasino.gameparts.CardGroup;
 import com.ninetyninepercentcasino.bj.BJClient;
-import com.ninetyninepercentcasino.gameparts.ChipActor;
-import com.ninetyninepercentcasino.gameparts.ChipStack;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.DTO;
-import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -120,7 +109,7 @@ public class BJScreen extends CasinoScreen {
         } catch (IOException e) {
             System.out.println();
         }
-
+        stage.setClient(client);
 
     }
 
@@ -133,8 +122,11 @@ public class BJScreen extends CasinoScreen {
         if(updateNeeded){
             if(latestUpdate instanceof BJCardUpdate){
                 stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
-                updateNeeded = false;
             }
+            else if(latestUpdate instanceof BJAvailActionUpdate){
+                stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
+            }
+            updateNeeded = false;
         }
         ScreenUtils.clear(0, 0, 0, 1f);
         stage.getBatch().begin();
@@ -164,6 +156,12 @@ public class BJScreen extends CasinoScreen {
         background.dispose();
         stage.dispose();
     }
+
+    /**
+     * called by the client to request an update to the game state
+     * since multithreading and scene2d don't go well together, this must be done to move the update onto the main Application thread
+     * @param latestUpdate the DTO transferred by the server holding the information for the update
+     */
     public void requestUpdate(DTO latestUpdate){
         updateNeeded = true;
         this.latestUpdate = latestUpdate;

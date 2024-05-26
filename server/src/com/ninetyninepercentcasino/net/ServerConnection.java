@@ -51,6 +51,12 @@ public class ServerConnection extends Connection {
                                     bjGame.setFirstBet(((BJBetRequest)message.getContent()).getAmountBet());
                                     System.out.println("BET PLACED: " + ((BJBetRequest)message.getContent()).getAmountBet());
                                 }
+                                else if(message.getContent() instanceof BJActionUpdate){
+                                    synchronized(bjGame.getBjSynchronizer()) {
+                                        bjGame.getBjSynchronizer().notify();
+                                    }
+                                    bjGame.setAction(((BJActionUpdate) message.getContent()).getChosenAction());
+                                }
                             default:
                         }
                     }
