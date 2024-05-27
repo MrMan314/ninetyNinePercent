@@ -40,18 +40,22 @@ public class BJClient extends Connection {
                                 out.writeObject(message);
                                 break;
                             case INFO:
-                                if(message.getContent() instanceof BJBetRequest) {
-                                    ((BJBetRequest)message.getContent()).setAmountBet(19);
+                                Object content = message.getContent();
+                                if(content instanceof BJBetRequest) {
+                                    ((BJBetRequest)content).setAmountBet(19);
                                     out.writeObject(message);
                                 }
-                                else if(message.getContent() instanceof BJCardUpdate){
-                                    screen.requestUpdate((DTO)message.getContent());
+                                else if(content instanceof BJCardUpdate){
+                                    screen.requestUpdate((DTO)content);
                                 }
-                                else if(message.getContent() instanceof BJInsuranceRequest){
+                                else if(content instanceof BJInsuranceRequest){
 
                                 }
-                                else if(message.getContent() instanceof BJAvailActionUpdate){
-                                    screen.requestUpdate((DTO)message.getContent());
+                                else if(content instanceof BJAvailActionUpdate){
+                                    screen.requestUpdate((DTO)content);
+                                }
+                                else if(content instanceof BJSplit){
+                                    screen.requestUpdate((DTO)content);
                                 }
                             default:
                         }

@@ -29,12 +29,20 @@ public class Hand {
         return card;
     }
     /**
-     * Method that removes a Card from the hand
+     * removes a specified Card from the hand
      * pre: none
      * post: removes the Card from the hand
      */
     public void removeCard(Card card){
         hand.remove(card);
+    }
+
+    /**
+     * removes the card at a specified index of the hand
+     * @param index the index of the card to be removed
+     */
+    public void removeCard(int index){
+        hand.remove(index);
     }
     public Card drawCard(Deck deck){
         Card card = deck.drawCard();

@@ -14,14 +14,8 @@ public class BJDealer {
         hand = new Hand();
         insuranceBet = 0;
     }
-    public void setup(){
-        hand.drawCard(deck);
-        hand.drawCard(deck);
-    }
-    public void play(){
-        while(getScore() < 17){
-            hand.drawCard(deck);
-        }
+    public Card drawCard(){
+        return hand.drawCard(deck);
     }
     /**
      * calculates the highest possible bj score of a hand that doesn't bust

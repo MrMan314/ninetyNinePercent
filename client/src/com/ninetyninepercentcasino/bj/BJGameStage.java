@@ -3,13 +3,13 @@ package com.ninetyninepercentcasino.bj;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mysql.cj.xdevapi.AddResultBuilder;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipStack;
+import com.ninetyninepercentcasino.gameparts.DeckActor;
 import com.ninetyninepercentcasino.net.BJAction;
 import com.ninetyninepercentcasino.net.BJActionUpdate;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
@@ -26,6 +26,8 @@ import java.util.Scanner;
 public class BJGameStage extends Stage {
     private CardGroup playerHand;
     private CardGroup dealerHand;
+    private CardGroup splits;
+    private DeckActor deckActor;
     private HitButton hitButton;
     private InsureButton insureButton;
     private SplitButton splitButton;
@@ -40,7 +42,8 @@ public class BJGameStage extends Stage {
         final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
         playerHand = new CardGroup(true, true);
-        dealerHand = new CardGroup(false, true);
+        dealerHand = new CardGroup(false, false);
+        splits = new CardGroup(true, false);
 
         playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
         dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
@@ -69,11 +72,13 @@ public class BJGameStage extends Stage {
 
         Table root = new Table();
         root.setFillParent(true);
+        root.add(deckActor);
         root.add(dealerHand);
         root.row();
         root.add(bottomUI);
         root.row();
         root.add(playerHand);
+        root.add(splits);
 
         addActor(chips);
         addActor(root);
@@ -120,6 +125,7 @@ public class BJGameStage extends Stage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        disableAllButtons();
     }
     public void stand() {
         BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.STAND);
@@ -129,6 +135,7 @@ public class BJGameStage extends Stage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        disableAllButtons();
     }
     public void doubleDown(){
         BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
@@ -138,6 +145,19 @@ public class BJGameStage extends Stage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        disableAllButtons();
+    }
+    public void split(){
+        splits.addCard(playerHand.getHand().getCard(0));
+        playerHand.getHand().removeCard(0);
+        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
+        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+        try {
+            client.message(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        disableAllButtons();
     }
     private void disableAllButtons(){
         hitButton.disable();

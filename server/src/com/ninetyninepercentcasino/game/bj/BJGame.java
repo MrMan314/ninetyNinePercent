@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * Runs logic for a bj game
+ * Runs logic for a blackjack game
  * @author Grant Liang
  */
 public class BJGame extends Thread {
@@ -17,10 +17,9 @@ public class BJGame extends Thread {
     private static final int DEALER_WON = 1;
     private static final int TIE = 3;
     private static final int PLAYER_BLACKJACK = 4;
-    private static final long pauseTime = 1000;
+    private static final long PAUSE_TIME = 1000;
 
-    private Deck deck;
-    private BJPlayer player;
+    private final BJPlayer player;
     private BJDealer dealer;
     private Stack<BJHand> hands;
     private Stack<BJHand> resolved;
@@ -29,23 +28,31 @@ public class BJGame extends Thread {
     private double firstBet;
     private BJAction action;
 
-    public BJGame(BJPlayer player) throws IOException {
+    /**
+     * initializes a new blackjack game
+     * @param player the player of the game, who will play against the dealer
+     */
+    public BJGame(BJPlayer player) {
         this.player = player;
         hands = new Stack<>();
         resolved = new Stack<>();
         bjSynchronizer = new BJSynchronizer();
     }
+    /**
+     * main driver for a blackjack game
+     */
     public void run() {
         try {
             getInitialBet();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        deck = new Deck();
+        Deck deck = new Deck();
         deck.shuffle();
-        dealer = new BJDealer(deck);
 
-        dealer.setup();
+        dealer = new BJDealer(deck);
+        drawCardUpdate(dealer.drawCard(), false);
+        drawCardUpdate(dealer.drawCard(), false);
 
         BJHand firstHand = new BJHand(player);
         firstHand.setBet(firstBet);
@@ -58,11 +65,7 @@ public class BJGame extends Thread {
 
         while(!hands.isEmpty()){
             BJHand currentHand = hands.peek();
-            try {
-                sendOptions(currentHand.updateOptions());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            sendOptions(currentHand.updateOptions());
             switch(action){
                 case HIT:
                     drawCardUpdate(currentHand.drawCard(deck), true);
@@ -85,25 +88,30 @@ public class BJGame extends Thread {
                     break;
             }
         }
-        dealer.play();
-        int dealerScore = dealer.getScore();
+        dealerAction();
         while (!resolved.isEmpty()) {
             BJHand currentHand = resolved.pop();
             int outcome = findWinner(currentHand, dealer);
+            double winnings = 0; //net earnings for the player
             switch(outcome){
                 case PLAYER_BLACKJACK:
                     player.addBalance(currentHand.getAmountBet()*2.5);
+                    winnings = currentHand.getAmountBet()*1.5;
                     break;
                 case PLAYER_WON:
                     player.addBalance(currentHand.getAmountBet()*2);
+                    winnings = currentHand.getAmountBet();
                     break;
                 case TIE:
                     player.addBalance(currentHand.getAmountBet());
+                    winnings = 0;
                     break;
                 case DEALER_WON:
                     if(dealer.getNumCards() == 2) player.addBalance(dealer.getInsuranceBet()*3);
+                    winnings = dealer.getInsuranceBet()*2;
                     break;
             }
+            sendHandEnd(outcome, winnings);
         }
 
     }
@@ -114,7 +122,9 @@ public class BJGame extends Thread {
      * simulates the action of the dealer
      */
     private void dealerAction(){
-
+        while(dealer.getScore() < 17){
+            drawCardUpdate(dealer.drawCard(), false);
+        }
     }
 
     private void getInitialBet() throws InterruptedException {
@@ -163,30 +173,51 @@ public class BJGame extends Thread {
         }
         pause();
     }
-    private void sendOptions(HashMap<BJAction, Boolean> availableActions) throws InterruptedException {
+    private void sendOptions(HashMap<BJAction, Boolean> availableActions){
         NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
         try {
             player.getConnection().message(actionUpdate);
-        } catch (IOException e) {
+            synchronized(bjSynchronizer) {
+                bjSynchronizer.wait(); //waits until the client returns the action
+            }
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        synchronized(bjSynchronizer) {
-            bjSynchronizer.wait(); //waits until the client returns the action
+    }
+    private void sendHandEnd(int winner, double winnings){
+        NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(winner, winnings));
+        try {
+            player.getConnection().message(handEndUpdate);
+            synchronized(bjSynchronizer) {
+                bjSynchronizer.wait(); //waits until the client returns the action
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
     }
-
     public BJSynchronizer getBjSynchronizer() {
         return bjSynchronizer;
     }
+    /**
+     * called by the ServerConnection managing the game when it receives the client's first bet
+     * @param firstBet the amount the client has chosen to bet
+     */
     public void setFirstBet(double firstBet){
         this.firstBet = firstBet;
     }
+    /**
+     * called by the ServerConnection managing the game when it receives the client's action
+     * @param action the action the client has chosen to perform
+     */
     public void setAction(BJAction action){
         this.action = action;
     }
+    /**
+     * sleeps the thread to prevent multiple DTOs being sent to client at the same time
+     */
     private void pause(){
-        try { Thread.sleep(pauseTime);
+        try { Thread.sleep(PAUSE_TIME);
         } catch (InterruptedException e) { throw new RuntimeException(e);}
     }
 }

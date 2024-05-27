@@ -2,15 +2,11 @@ package com.ninetyninepercentcasino.net;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 
-/**
- * DTO for whenever a new card is introduced to the BJ game
- * @author Grant Liang
- */
-public class BJCardUpdate extends DTO {
+public class BJSplit extends DTO {
     private Card card;
-    private boolean visible; //this variable currently also acts as an identifier for whether the player or dealer drew the card
+    private boolean visible;
 
-    public BJCardUpdate(Card card, boolean visible){
+    public BJSplit(Card card, boolean visible){
         this.card = card;
         this.visible = visible;
     }

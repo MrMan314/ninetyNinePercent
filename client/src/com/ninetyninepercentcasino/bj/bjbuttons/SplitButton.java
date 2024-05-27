@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.gameparts.CasinoButton;
 
 public class SplitButton extends CasinoButton {
@@ -31,5 +32,6 @@ public class SplitButton extends CasinoButton {
      * called when the button is clicked
      */
     public void signalSplit(){
+        ((BJGameStage)getStage()).split();
     }
 }

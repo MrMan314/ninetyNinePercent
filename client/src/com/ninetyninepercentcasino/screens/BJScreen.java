@@ -121,10 +121,18 @@ public class BJScreen extends CasinoScreen {
         }
         if(updateNeeded){
             if(latestUpdate instanceof BJCardUpdate){
-                stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
+                if(((BJCardUpdate)latestUpdate).isVisible()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
+                else stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
+
             }
             else if(latestUpdate instanceof BJAvailActionUpdate){
                 stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
+            }
+            else if(latestUpdate instanceof BJSplit){
+
+            }
+            else if(latestUpdate instanceof BJHandEnd){
+                stage.revealDealerHand();
             }
             updateNeeded = false;
         }

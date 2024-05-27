@@ -3,6 +3,10 @@ package com.ninetyninepercentcasino.net;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * DTO that the server uses to send the player what actions are available to them
+ * @author Grant Liang
+ */
 public class BJAvailActionUpdate extends DTO {
     private HashMap<BJAction, Boolean> actions;
     private BJAction chosenAction;
