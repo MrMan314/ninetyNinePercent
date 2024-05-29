@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
+import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.CardGroup;
@@ -44,6 +45,7 @@ public class BJGameStage extends Stage {
         playerHand = new CardGroup(true, true);
         dealerHand = new CardGroup(false, false);
         splits = new CardGroup(true, false);
+        deckActor = new DeckActor();
 
         playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
         dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
@@ -61,8 +63,8 @@ public class BJGameStage extends Stage {
         bjButtons.add(doubleDownButton);
 
         Table bottomUI = new Table();
-        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/7);
-        bottomUI.add(bjButtons).padRight(WORLD_WIDTH / 16).padLeft(WORLD_WIDTH / 16).bottom();
+        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
+        bottomUI.add(bjButtons).bottom();
 
         ChipStack chips = new ChipStack();
         chips.addChip(new ChipActor(new Chip(1)));
@@ -70,16 +72,19 @@ public class BJGameStage extends Stage {
         chips.addChip(new ChipActor(new Chip(1)));
         chips.debug();
 
-        Table root = new Table();
-        root.setFillParent(true);
-        root.add(deckActor);
-        root.add(dealerHand);
-        root.row();
-        root.add(bottomUI);
-        root.row();
-        root.add(playerHand);
-        root.add(splits);
+        Table upperTable = new Table();
+        upperTable.add(deckActor).padRight(100);
+        upperTable.add(dealerHand);
+        upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.2f);
 
+        Table root = new Table();
+        root.setPosition(WORLD_WIDTH / 2, 0);
+        root.add(playerHand).bottom();
+        root.add(splits).bottom();
+        root.debug();
+
+        addActor(upperTable);
+        addActor(bottomUI);
         addActor(chips);
         addActor(root);
     }
@@ -90,9 +95,11 @@ public class BJGameStage extends Stage {
         return input.nextDouble();
     }
     public void addPlayerCard(Card card){
+        SFXManager.playSlideSound();
         playerHand.addCard(card);
     }
     public void addDealerCard(Card card){
+        SFXManager.playSlideSound();
         dealerHand.addCard(card);
     }
     public void revealDealerHand(){
@@ -149,7 +156,7 @@ public class BJGameStage extends Stage {
     }
     public void split(){
         splits.addCard(playerHand.getHand().getCard(0));
-        playerHand.getHand().removeCard(0);
+        playerHand.removeCard(playerHand.getHand().getCard(0));
         BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
         NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
         try {
@@ -166,7 +173,9 @@ public class BJGameStage extends Stage {
         insureButton.disable();
         doubleDownButton.disable();
     }
-
+    public void endHand(){
+        playerHand.hide();
+    }
     /**
      * this method NEEDS TO BE CALLED to set the client of a stage if the stage is to communicate with server
      * @param client the client of the stage that communicates with the server

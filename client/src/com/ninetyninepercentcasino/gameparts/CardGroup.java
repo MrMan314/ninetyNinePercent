@@ -28,6 +28,13 @@ public class CardGroup extends Table {
         else setTouchable(Touchable.disabled);
         hand = new Hand();
     }
+
+    /**
+     * Constructor that initializes a new player hand with a given Hand
+     * @param hand the hand to create the CardGroup with
+     * @param faceUp the orientation that new cards will automatically have
+     * @param isUIHand
+     */
     public CardGroup(Hand hand, boolean faceUp, boolean isUIHand){
         this(faceUp, isUIHand);
         for(Card card : hand.getCards()){
@@ -62,6 +69,17 @@ public class CardGroup extends Table {
     public void removeCard(CardActor card){
         hand.removeCard(card.getCard());
         removeActor(card);
+    }
+    public void removeCard(Card card){
+        int index = 0;
+        for(int i = 0; i < hand.getCards().size(); i++){
+            Card cardInHand = hand.getCard(i);
+            if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){
+                index = i;
+                hand.removeCard(i);
+            }
+        }
+        removeActorAt(index, true);
     }
     /**
      * Hides the hand by hiding all CardActors

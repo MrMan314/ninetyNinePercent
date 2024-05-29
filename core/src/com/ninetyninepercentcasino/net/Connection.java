@@ -94,13 +94,13 @@ public class Connection extends Thread {
 						}
 						synchronized (aliveMessage) {
 							aliveMessage.notify();
-							NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "my balls itch");
+							NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "alive check.");
 							out.writeObject(pingMessage);
 							aliveMessage = "";
 							aliveMessage.wait();
 						}
 
-						if(aliveMessage == "") {
+						if(aliveMessage.isEmpty()) {
 							finish();
 							return;
 						}

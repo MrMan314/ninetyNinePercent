@@ -14,6 +14,7 @@ import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Screen that renders a BJ game
@@ -22,10 +23,9 @@ import java.net.Socket;
 public class BJScreen extends CasinoScreen {
     private Texture background;
     private boolean firstRender;
-    private boolean updateNeeded;
     private BJClient client;
     private BJGameStage stage;
-    private DTO latestUpdate;
+    private ArrayList<DTO> updates = new ArrayList<>();
 
     public BJScreen(MainCasino game) {
         super(game);
@@ -45,7 +45,6 @@ public class BJScreen extends CasinoScreen {
 
     @Override
     public void show() {
-        updateNeeded = false;
         firstRender = true;
         stage = new BJGameStage(new ExtendViewport(1312, 738, 1312, 738));
         Gdx.input.setInputProcessor(stage);
@@ -119,11 +118,14 @@ public class BJScreen extends CasinoScreen {
             Gdx.graphics.requestRendering();
             firstRender = false;
         }
-        if(updateNeeded){
+        if(!updates.isEmpty()){
+            DTO latestUpdate = updates.remove(0);
             if(latestUpdate instanceof BJCardUpdate){
-                if(((BJCardUpdate)latestUpdate).isVisible()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
-                else stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
-
+                if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
+                else {
+                    stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
+                    if(((BJCardUpdate)latestUpdate).isVisible()) stage.revealDealerHand();
+                }
             }
             else if(latestUpdate instanceof BJAvailActionUpdate){
                 stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
@@ -133,8 +135,8 @@ public class BJScreen extends CasinoScreen {
             }
             else if(latestUpdate instanceof BJHandEnd){
                 stage.revealDealerHand();
+                stage.endHand();
             }
-            updateNeeded = false;
         }
         ScreenUtils.clear(0, 0, 0, 1f);
         stage.getBatch().begin();
@@ -171,7 +173,7 @@ public class BJScreen extends CasinoScreen {
      * @param latestUpdate the DTO transferred by the server holding the information for the update
      */
     public void requestUpdate(DTO latestUpdate){
-        updateNeeded = true;
-        this.latestUpdate = latestUpdate;
+        updates.add(latestUpdate);
+        Gdx.graphics.requestRendering();
     }
 }

@@ -57,6 +57,9 @@ public class BJClient extends Connection {
                                 else if(content instanceof BJSplit){
                                     screen.requestUpdate((DTO)content);
                                 }
+                                else if(content instanceof BJHandEnd){
+                                    screen.requestUpdate((DTO)content);
+                                }
                             default:
                         }
                     }

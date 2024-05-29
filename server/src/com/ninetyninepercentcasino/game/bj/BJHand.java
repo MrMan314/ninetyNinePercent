@@ -72,7 +72,6 @@ public class BJHand extends Hand {
             if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
         }
-        //else resolve the hand bc player has busted.
         return availableActions;
     }
 

@@ -19,12 +19,6 @@ public class ChipStack extends VerticalGroup{
                 return true;
             }
             public void touchDragged (InputEvent event, float x, float y, int pointer) {
-                Vector2 newTouch = new Vector2(x, y);
-                Vector2 delta = newTouch.cpy().sub(lastTouch);
-                lastTouch = newTouch;
-
-                event.getTarget().moveBy(Gdx.input.getDeltaX(), -Gdx.input.getDeltaY());
-
             }
         });
     }

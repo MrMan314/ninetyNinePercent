@@ -51,8 +51,8 @@ public class BJGame extends Thread {
         deck.shuffle();
 
         dealer = new BJDealer(deck);
-        drawCardUpdate(dealer.drawCard(), false);
-        drawCardUpdate(dealer.drawCard(), false);
+        drawCardUpdate(dealer.drawCard(), true, false);
+        drawCardUpdate(dealer.drawCard(), false, false);
 
         BJHand firstHand = new BJHand(player);
         firstHand.setBet(firstBet);
@@ -60,32 +60,46 @@ public class BJGame extends Thread {
 
         if(dealer.hasVisibleAce()) dealer.setInsuranceBet(firstHand.getInsurance());
 
-        drawCardUpdate(firstHand.drawCard(deck), true);
-        drawCardUpdate(firstHand.drawCard(deck), true);
+        drawCardUpdate(firstHand.drawCard(deck), true, true);
+        drawCardUpdate(firstHand.drawCard(deck), true, true);
 
         while(!hands.isEmpty()){
             BJHand currentHand = hands.peek();
-            sendOptions(currentHand.updateOptions());
-            switch(action){
-                case HIT:
-                    drawCardUpdate(currentHand.drawCard(deck), true);
+            HashMap<BJAction, Boolean> availableActions = currentHand.updateOptions();
+            sendOptions(availableActions);
+            boolean handOver = true;
+            for(Boolean available : availableActions.values()){
+                if (available) {
+                    handOver = false;
                     break;
-                case STAND:
-                    resolved.push(hands.pop());
-                    break;
-                case SPLIT:
-                    Card card1 = deck.drawCard();
-                    Card card2 = deck.drawCard();
-                    BJHand hand1 = new BJHand(player, currentHand.getCard(0), card1);
-                    BJHand hand2 = new BJHand(player, currentHand.getCard(1), card2);
-                    hands.push(hand1);
-                    hands.push(hand2);
-                    break;
-                case DOUBLE_DOWN:
-                    drawCardUpdate(currentHand.drawCard(deck), true);
-                    currentHand.doubleBet();
-                    resolved.push(hands.pop());
-                    break;
+                }
+            }
+            if(handOver) {
+                resolved.push(hands.pop());
+                System.out.println("HAND OVER.");
+            }
+            else {
+                switch(action){
+                    case HIT:
+                        drawCardUpdate(currentHand.drawCard(deck), true, true);
+                        break;
+                    case STAND:
+                        resolved.push(hands.pop());
+                        break;
+                    case SPLIT:
+                        Card card1 = deck.drawCard();
+                        Card card2 = deck.drawCard();
+                        BJHand hand1 = new BJHand(player, currentHand.getCard(0), card1);
+                        BJHand hand2 = new BJHand(player, currentHand.getCard(1), card2);
+                        hands.push(hand1);
+                        hands.push(hand2);
+                        break;
+                    case DOUBLE_DOWN:
+                        drawCardUpdate(currentHand.drawCard(deck), true, true);
+                        currentHand.doubleBet();
+                        resolved.push(hands.pop());
+                        break;
+                }
             }
         }
         dealerAction();
@@ -123,7 +137,7 @@ public class BJGame extends Thread {
      */
     private void dealerAction(){
         while(dealer.getScore() < 17){
-            drawCardUpdate(dealer.drawCard(), false);
+            drawCardUpdate(dealer.drawCard(), false, false);
         }
     }
 
@@ -164,8 +178,8 @@ public class BJGame extends Thread {
     /**
      * called when the client needs to be updated about a card that was drawn
      */
-    private void drawCardUpdate(Card card, boolean visible){
-        NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible));
+    private void drawCardUpdate(Card card, boolean visible, boolean isPlayerCard){
+        NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible, isPlayerCard));
         try {
             player.getConnection().message(cardUpdate);
         } catch (IOException e) {
@@ -219,5 +233,6 @@ public class BJGame extends Thread {
     private void pause(){
         try { Thread.sleep(PAUSE_TIME);
         } catch (InterruptedException e) { throw new RuntimeException(e);}
+        System.out.println("Paused.");
     }
 }

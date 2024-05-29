@@ -37,25 +37,26 @@ public class ServerConnection extends Connection {
                                 out.writeObject(message);
                                 break;
                             case INFO:
-                                if(message.getContent() instanceof String){
+                                Object content = message.getContent();
+                                if(content instanceof String){
                                     if(message.getContent().equals("begin game.")){
                                         bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
                                         bjGame.start();
                                         System.out.println("GAME BEGUN");
                                     }
                                 }
-                                if(message.getContent() instanceof BJBetRequest) {
+                                if(content instanceof BJBetRequest) {
+                                    bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
                                     synchronized(bjGame.getBjSynchronizer()) {
                                         bjGame.getBjSynchronizer().notify();
                                     }
-                                    bjGame.setFirstBet(((BJBetRequest)message.getContent()).getAmountBet());
-                                    System.out.println("BET PLACED: " + ((BJBetRequest)message.getContent()).getAmountBet());
+                                    System.out.println("BET PLACED: " + ((BJBetRequest)content).getAmountBet());
                                 }
-                                else if(message.getContent() instanceof BJActionUpdate){
+                                else if(content instanceof BJActionUpdate){
+                                    bjGame.setAction(((BJActionUpdate)content).getChosenAction());
                                     synchronized(bjGame.getBjSynchronizer()) {
                                         bjGame.getBjSynchronizer().notify();
                                     }
-                                    bjGame.setAction(((BJActionUpdate) message.getContent()).getChosenAction());
                                 }
                             default:
                         }

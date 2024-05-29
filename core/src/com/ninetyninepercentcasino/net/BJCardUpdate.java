@@ -8,17 +8,21 @@ import com.ninetyninepercentcasino.game.gameparts.Card;
  */
 public class BJCardUpdate extends DTO {
     private Card card;
-    private boolean visible; //this variable currently also acts as an identifier for whether the player or dealer drew the card
+    private boolean visible;
+    private boolean isPlayerCard; //acts as an identifier for whether the player or dealer drew the card
 
-    public BJCardUpdate(Card card, boolean visible){
+    public BJCardUpdate(Card card, boolean visible, boolean isPlayerCard){
         this.card = card;
         this.visible = visible;
+        this.isPlayerCard = isPlayerCard;
     }
     public Card getCard(){
-        if(visible) return card;
-        else return new Card(0, 0);
+        return card;
     }
     public boolean isVisible(){
         return visible;
+    }
+    public boolean isPlayerCard(){
+        return isPlayerCard;
     }
 }

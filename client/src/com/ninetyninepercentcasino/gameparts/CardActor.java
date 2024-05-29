@@ -19,7 +19,7 @@ public class CardActor extends Actor {
     private boolean faceUp; //stores the current state of the card
 
     boolean popped; //card is popped when the cursor is touching it
-    final static float POPDISTANCE = 20; //the distance the card will pop up when hovered over
+    final static float POP_DISTANCE = 20; //the distance the card will pop up when hovered over
 
     final static TextureRegion faceDownTex = new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_Back-88x124.png"), 0, 0, 88, 124);
     final TextureRegion faceUpTex;
@@ -60,7 +60,7 @@ public class CardActor extends Actor {
         }
     }
     public void draw(Batch batch, float parentAlpha){
-        if(popped) batch.draw(sprite, getX(), getY()+POPDISTANCE, sprite.getWidth(), sprite.getHeight());
+        if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
         else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
     }
     public Card getCard(){
