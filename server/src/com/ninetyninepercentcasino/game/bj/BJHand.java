@@ -1,13 +1,13 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.bj.BJPlayer;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJActionUpdate;
+import com.ninetyninepercentcasino.net.BJInsuranceRequest;
 import com.ninetyninepercentcasino.net.NetMessage;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -33,15 +33,14 @@ public class BJHand extends Hand {
     public Card drawCard(Deck deck){
         return addCard(deck.drawCard());
     }
-    public BJAction act(){
-        updateOptions();
-        //TODO send the player their available actions
-        BJAction playerAction = BJAction.SPLIT; //take in client input, temporarily permanently set to split
-        return playerAction;
-    }
     public double getInsurance(){
-        //ask user if they want insurance
-        return 0; //TODO
+        NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
+        try {
+            player.getConnection().message(insuranceMessage);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return 100; //TODO actuallg et insurance
     }
     /**
      * calculates the highest possible bj score of a hand that doesn't bust
@@ -62,7 +61,7 @@ public class BJHand extends Hand {
         }
         return score;
     }
-    private void updateOptions(){
+    public  HashMap<BJAction, Boolean> updateOptions(){
         int score = getScore();
         for(BJAction action : availableActions.keySet()){
             availableActions.replace(action, false);
@@ -73,11 +72,9 @@ public class BJHand extends Hand {
             if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
             if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
         }
-        //else resolve the hand bc player has busted.
-        NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJActionUpdate(availableActions));
-
-
+        return availableActions;
     }
+
     private boolean canSplit(){
         return getCards().get(0).getNum() == getCards().get(1).getNum();
     }

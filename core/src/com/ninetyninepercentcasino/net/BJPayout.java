@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
-public class BJPayout {
+public class BJPayout extends DTO {
     private final double winnings;
     public BJPayout(double winnings){
         this.winnings = winnings;

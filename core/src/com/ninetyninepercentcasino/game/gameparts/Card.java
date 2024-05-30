@@ -1,13 +1,15 @@
 package com.ninetyninepercentcasino.game.gameparts;
 
+import java.io.Serializable;
+
 /**
  * Models a card with a suit and card number
  * @author Grant Liang
  */
-public class Card {
+public class Card implements Serializable {
     private final int suit; //0 spades, 1 diamonds, 2 clubs, 3 hearts
     private final int cardNum; //1
-    private final static String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"}; //TODO move these to another class maybe?
+    private final static String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"};
     private final static String[] numberNames = {"ZERO_ERROR", "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
     /**
      * Constructor that initializes a new card with a given suit and number

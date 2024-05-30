@@ -12,7 +12,7 @@ import com.ninetyninepercentcasino.game.gameparts.Chip;
 public class ChipActor extends Actor {
     private Chip chip;
     private Sprite sprite;
-    final static float POPDISTANCE = 5;
+    final static float POP_DISTANCE = 5;
     boolean popped = false;
 
     public ChipActor(Chip chip){
@@ -32,7 +32,7 @@ public class ChipActor extends Actor {
         });
     }
     public void draw(Batch batch, float parentAlpha){
-        if(popped) batch.draw(sprite, getX(), getY()+POPDISTANCE, sprite.getWidth(), sprite.getHeight());
+        if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
         else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
     }
     private TextureRegion findTexture(){

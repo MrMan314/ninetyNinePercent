@@ -9,25 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.gameparts.CasinoButton;
 
-import java.io.IOException;
-
-/**
- * Models a calling button in a poker game
- * @author Grant Liang
- */
-public class HitButton extends CasinoButton {
-    public HitButton(){
+public class InsureButton extends CasinoButton {
+    public InsureButton(){
         super();
-        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 192, 0, 64, 72));
+        buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 256, 0, 64, 72));
         buttonSprite.setSize(192, 192 * ((float) 72/64));
         setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
         buttonSprite.setPosition(getX(), getY());
         addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(isAvailable) {
-                    signalHit();
-                }
+                if(isAvailable) signalInsure();
                 return true;
             }
         });
@@ -39,7 +31,6 @@ public class HitButton extends CasinoButton {
     /**
      * called when the button is clicked
      */
-    public void signalHit() {
-        ((BJGameStage)getStage()).hit();
+    public void signalInsure(){
     }
 }

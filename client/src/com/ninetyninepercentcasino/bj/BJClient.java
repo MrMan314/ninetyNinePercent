@@ -1,18 +1,22 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.screens.BJScreen;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.OptionalDataException;
 import java.net.Socket;
 
+/**
+ * client of a blackjack game that receives messages from the server and handles them
+ */
 public class BJClient extends Connection {
 
-    public BJClient(Socket clientSocket) throws IOException {
+    private BJScreen screen;
+    public BJClient(Socket clientSocket, BJScreen screen) throws IOException {
         super(clientSocket);
+        this.screen = screen;
     }
 
     @Override
@@ -36,9 +40,25 @@ public class BJClient extends Connection {
                                 out.writeObject(message);
                                 break;
                             case INFO:
-                                if(message.getContent() instanceof BJBetRequest) {
-                                    ((BJBetRequest)message.getContent()).setAmountBet(19);
+                                Object content = message.getContent();
+                                if(content instanceof BJBetRequest) {
+                                    ((BJBetRequest)content).setAmountBet(19);
                                     out.writeObject(message);
+                                }
+                                else if(content instanceof BJCardUpdate){
+                                    screen.requestUpdate((DTO)content);
+                                }
+                                else if(content instanceof BJInsuranceRequest){
+
+                                }
+                                else if(content instanceof BJAvailActionUpdate){
+                                    screen.requestUpdate((DTO)content);
+                                }
+                                else if(content instanceof BJSplit){
+                                    screen.requestUpdate((DTO)content);
+                                }
+                                else if(content instanceof BJHandEnd){
+                                    screen.requestUpdate((DTO)content);
                                 }
                             default:
                         }

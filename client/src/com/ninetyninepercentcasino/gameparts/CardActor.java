@@ -11,15 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 
 /**
- * Models an interactive CardActor with a texture and event listeners
+ * Models an interactive Card with a texture and event listeners
  * @author Grant Liang
  */
 public class CardActor extends Actor {
     private Card card;
     private boolean faceUp; //stores the current state of the card
 
-    boolean popped = false;
-    final static float POPDISTANCE = 20;
+    boolean popped; //card is popped when the cursor is touching it
+    final static float POP_DISTANCE = 20; //the distance the card will pop up when hovered over
 
     final static TextureRegion faceDownTex = new TextureRegion(new Texture("GameAssets/Top-Down/Cards/Card_Back-88x124.png"), 0, 0, 88, 124);
     final TextureRegion faceUpTex;
@@ -35,7 +35,7 @@ public class CardActor extends Actor {
         }
         else setTouchable(Touchable.disabled);
         setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
-
+        popped = false;
         addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
@@ -60,7 +60,7 @@ public class CardActor extends Actor {
         }
     }
     public void draw(Batch batch, float parentAlpha){
-        if(popped) batch.draw(sprite, getX(), getY()+POPDISTANCE, sprite.getWidth(), sprite.getHeight());
+        if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
         else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
     }
     public Card getCard(){
@@ -76,8 +76,8 @@ public class CardActor extends Actor {
         int textureRegionX = 0;
         int textureRegionY = 0;
         for(int i = 1; i < cardNum; i++){
-            textureRegionX += 88;
-            if(textureRegionX > 88*4){
+            textureRegionX += 88; //increment by 88 in the row to get to the next number's texture
+            if(textureRegionX > 88*4){ //the end of the row has been reached, so travel to the next row
                 textureRegionX = 0;
                 textureRegionY += 124;
             }
