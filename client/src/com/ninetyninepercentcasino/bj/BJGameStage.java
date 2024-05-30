@@ -13,7 +13,6 @@ import com.ninetyninepercentcasino.gameparts.ChipStack;
 import com.ninetyninepercentcasino.gameparts.DeckActor;
 import com.ninetyninepercentcasino.net.BJAction;
 import com.ninetyninepercentcasino.net.BJActionUpdate;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
@@ -66,12 +65,6 @@ public class BJGameStage extends Stage {
         bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
         bottomUI.add(bjButtons).bottom();
 
-        ChipStack chips = new ChipStack();
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.addChip(new ChipActor(new Chip(1)));
-        chips.debug();
-
         Table upperTable = new Table();
         upperTable.add(deckActor).padRight(100);
         upperTable.add(dealerHand);
@@ -85,7 +78,6 @@ public class BJGameStage extends Stage {
 
         addActor(upperTable);
         addActor(bottomUI);
-        addActor(chips);
         addActor(root);
     }
 

@@ -9,11 +9,6 @@ public class ChipExchangeMenu extends CasinoScreen {
     }
     @Override
     public void show() {
-        ChipStack whiteChips = new ChipStack();
-        ChipStack redChips = new ChipStack();
-        ChipStack blueChips = new ChipStack();
-        ChipStack greenChips = new ChipStack();
-        ChipStack blackChips = new ChipStack();
 
 
     }

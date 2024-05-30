@@ -10,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.MainCasino;
+import com.ninetyninepercentcasino.game.gameparts.Chip;
+import com.ninetyninepercentcasino.gameparts.ChipActor;
 
 /**
  * Main menu of the game
@@ -19,7 +20,7 @@ import com.ninetyninepercentcasino.MainCasino;
  */
 public class MainMenu extends CasinoScreen {
     private Texture background;
-
+private ChipActor chip1;
     public MainMenu(MainCasino game) {
         super(game);
     }
@@ -56,17 +57,6 @@ public class MainMenu extends CasinoScreen {
 
         background = new Texture("Menus/Background.jpg");
 
-        //this click listener gives the buttons interactivity when hovered over
-        ClickListener buttonDown = new ClickListener() {
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                (event.getTarget()).setColor(65, 65, 65, 0.7f); //fades the button slightly when the cursor enters
-            }
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                (event.getTarget()).setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
-            }
-        }; //makes the button fade a little when hovering over it
-
         /*
          * adding change listeners to the buttons on the main menu
          * this gives them their functionality to switch the game over to another screen when clicked
@@ -76,13 +66,39 @@ public class MainMenu extends CasinoScreen {
                 game.setScreen(new AccountMenu(game));
             }
         });
-        settingsButton.addListener(buttonDown);
+        settingsButton.addListener(new ClickListener() {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                (event.getTarget()).setColor(65, 65, 65, 0.7f); //fades the button slightly when the cursor enters
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                (event.getTarget()).setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
+            }
+        });
         playButton.addListener(new ChangeListener(){
             public void changed (ChangeEvent event, Actor actor) {
                 game.setScreen(new GameSelect(game)); //set the screen to be a new game selection screen
             }
         });
-        playButton.addListener(buttonDown);
+        playButton.addListener( new ClickListener() {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                (event.getTarget()).setColor(65, 65, 65, 0.7f); //fades the button slightly when the cursor enters
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                (event.getTarget()).setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
+            }
+        });
+
+        chip1 = new ChipActor(new Chip(10));
+        ChipActor chip2 = new ChipActor(new Chip(10));
+        ChipActor chip3 = new ChipActor(new Chip(10));
+        chip1.attachToChip(chip2);
+        chip2.attachToChip(chip3);
+        stage.addActor(chip3);
+        stage.addActor(chip2);
+        stage.addActor(chip1);
+        System.out.println(chip1.isTopChip());
 
     }
 
@@ -99,6 +115,8 @@ public class MainMenu extends CasinoScreen {
         stage.getBatch().end();
         stage.draw(); //draw all actors on stage
         stage.act(); //act all actors on stage
+        System.out.println(chip1.isTopChip());
+        System.out.println(chip1.getChipAbove());
     }
 
     @Override
