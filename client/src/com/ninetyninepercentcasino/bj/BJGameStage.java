@@ -76,6 +76,7 @@ public class BJGameStage extends Stage {
         root.add(splits).bottom();
         root.debug();
 
+
         addActor(upperTable);
         addActor(bottomUI);
         addActor(root);

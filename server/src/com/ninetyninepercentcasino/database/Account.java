@@ -11,6 +11,7 @@ public class Account {
         this.username=username;
     }
     public void addBalance(double amountAdded){
+
     }
     public void withdraw(double withdrawAmount){
 

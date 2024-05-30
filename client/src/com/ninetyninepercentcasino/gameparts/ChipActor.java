@@ -16,11 +16,11 @@ public class ChipActor extends Actor {
     private ChipActor chipUnderneath;
     private ChipActor chipAbove;
     private final Sprite sprite;
-    final static float POP_DISTANCE = 10;
-    final static float CHIP_DISTANCE = 20; //distance between each chip in a stack
-    final static float DETACH_DISTANCE = 40; //distance between chips where they will detach
-    final static float ATTACH_DISTANCE = 20; //distance between chips where they will attach
-    boolean popped = false;
+    private final static float POP_DISTANCE = 10;
+    private final static float CHIP_DISTANCE = 20; //distance between each chip in a stack
+    private final static float DETACH_DISTANCE = 40; //distance between chips where they will detach
+    private final static float ATTACH_DISTANCE = 20; //distance between chips where they will attach
+    private boolean popped = false;
     public ChipActor(Chip chip){
         this.chip = chip;
         chipUnderneath = null;
@@ -44,6 +44,9 @@ public class ChipActor extends Actor {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 moveBy(x - getWidth() / 2, y - getHeight()/2);
+                if(chipUnderneath != null){
+                    setZIndex(chipUnderneath.getZIndex()+1);
+                }
                 if(chipUnderneath != null && Math.sqrt(Math.pow(chipUnderneath.getX()-getX(), 2) + Math.pow(chipUnderneath.getY()-getY(), 2)) >= DETACH_DISTANCE && pointer == 0){
                     detach();
                     System.out.println("DETACHED: " + isTopChip());
@@ -83,15 +86,15 @@ public class ChipActor extends Actor {
     public ChipActor getChipUnderneath() {
         return chipUnderneath;
     }
-    /**
-     * attaches the chip to a chip underneath it
-     */
     public void setChipUnderneath(ChipActor chipUnderneath){
         this.chipUnderneath = chipUnderneath;
     }
     public void setChipAbove(ChipActor chipAbove){
         this.chipAbove = chipAbove;
     }
+    /**
+     * attaches the chip to a chip underneath it
+     */
     public void attachToChip(ChipActor chipUnderneath){
         this.chipUnderneath = chipUnderneath;
         chipUnderneath.setChipAbove(this);

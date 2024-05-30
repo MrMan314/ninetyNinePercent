@@ -116,7 +116,6 @@ private ChipActor chip1;
         stage.draw(); //draw all actors on stage
         stage.act(); //act all actors on stage
         System.out.println(chip1.isTopChip());
-        System.out.println(chip1.getChipAbove());
     }
 
     @Override

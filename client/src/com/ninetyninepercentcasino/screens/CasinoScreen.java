@@ -10,7 +10,7 @@ import com.ninetyninepercentcasino.MainCasino;
  * @author Grant Liang
  */
 public abstract class CasinoScreen implements Screen {
-    MainCasino game; //screen has a game instance so it can create a new screen for the same game
+    MainCasino game; //screen has a game instance, so it can create a new screen for the same game
     Stage stage; //stage to manage the actors on the screen
     float screenHeight = Gdx.graphics.getHeight(); //height of client area in pixels
     float screenWidth = Gdx.graphics.getWidth(); //width of client area in pixels

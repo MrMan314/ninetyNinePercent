@@ -1,23 +1,31 @@
 package com.ninetyninepercentcasino.net;
 
+import com.ninetyninepercentcasino.database.Database;
+
 import java.net.ServerSocket;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Server extends Thread {
 	private ServerSocket serverSocket;
 	private int port = 9925;
+	private Database database;
 
 	private List<Connection> clients = new ArrayList<Connection>();
 
 	public Server() throws IOException {
 		serverSocket = new ServerSocket(this.port);
-	}
+        try { database = new Database();
+        } catch (SQLException e) { throw new RuntimeException(e); }
+    }
 
 	public Server(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(this.port);
+		try { database = new Database();
+		} catch (SQLException e) { throw new RuntimeException(e); }
 	}
 
 	public void run() {
