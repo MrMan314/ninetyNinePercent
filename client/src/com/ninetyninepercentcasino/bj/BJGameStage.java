@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
+import com.ninetyninepercentcasino.game.BackButton;
 import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
@@ -33,7 +34,8 @@ public class BJGameStage extends Stage {
     private SplitButton splitButton;
     private StandButton standButton;
     private DDButton doubleDownButton;
-    private BJClient client;
+    private BackButton backButton;
+	private BJClient client;
     private ChipStack whiteChips, redChips, blueChips, greenChips, blackChips;
 
     public BJGameStage(Viewport viewport){
@@ -55,11 +57,14 @@ public class BJGameStage extends Stage {
         splitButton = new SplitButton();
         standButton = new StandButton();
         doubleDownButton = new DDButton();
+		backButton = new BackButton();
         bjButtons.add(hitButton);
         bjButtons.add(standButton);
         bjButtons.add(insureButton);
         bjButtons.add(splitButton);
-        bjButtons.add(doubleDownButton);
+		backButton.enable();
+
+		backButton.setPosition(64, WORLD_HEIGHT - 64);
 
         Table bottomUI = new Table();
         bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
@@ -76,7 +81,11 @@ public class BJGameStage extends Stage {
         root.add(splits).bottom();
         root.debug();
 
+<<<<<<< Updated upstream
 
+=======
+		addActor(backButton);
+>>>>>>> Stashed changes
         addActor(upperTable);
         addActor(bottomUI);
         addActor(root);
