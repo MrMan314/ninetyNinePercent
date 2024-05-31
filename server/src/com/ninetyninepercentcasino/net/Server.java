@@ -17,7 +17,7 @@ public class Server extends Thread {
 
 	public Server() throws IOException {
 		serverSocket = new ServerSocket(this.port);
-        try { 
+		try { 
 			database = new Database();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
