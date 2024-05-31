@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
+import com.ninetyninepercentcasino.gameparts.ChipStack;
 
 /**
  * Main menu of the game
@@ -21,6 +22,8 @@ import com.ninetyninepercentcasino.gameparts.ChipActor;
 public class MainMenu extends CasinoScreen {
     private Texture background;
 private ChipActor chip1;
+private ChipActor chip2;
+private ChipActor chip3;
     public MainMenu(MainCasino game) {
         super(game);
     }
@@ -42,6 +45,8 @@ private ChipActor chip1;
         Image titleBanner = new Image(skins.getDrawable("titleBanner"));
         Button playButton = new Button(skins.getDrawable("playButton"));
         Button settingsButton = new Button(skins.getDrawable("settingsButton"));
+
+        stage.addActor(new ChipStack(5, 50)); // paid actor
 
         VerticalGroup middleMenu = new VerticalGroup();
         middleMenu.addActor(playButton);
@@ -90,16 +95,6 @@ private ChipActor chip1;
             }
         });
 
-        chip1 = new ChipActor(new Chip(10));
-        ChipActor chip2 = new ChipActor(new Chip(10));
-        ChipActor chip3 = new ChipActor(new Chip(10));
-        chip1.attachToChip(chip2);
-        chip2.attachToChip(chip3);
-        stage.addActor(chip3);
-        stage.addActor(chip2);
-        stage.addActor(chip1);
-        System.out.println(chip1.isTopChip());
-
     }
 
     /**
@@ -115,7 +110,6 @@ private ChipActor chip1;
         stage.getBatch().end();
         stage.draw(); //draw all actors on stage
         stage.act(); //act all actors on stage
-        System.out.println(chip1.isTopChip());
     }
 
     @Override

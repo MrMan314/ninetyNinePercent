@@ -14,6 +14,8 @@ public class SFXManager {
     //the following array lists hold different variations of the same sound effect
     private static final ArrayList<Sound> cardSlideSounds = new ArrayList<>();
     private static final ArrayList<Sound> chipStackSounds = new ArrayList<>();
+    private static final ArrayList<Sound> chipLaySounds = new ArrayList<>();
+    private static final Sound chipGrabSound = Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsHandle5.ogg"));
 
     //no constructor needed because this is a utility class meant for only static methods
 
@@ -26,6 +28,9 @@ public class SFXManager {
         }
         for(int i = 1; i <= 6; i++){
             chipStackSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsStack" + i + ".ogg")));
+        }
+        for(int i = 1; i <= 3; i++){
+            chipLaySounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipLay" + i + ".ogg")));
         }
     }
 
@@ -41,5 +46,15 @@ public class SFXManager {
      */
     public static void playStackSound(){
         cardSlideSounds.get(MathUtils.random(chipStackSounds.size()-1)).play();
+    }
+
+    /**
+     * plays the chip grabbing sound
+     */
+    public static void playChipGrabSound(){
+        chipGrabSound.play();
+    }
+    public static void playChipLaySound(){
+        chipLaySounds.get(MathUtils.random(chipLaySounds.size()-1)).play();
     }
 }

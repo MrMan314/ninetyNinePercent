@@ -76,7 +76,10 @@ public class BJGameStage extends Stage {
         root.add(splits).bottom();
         root.debug();
 
-
+        addActor(new ChipStack(5, 1));
+        addActor(new ChipStack(5, 5));
+        addActor(new ChipStack(5, 10));
+        addActor(new ChipStack(5, 50));
         addActor(upperTable);
         addActor(bottomUI);
         addActor(root);
