@@ -15,16 +15,16 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class CardGroup extends Table {
     private Hand hand;
     private final boolean faceUp; //any new CardActors added will be faceUp or faceDown according to this variable
-    private boolean isUIHand;
+    private boolean isLocalHand; //any new CardActors will be larger/smaller if isLocalHand is true/false respectively.
     /**
      * Constructor that initializes a new empty player hand
      * pre: none
      * post: initializes a new empty player hand
      */
-    public CardGroup(boolean faceUp, boolean isUIHand){
+    public CardGroup(boolean faceUp, boolean isLocalHand){
         this.faceUp = faceUp;
-        this.isUIHand = isUIHand;
-        if(isUIHand) setTouchable(Touchable.enabled);
+        this.isLocalHand = isLocalHand;
+        if(isLocalHand) setTouchable(Touchable.enabled);
         else setTouchable(Touchable.disabled);
         hand = new Hand();
     }
@@ -33,12 +33,12 @@ public class CardGroup extends Table {
      * Constructor that initializes a new player hand with a given Hand
      * @param hand the hand to create the CardGroup with
      * @param faceUp the orientation that new cards will automatically have
-     * @param isUIHand
+     * @param isLocalHand
      */
-    public CardGroup(Hand hand, boolean faceUp, boolean isUIHand){
-        this(faceUp, isUIHand);
+    public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand){
+        this(faceUp, isLocalHand);
         for(Card card : hand.getCards()){
-            add(new CardActor(card, faceUp, isUIHand));
+            add(new CardActor(card, faceUp, isLocalHand));
         }
         this.hand = hand;
     }
@@ -58,7 +58,7 @@ public class CardGroup extends Table {
      */
     public void addCard(Card card){
         hand.addCard(card);
-        CardActor newCard = new CardActor(card, faceUp, isUIHand);
+        CardActor newCard = new CardActor(card, faceUp, isLocalHand);
         add(newCard);
     }
     /**
@@ -86,7 +86,7 @@ public class CardGroup extends Table {
      */
     public void hide(){
         for(Actor cardActor: getChildren()){
-            ((CardActor)cardActor).hide();
+            ((CardActor)cardActor).hide(); //hide each CardActor this manages
         }
     }
     /**
@@ -94,9 +94,13 @@ public class CardGroup extends Table {
      */
     public void reveal(){
         for(Actor cardActor: getChildren()){
-            ((CardActor)cardActor).reveal();
+            ((CardActor)cardActor).reveal(); //reveal each CardActor this manages
         }
     }
+
+    /**
+     * @return the Hand this CardGroup wraps
+     */
     public Hand getHand(){
         return hand;
     }

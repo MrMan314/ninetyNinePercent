@@ -17,15 +17,15 @@ public class Server extends Thread {
 
 	public Server() throws IOException {
 		serverSocket = new ServerSocket(this.port);
-        try { database = new Database();
-        } catch (SQLException e) { throw new RuntimeException(e); }
+//        try { database = new Database();
+//        } catch (SQLException e) { throw new RuntimeException(e); }
     }
 
 	public Server(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(this.port);
-		try { database = new Database();
-		} catch (SQLException e) { throw new RuntimeException(e); }
+//		try { database = new Database();
+//		} catch (SQLException e) { throw new RuntimeException(e); }
 	}
 
 	public void run() {
