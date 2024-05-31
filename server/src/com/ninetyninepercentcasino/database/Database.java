@@ -11,6 +11,8 @@ import java.security.SecureRandom;
 public class Database {
     private Connection database; //This is our database connection
 
+	private String serverAddress = "mysql://localhost:3306/nine";
+
     /**
      * Name: Database
      * Description: Constructor. Initializes the database connection.
@@ -18,7 +20,7 @@ public class Database {
      * Postcondition: Connection to the database established
     */
     public Database() throws SQLException {
-        database=DriverManager.getConnection("jdbc:mysql://localhost:3306/ninetyNinePercent", "root", "password");
+        database=DriverManager.getConnection("jdbc:" + serverAddress, "ninetyNineMan", "amogus69420");
     }
     /**
      * Name: loadUser
@@ -27,7 +29,7 @@ public class Database {
      * Postcondition: None
      */
     public Account loadUser(String username, String password) throws SQLException, AccountNonExistent, PasswordIncorrect {
-        PreparedStatement loadUser=database.prepareStatement("select * from Accounts");
+        PreparedStatement loadUser=database.prepareStatement("SELECT * FROM Accounts");
         ResultSet result=loadUser.executeQuery();
         if(userExists(result, username)) { //User does exist
             if(result.getString("Hash").equals(Base64Utils.byteArrayTobase64(hash(password, Base64Utils.base64ToByteArray(result.getString("Salt")))))) { //Compares the password provided to the password in the database
@@ -47,13 +49,13 @@ public class Database {
      * Postcondition: Account added to database or UserAlreadyExists exception thrown.
      */
     public void createUser(String username, String password) throws SQLException, UserAlreadyExists {
-        PreparedStatement loadUser=database.prepareStatement("select Username from Accounts");
+        PreparedStatement loadUser=database.prepareStatement("SELECT Username FROM Accounts");
         ResultSet result=loadUser.executeQuery();
         if(!userExists(result, username)) { //User doesn't exist
             SecureRandom secureRandom=new SecureRandom();
             byte[] salt=new byte[32];
             secureRandom.nextBytes(salt);
-            PreparedStatement createUser=database.prepareStatement("insert into Accounts (Username, Hash, Salt) values ('"+username+"','"+Base64Utils.byteArrayTobase64(hash(password, salt))+"','"+Base64Utils.byteArrayTobase64(salt)+"');");
+            PreparedStatement createUser=database.prepareStatement("INSERT INTO Accounts (Username, Hash, Salt) VALUES ('"+username+"','"+Base64Utils.byteArrayTobase64(hash(password, salt))+"','"+Base64Utils.byteArrayTobase64(salt)+"');");
             createUser.executeUpdate();
         } else { //User already exists
             throw new UserAlreadyExists();
