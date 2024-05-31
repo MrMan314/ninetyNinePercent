@@ -5,9 +5,9 @@ package com.ninetyninepercentcasino.net;
  * @author Grant Liang
  */
 public enum BJAction {
-    HIT,
-    STAND,
-    SPLIT,
-    DOUBLE_DOWN,
-    INSURANCE
+	HIT,
+	STAND,
+	SPLIT,
+	DOUBLE_DOWN,
+	INSURANCE
 }

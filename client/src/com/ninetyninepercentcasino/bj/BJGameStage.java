@@ -25,159 +25,164 @@ import java.util.Scanner;
  * also includes methods for changing the game state
  */
 public class BJGameStage extends Stage {
-    private CardGroup playerHand;
-    private CardGroup dealerHand;
-    private CardGroup splits;
-    private DeckActor deckActor;
-    private HitButton hitButton;
-    private InsureButton insureButton;
-    private SplitButton splitButton;
-    private StandButton standButton;
-    private DDButton doubleDownButton;
-    private BackButton backButton;
+	private CardGroup playerHand;
+	private CardGroup dealerHand;
+	private CardGroup splits;
+	private DeckActor deckActor;
+	private HitButton hitButton;
+	private InsureButton insureButton;
+	private SplitButton splitButton;
+	private StandButton standButton;
+	private DDButton doubleDownButton;
+	private BackButton backButton;
 	private BJClient client;
-    private ChipStack whiteChips, redChips, blueChips, greenChips, blackChips;
+	private ChipStack whiteChips, redChips, blueChips, greenChips, blackChips;
 
-    public BJGameStage(Viewport viewport){
-        super(viewport);
-        final float WORLD_WIDTH = getViewport().getWorldWidth();
-        final float WORLD_HEIGHT = getViewport().getWorldHeight();
+	public BJGameStage(Viewport viewport){
+		super(viewport);
+		final float WORLD_WIDTH = getViewport().getWorldWidth();
+		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-        playerHand = new CardGroup(true, true);
-        dealerHand = new CardGroup(false, false);
-        splits = new CardGroup(true, false);
-        deckActor = new DeckActor();
+		playerHand = new CardGroup(true, true);
+		dealerHand = new CardGroup(false, false);
+		splits = new CardGroup(true, false);
+		deckActor = new DeckActor();
 
-        playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
-        dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
+		playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
+		dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
 
-        Table bjButtons = new Table();
-        hitButton = new HitButton();
-        insureButton = new InsureButton();
-        splitButton = new SplitButton();
-        standButton = new StandButton();
-        doubleDownButton = new DDButton();
+		Table bjButtons = new Table();
+		hitButton = new HitButton();
+		insureButton = new InsureButton();
+		splitButton = new SplitButton();
+		standButton = new StandButton();
+		doubleDownButton = new DDButton();
 		backButton = new BackButton();
-        bjButtons.add(hitButton);
-        bjButtons.add(standButton);
-        bjButtons.add(insureButton);
-        bjButtons.add(splitButton);
+		bjButtons.add(hitButton);
+		bjButtons.add(standButton);
+		bjButtons.add(insureButton);
+		bjButtons.add(splitButton);
 		backButton.enable();
 
 		backButton.setPosition(64, WORLD_HEIGHT - 64);
 
-        Table bottomUI = new Table();
-        bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
-        bottomUI.add(bjButtons).bottom();
+		Table bottomUI = new Table();
+		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
+		bottomUI.add(bjButtons).bottom();
 
-        Table upperTable = new Table();
-        upperTable.add(deckActor).padRight(100);
-        upperTable.add(dealerHand);
-        upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.2f);
+		Table upperTable = new Table();
+		upperTable.add(deckActor).padRight(100);
+		upperTable.add(dealerHand);
+		upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.2f);
 
-        Table root = new Table();
-        root.setPosition(WORLD_WIDTH / 2, 0);
-        root.add(playerHand).bottom();
-        root.add(splits).bottom();
-        root.debug();
+		Table root = new Table();
+		root.setPosition(WORLD_WIDTH / 2, 0);
+		root.add(playerHand).bottom();
+		root.add(splits).bottom();
+		root.debug();
+
 		addActor(backButton);
-        addActor(upperTable);
-        addActor(bottomUI);
-        addActor(root);
-    }
+		addActor(new ChipStack(5, 1));
+		addActor(new ChipStack(5, 5));
+		addActor(new ChipStack(5, 10));
+		addActor(new ChipStack(5, 50));
+		addActor(upperTable);
+		addActor(bottomUI);
+		addActor(root);
+	}
 
-    public double placeBet(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Place bet:");
-        return input.nextDouble();
-    }
-    public void addPlayerCard(Card card){
-        SFXManager.playSlideSound();
-        playerHand.addCard(card);
-    }
-    public void addDealerCard(Card card){
-        SFXManager.playSlideSound();
-        dealerHand.addCard(card);
-    }
-    public void revealDealerHand(){
-        dealerHand.reveal();
-    }
-    @Override
-    public Viewport getViewport(){
-        return super.getViewport();
-    }
-    public CardGroup getPlayerHand(){
-        return playerHand;
-    }
-    public void updateButtons(HashMap<BJAction, Boolean> actions){
-        if(actions.get(BJAction.HIT)) hitButton.enable();
-        else hitButton.disable();
-        if(actions.get(BJAction.STAND)) standButton.enable();
-        else standButton.disable();
-        if(actions.get(BJAction.SPLIT)) splitButton.enable();
-        else splitButton.disable();
-        if(actions.get(BJAction.INSURANCE)) insureButton.enable();
-        else insureButton.disable();
-        if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
-        else doubleDownButton.disable();
-    }
-    public void hit() {
-        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.HIT);
-        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
-        try {
-            client.message(message);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        disableAllButtons();
-    }
-    public void stand() {
-        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.STAND);
-        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
-        try {
-            client.message(message);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        disableAllButtons();
-    }
-    public void doubleDown(){
-        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
-        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
-        try {
-            client.message(message);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        disableAllButtons();
-    }
-    public void split(){
-        splits.addCard(playerHand.getHand().getCard(0));
-        playerHand.removeCard(playerHand.getHand().getCard(0));
-        BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
-        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
-        try {
-            client.message(message);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        disableAllButtons();
-    }
-    private void disableAllButtons(){
-        hitButton.disable();
-        standButton.disable();
-        splitButton.disable();
-        insureButton.disable();
-        doubleDownButton.disable();
-    }
-    public void endHand(){
-        playerHand.hide();
-    }
-    /**
-     * this method NEEDS TO BE CALLED to set the client of a stage if the stage is to communicate with server
-     * @param client the client of the stage that communicates with the server
-     */
-    public void setClient(BJClient client){
-        this.client = client;
-    }
+	public double placeBet(){
+		Scanner input = new Scanner(System.in);
+		System.out.println("Place bet:");
+		return input.nextDouble();
+	}
+	public void addPlayerCard(Card card){
+		SFXManager.playSlideSound();
+		playerHand.addCard(card);
+	}
+	public void addDealerCard(Card card){
+		SFXManager.playSlideSound();
+		dealerHand.addCard(card);
+	}
+	public void revealDealerHand(){
+		dealerHand.reveal();
+	}
+	@Override
+	public Viewport getViewport(){
+		return super.getViewport();
+	}
+	public CardGroup getPlayerHand(){
+		return playerHand;
+	}
+	public void updateButtons(HashMap<BJAction, Boolean> actions){
+		if(actions.get(BJAction.HIT)) hitButton.enable();
+		else hitButton.disable();
+		if(actions.get(BJAction.STAND)) standButton.enable();
+		else standButton.disable();
+		if(actions.get(BJAction.SPLIT)) splitButton.enable();
+		else splitButton.disable();
+		if(actions.get(BJAction.INSURANCE)) insureButton.enable();
+		else insureButton.disable();
+		if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
+		else doubleDownButton.disable();
+	}
+	public void hit() {
+		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.HIT);
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+		try {
+			client.message(message);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		disableAllButtons();
+	}
+	public void stand() {
+		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.STAND);
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+		try {
+			client.message(message);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		disableAllButtons();
+	}
+	public void doubleDown(){
+		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+		try {
+			client.message(message);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		disableAllButtons();
+	}
+	public void split(){
+		splits.addCard(playerHand.getHand().getCard(0));
+		playerHand.removeCard(playerHand.getHand().getCard(0));
+		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
+		try {
+			client.message(message);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		disableAllButtons();
+	}
+	private void disableAllButtons(){
+		hitButton.disable();
+		standButton.disable();
+		splitButton.disable();
+		insureButton.disable();
+		doubleDownButton.disable();
+	}
+	public void endHand(){
+		playerHand.hide();
+	}
+	/**
+	 * this method NEEDS TO BE CALLED to set the client of a stage if the stage is to communicate with server
+	 * @param client the client of the stage that communicates with the server
+	 */
+	public void setClient(BJClient client){
+		this.client = client;
+	}
 }

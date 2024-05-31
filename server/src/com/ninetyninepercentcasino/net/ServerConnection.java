@@ -14,32 +14,32 @@ import java.net.Socket;
 import java.util.List;
 
 public class ServerConnection extends Connection {
-    private BJGame bjGame;
+	private BJGame bjGame;
 
 	/**
 	 * Constructor for ServerConnection, calls parent constructor
 	 * pre: clientSocket and list of clients exists
 	 * post: ServerConnection and Connection is started
 	 */
-    public ServerConnection(Socket clientSocket, List<Connection> clients) throws IOException {
-        super(clientSocket, clients);
-    }
+	public ServerConnection(Socket clientSocket, List<Connection> clients) throws IOException {
+		super(clientSocket, clients);
+	}
 
 	/**
 	 * Main method for ServerConnection thread
 	 * pre: ServerConnection is started
 	 * post: ServerConnection is run
 	 */
-    @Override
-    public void run(){
-        try {
+	@Override
+	public void run(){
+		try {
 			// Loop until dead
-            while (alive) {
+			while (alive) {
 				// If connection is closed, quit
-                if(!clientSocket.isConnected()) {
-                    finish();
-                }
-                try {
+				if(!clientSocket.isConnected()) {
+					finish();
+				}
+				try {
 					// Read message from input stream
 					NetMessage message = (NetMessage) in.readObject();
 					// Set the origin of the message on the server side
@@ -57,36 +57,36 @@ public class ServerConnection extends Connection {
 								// Set the type of the message to ACK and send it back
 								message.setType(NetMessage.MessageType.ACK);
 								out.writeObject(message);
-                                break;
-                            case INFO:
+								break;
+							case INFO:
 								// Read content of message
-                                Object content = message.getContent();
-                                if(content instanceof String){
+								Object content = message.getContent();
+								if(content instanceof String){
 									// Start game if request says so, inform user as well
-                                    if(message.getContent().equals("begin game.")){
-                                        bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
-                                        bjGame.start();
-                                        System.out.println("GAME BEGUN");
-                                    }
-                                }
-                                if(content instanceof BJBetRequest) {
+									if(message.getContent().equals("begin game.")){
+										bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
+										bjGame.start();
+										System.out.println("GAME BEGUN");
+									}
+								}
+								if(content instanceof BJBetRequest) {
 									// Process BJBetRequest if it is a BJBetRequest
-                                    bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
-                                    synchronized(bjGame.getBjSynchronizer()) {
-                                        bjGame.getBjSynchronizer().notify();
-                                    }
-                                    System.out.println("BET PLACED: " + ((BJBetRequest)content).getAmountBet());
-                                }
-                                else if(content instanceof BJActionUpdate){
+									bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
+									synchronized(bjGame.getBjSynchronizer()) {
+										bjGame.getBjSynchronizer().notify();
+									}
+									System.out.println("BET PLACED: " + ((BJBetRequest)content).getAmountBet());
+								}
+								else if(content instanceof BJActionUpdate){
 									// Update action, notify synchronizer
-                                    bjGame.setAction(((BJActionUpdate)content).getChosenAction());
-                                    synchronized(bjGame.getBjSynchronizer()) {
-                                        bjGame.getBjSynchronizer().notify();
-                                    }
-                                }
-                            default:
-                        }
-                    }
+									bjGame.setAction(((BJActionUpdate)content).getChosenAction());
+									synchronized(bjGame.getBjSynchronizer()) {
+										bjGame.getBjSynchronizer().notify();
+									}
+								}
+							default:
+						}
+					}
 				} catch (OptionalDataException e) {
 					// This error can be safely ignored.
 				} catch (EOFException e) {
@@ -96,9 +96,9 @@ public class ServerConnection extends Connection {
 					// These errors cannot be ignored
 					e.printStackTrace();
 				}
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

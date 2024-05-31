@@ -1,18 +1,19 @@
 package com.ninetyninepercentcasino.gameparts;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.ninetyninepercentcasino.game.gameparts.Chip;
 
-import java.util.Stack;
-
-public class ChipStack {
-    private Stack<ChipActor> chips;
-    private Vector2 lastTouch;
-    public ChipStack(int numChips, double value){
-        for(int i = 0; i < numChips; i++){
-
-        }
-    }
+public class ChipStack extends Group {
+	public ChipStack(int numChips, double value){
+		ChipActor chipUnderneath = new ChipActor(new Chip(value));
+		chipUnderneath.setName("1");
+		addActor(chipUnderneath);
+		for(int i = 0; i < numChips; i++){
+			ChipActor chipAbove = new ChipActor(new Chip(value));
+			chipAbove.setName(Integer.toString(i));
+			addActor(chipAbove);
+			chipAbove.attachToChip(chipUnderneath);
+			chipUnderneath = chipAbove;
+		}
+	}
 }

@@ -12,77 +12,77 @@ import java.net.Socket;
  * client of a blackjack game that receives messages from the server and handles them
  */
 public class BJClient extends Connection {
-    private BJScreen screen; //the BJScreen that this BJClient will update
+	private BJScreen screen; //the BJScreen that this BJClient will update
 
-    /**
-     * initializes a BJClient
-     * @param clientSocket the socket of the client
-     * @param screen the screen that the BJClient will update
-     * @throws IOException when there is a problem with the socket?
-     */
-    public BJClient(Socket clientSocket, BJScreen screen) throws IOException {
-        super(clientSocket);
-        this.screen = screen;
-    }
+	/**
+	 * initializes a BJClient
+	 * @param clientSocket the socket of the client
+	 * @param screen the screen that the BJClient will update
+	 * @throws IOException when there is a problem with the socket?
+	 */
+	public BJClient(Socket clientSocket, BJScreen screen) throws IOException {
+		super(clientSocket);
+		this.screen = screen;
+	}
 
-    /**
-     * the method called by the connection when it is started
-     * this will receive messages from the server on a separate thread from the main game
-     */
-    @Override
-    public void run(){
-        try {
-            while (alive) {
-                if(!clientSocket.isConnected()) {
-                    finish();
-                }
-                try {
-                    NetMessage message = (NetMessage) in.readObject();
-                    message.setOrigin(clientSocket.getRemoteSocketAddress());
-                    if (message.getContent() != null) {
-                        System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
-                        switch(message.getType()) {
-                            case ACK:
-                                aliveMessage = (String) message.getContent();
-                                break;
-                            case PING:
-                                message.setType(NetMessage.MessageType.ACK);
-                                out.writeObject(message);
-                                break;
-                            case INFO: //the message contains information about the game state
-                                Object content = message.getContent();
-                                if(content instanceof BJBetRequest) {
-                                    ((BJBetRequest)content).setAmountBet(19);
-                                    out.writeObject(message);
-                                }
-                                else if(content instanceof BJCardUpdate){
-                                    screen.requestUpdate((DTO)content);
-                                }
-                                else if(content instanceof BJInsuranceRequest){
+	/**
+	 * the method called by the connection when it is started
+	 * this will receive messages from the server on a separate thread from the main game
+	 */
+	@Override
+	public void run(){
+		try {
+			while (alive) {
+				if(!clientSocket.isConnected()) {
+					finish();
+				}
+				try {
+					NetMessage message = (NetMessage) in.readObject();
+					message.setOrigin(clientSocket.getRemoteSocketAddress());
+					if (message.getContent() != null) {
+						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
+						switch(message.getType()) {
+							case ACK:
+								aliveMessage = (String) message.getContent();
+								break;
+							case PING:
+								message.setType(NetMessage.MessageType.ACK);
+								out.writeObject(message);
+								break;
+							case INFO: //the message contains information about the game state
+								Object content = message.getContent();
+								if(content instanceof BJBetRequest) {
+									((BJBetRequest)content).setAmountBet(19);
+									out.writeObject(message);
+								}
+								else if(content instanceof BJCardUpdate){
+									screen.requestUpdate((DTO)content);
+								}
+								else if(content instanceof BJInsuranceRequest){
 
-                                }
-                                else if(content instanceof BJAvailActionUpdate){
-                                    screen.requestUpdate((DTO)content);
-                                }
-                                else if(content instanceof BJSplit){
-                                    screen.requestUpdate((DTO)content);
-                                }
-                                else if(content instanceof BJHandEnd){
-                                    screen.requestUpdate((DTO)content);
-                                }
-                            default:
-                        }
-                    }
-                } catch (OptionalDataException e) {
+								}
+								else if(content instanceof BJAvailActionUpdate){
+									screen.requestUpdate((DTO)content);
+								}
+								else if(content instanceof BJSplit){
+									screen.requestUpdate((DTO)content);
+								}
+								else if(content instanceof BJHandEnd){
+									screen.requestUpdate((DTO)content);
+								}
+							default:
+						}
+					}
+				} catch (OptionalDataException e) {
 
-                } catch (EOFException e) {
-                    finish();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+				} catch (EOFException e) {
+					finish();
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

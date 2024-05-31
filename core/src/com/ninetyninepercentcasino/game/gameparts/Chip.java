@@ -5,11 +5,11 @@ package com.ninetyninepercentcasino.game.gameparts;
  * @author Grant Liang
  */
 public class Chip {
-    private final double value;
-    public Chip(double value){
-        this.value = value;
-    }
-    public double getValue() {
-        return value;
-    }
+	private final double value;
+	public Chip(double value){
+		this.value = value;
+	}
+	public double getValue() {
+		return value;
+	}
 }

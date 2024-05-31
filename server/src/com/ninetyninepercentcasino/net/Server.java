@@ -22,7 +22,7 @@ public class Server extends Thread {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-    }
+	}
 
 	public Server(int port) throws IOException {
 		this.port = port;

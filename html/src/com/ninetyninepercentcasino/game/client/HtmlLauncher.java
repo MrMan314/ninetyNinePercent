@@ -7,16 +7,16 @@ import com.ninetyninepercentcasino.MainCasino;
 
 public class HtmlLauncher extends GwtApplication {
 
-        @Override
-        public GwtApplicationConfiguration getConfig () {
-                // Resizable application, uses available space in browser
-                return new GwtApplicationConfiguration(true);
-                // Fixed size application:
-                //return new GwtApplicationConfiguration(480, 320);
-        }
+		@Override
+		public GwtApplicationConfiguration getConfig () {
+				// Resizable application, uses available space in browser
+				return new GwtApplicationConfiguration(true);
+				// Fixed size application:
+				//return new GwtApplicationConfiguration(480, 320);
+		}
 
-        @Override
-        public ApplicationListener createApplicationListener () {
-                return new MainCasino();
-        }
+		@Override
+		public ApplicationListener createApplicationListener () {
+				return new MainCasino();
+		}
 }
