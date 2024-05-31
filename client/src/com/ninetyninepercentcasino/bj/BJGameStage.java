@@ -80,12 +80,7 @@ public class BJGameStage extends Stage {
         root.add(playerHand).bottom();
         root.add(splits).bottom();
         root.debug();
-
-<<<<<<< Updated upstream
-
-=======
 		addActor(backButton);
->>>>>>> Stashed changes
         addActor(upperTable);
         addActor(bottomUI);
         addActor(root);
