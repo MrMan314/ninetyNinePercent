@@ -14,7 +14,7 @@ public class MainCasino extends Game {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); //set the game to fullscreen
 		music = new MusicManager(); //music manager that will be accessible to all screens
 		music.playMusic();
-		SFXManager.prepare();
+		SFXManager.loadSFX();
 		setScreen(new MainMenu(this)); //set the screen to be the main menu screen, passing it an instance of the game
 	}
 }

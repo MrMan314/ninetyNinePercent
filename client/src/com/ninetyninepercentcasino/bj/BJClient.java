@@ -12,13 +12,23 @@ import java.net.Socket;
  * client of a blackjack game that receives messages from the server and handles them
  */
 public class BJClient extends Connection {
+    private BJScreen screen; //the BJScreen that this BJClient will update
 
-    private BJScreen screen;
+    /**
+     * initializes a BJClient
+     * @param clientSocket the socket of the client
+     * @param screen the screen that the BJClient will update
+     * @throws IOException when there is a problem with the socket?
+     */
     public BJClient(Socket clientSocket, BJScreen screen) throws IOException {
         super(clientSocket);
         this.screen = screen;
     }
 
+    /**
+     * the method called by the connection when it is started
+     * this will receive messages from the server on a separate thread from the main game
+     */
     @Override
     public void run(){
         try {
@@ -39,7 +49,7 @@ public class BJClient extends Connection {
                                 message.setType(NetMessage.MessageType.ACK);
                                 out.writeObject(message);
                                 break;
-                            case INFO:
+                            case INFO: //the message contains information about the game state
                                 Object content = message.getContent();
                                 if(content instanceof BJBetRequest) {
                                     ((BJBetRequest)content).setAmountBet(19);

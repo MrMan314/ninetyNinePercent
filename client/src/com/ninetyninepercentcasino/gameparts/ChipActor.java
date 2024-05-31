@@ -111,6 +111,12 @@ public class ChipActor extends Actor {
         chipUnderneath = null;
     }
     public void draw(Batch batch, float parentAlpha){
+        if(chipUnderneath == this){
+            chipUnderneath = null;
+        }
+        if(chipAbove == this){
+            chipAbove = null;
+        }
         if(chipUnderneath != null) {
             sprite.setPosition(chipUnderneath.getX(), chipUnderneath.getY() + CHIP_DISTANCE);
             setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
