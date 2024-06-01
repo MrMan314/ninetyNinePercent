@@ -1,8 +1,13 @@
 package com.ninetyninepercentcasino.database;
-import java.sql.*;
-import java.security.*;
+
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.security.MessageDigest;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 /**
  * Class: Database
@@ -48,7 +53,7 @@ public class Database {
 	 * Precondition: None
 	 * Postcondition: Account added to database or UserAlreadyExists exception thrown.
 	 */
-	public void createUser(String username, String password) throws SQLException, UserAlreadyExists {
+	public Account createUser(String username, String password) throws SQLException, UserAlreadyExists, AccountNonExistent, PasswordIncorrect {
 		PreparedStatement loadUser=database.prepareStatement("SELECT Username FROM Accounts");
 		ResultSet result=loadUser.executeQuery();
 		if(!userExists(result, username)) { //User doesn't exist
@@ -57,6 +62,7 @@ public class Database {
 			secureRandom.nextBytes(salt);
 			PreparedStatement createUser=database.prepareStatement("INSERT INTO Accounts (Username, Hash, Salt) VALUES ('"+username+"','"+Base64Utils.byteArrayTobase64(hash(password, salt))+"','"+Base64Utils.byteArrayTobase64(salt)+"');");
 			createUser.executeUpdate();
+			return loadUser(username, password);
 		} else { //User already exists
 			throw new UserAlreadyExists();
 		}

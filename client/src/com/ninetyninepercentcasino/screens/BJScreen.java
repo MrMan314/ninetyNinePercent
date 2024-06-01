@@ -10,7 +10,12 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.bj.BJClient;
-import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.BJCardUpdate;
+import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
+import com.ninetyninepercentcasino.net.BJSplit;
+import com.ninetyninepercentcasino.net.BJHandEnd;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -2,7 +2,13 @@ package com.ninetyninepercentcasino.game.bj;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.BJAction;
+import com.ninetyninepercentcasino.net.BJBetRequest;
+import com.ninetyninepercentcasino.net.BJCardUpdate;
+import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
+import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
+import com.ninetyninepercentcasino.net.BJHandEnd;
 
 import java.io.IOException;
 import java.util.HashMap;

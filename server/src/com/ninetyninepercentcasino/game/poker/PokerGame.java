@@ -1,9 +1,12 @@
 package com.ninetyninepercentcasino.game.poker;
 
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-
-import java.util.*;
 
 /**
  * Models a poker game on server side

@@ -38,7 +38,7 @@ public class Server extends Thread {
 		boolean running = true;
 		while (running) {
 			try {
-				clients.add(new ServerConnection(serverSocket.accept(), clients));
+				clients.add(new ServerConnection(serverSocket.accept(), clients, database));
 				clients.get(clients.size() - 1).start();
 			} catch (IOException e) {
 				e.printStackTrace();

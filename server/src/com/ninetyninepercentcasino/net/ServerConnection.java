@@ -5,24 +5,33 @@
 
 package com.ninetyninepercentcasino.net;
 
+import com.ninetyninepercentcasino.database.Database;
+import com.ninetyninepercentcasino.database.UserAlreadyExists;
+import com.ninetyninepercentcasino.database.PasswordIncorrect;
+import com.ninetyninepercentcasino.database.AccountNonExistent;
 import com.ninetyninepercentcasino.database.Account;
 import com.ninetyninepercentcasino.game.bj.BJGame;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OptionalDataException;
+import java.io.EOFException;
 import java.net.Socket;
 import java.util.List;
+import java.sql.SQLException;
 
 public class ServerConnection extends Connection {
 	private BJGame bjGame;
+	private Database database;
 
 	/**
 	 * Constructor for ServerConnection, calls parent constructor
 	 * pre: clientSocket and list of clients exists
 	 * post: ServerConnection and Connection is started
 	 */
-	public ServerConnection(Socket clientSocket, List<Connection> clients) throws IOException {
+	public ServerConnection(Socket clientSocket, List<Connection> clients, Database database) throws IOException {
 		super(clientSocket, clients);
+		this.database = database;
 	}
 
 	/**
@@ -61,27 +70,48 @@ public class ServerConnection extends Connection {
 							case INFO:
 								// Read content of message
 								Object content = message.getContent();
-								if(content instanceof String){
+								if (content instanceof String) {
 									// Start game if request says so, inform user as well
-									if(message.getContent().equals("begin game.")){
+									if (message.getContent().equals("begin game.")) {
 										bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
 										bjGame.start();
 										System.out.println("GAME BEGUN");
 									}
-								}
-								if(content instanceof BJBetRequest) {
+								} else if (content instanceof BJBetRequest) {
 									// Process BJBetRequest if it is a BJBetRequest
 									bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
 									synchronized(bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
 									System.out.println("BET PLACED: " + ((BJBetRequest)content).getAmountBet());
-								}
-								else if(content instanceof BJActionUpdate){
+								} else if (content instanceof BJActionUpdate) {
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());
 									synchronized(bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
+									}
+								} else if (content instanceof LoginRequest) {
+									NetMessage loginMessage;
+									try {
+										LoginRequest request = (LoginRequest) content;
+										Account account = database.loadUser(request.getUsername(), request.getPassword());
+										loginMessage = new NetMessage(NetMessage.MessageType.NORMAL, account);
+									} catch (SQLException e) {
+										loginMessage = new NetMessage(NetMessage.MessageType.ERROR, new ServerError());
+									} catch (AccountNonExistent | PasswordIncorrect e) {
+										loginMessage = new NetMessage(NetMessage.MessageType.ERROR, new LoginError());
+									}
+									out.writeObject(loginMessage);
+								} else if (content instanceof CreateUserRequest) {
+									NetMessage creationMessage;
+									try {
+										LoginRequest request = (LoginRequest) content;
+										Account account = database.createUser(request.getUsername(), request.getPassword());
+										creationMessage = new NetMessage(NetMessage.MessageType.NORMAL, account);
+									} catch (SQLException | AccountNonExistent | PasswordIncorrect e) {
+										creationMessage = new NetMessage(NetMessage.MessageType.ERROR, new ServerError());
+									} catch (UserAlreadyExists e) {
+										creationMessage = new NetMessage(NetMessage.MessageType.ERROR, new CreateUserError());
 									}
 								}
 							default:

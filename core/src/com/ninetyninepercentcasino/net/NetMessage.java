@@ -8,7 +8,8 @@ public class NetMessage implements Serializable {
 		PING,
 		ACK,
 		INFO,
-		NORMAL
+		NORMAL,
+		ERROR
 	}
 
 	private MessageType type;
