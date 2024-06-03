@@ -33,39 +33,39 @@ public class BJClient extends Connection {
 		this.screen = screen;
 	}
 
-    /**
-     * the method called by the connection when it is started
-     * this will receive messages from the server on a separate thread from the main game
-     */
-    @Override
-    public void run(){
-        try {
-            while (alive) {
-                if(!clientSocket.isConnected()) {
-                    finish();
-                }
-                try {
-                    NetMessage message = (NetMessage) in.readObject();
-                    message.setOrigin(clientSocket.getRemoteSocketAddress());
-                    if (message.getContent() != null) {
-                        System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
-                        switch(message.getType()) {
-                            case ACK:
-                                aliveMessage = (String) message.getContent();
-                                break;
-                            case PING:
-                                message.setType(NetMessage.MessageType.ACK);
-                                out.writeObject(message);
-                                break;
-                            case INFO: //the message contains information about the game state
-                                Object content = message.getContent();
-                                if(content instanceof BJBetRequest) {
-                                    screen.requestUpdate((DTO)content);
-                                }
-                                else if(content instanceof BJCardUpdate){
-                                    screen.requestUpdate((DTO)content);
-                                }
-                                else if(content instanceof BJInsuranceRequest){
+	/**
+	 * the method called by the connection when it is started
+	 * this will receive messages from the server on a separate thread from the main game
+	 */
+	@Override
+	public void run(){
+		try {
+			while (alive) {
+				if(!clientSocket.isConnected()) {
+					finish();
+				}
+				try {
+					NetMessage message = (NetMessage) in.readObject();
+					message.setOrigin(clientSocket.getRemoteSocketAddress());
+					if (message.getContent() != null) {
+						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
+						switch(message.getType()) {
+							case ACK:
+								aliveMessage = (String) message.getContent();
+								break;
+							case PING:
+								message.setType(NetMessage.MessageType.ACK);
+								out.writeObject(message);
+								break;
+							case INFO: //the message contains information about the game state
+								Object content = message.getContent();
+								if(content instanceof BJBetRequest) {
+									screen.requestUpdate((DTO)content);
+								}
+								else if(content instanceof BJCardUpdate){
+									screen.requestUpdate((DTO)content);
+								}
+								else if(content instanceof BJInsuranceRequest){
 
 								}
 								else if(content instanceof BJAvailActionUpdate){

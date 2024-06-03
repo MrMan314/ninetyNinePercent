@@ -104,41 +104,41 @@ public class BJScreen extends CasinoScreen {
 			}
 		});
 
-        try {
-            client = new BJClient(new Socket("127.0.0.1", 9925), this);
-        } catch (IOException ignored) {
-        }
-        client.start();
-        try {
-            client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame()));
-        } catch (IOException ignored) {
-        }
-        stage.setClient(client);
+		try {
+			client = new BJClient(new Socket("127.0.0.1", 9925), this);
+		} catch (IOException ignored) {
+		}
+		client.start();
+		try {
+			client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame()));
+		} catch (IOException ignored) {
+		}
+		stage.setClient(client);
 
 	}
 
-    @Override
-    public void render(float delta) {
-        if(firstRender) {
-            Gdx.graphics.requestRendering();
-            firstRender = false;
-        }
-        if(!updates.isEmpty()){
-            DTO latestUpdate = updates.remove(0);
-            if(latestUpdate instanceof BJBetRequest){
-                stage.startBetPhase();
-            }
-            else if(latestUpdate instanceof BJCardUpdate){
-                if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
-                else {
-                    stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
-                    if(((BJCardUpdate)latestUpdate).isVisible()) stage.revealDealerHand();
-                }
-            }
-            else if(latestUpdate instanceof BJAvailActionUpdate){
-                stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
-            }
-            else if(latestUpdate instanceof BJSplit){
+	@Override
+	public void render(float delta) {
+		if(firstRender) {
+			Gdx.graphics.requestRendering();
+			firstRender = false;
+		}
+		if(!updates.isEmpty()){
+			DTO latestUpdate = updates.remove(0);
+			if(latestUpdate instanceof BJBetRequest){
+				stage.startBetPhase();
+			}
+			else if(latestUpdate instanceof BJCardUpdate){
+				if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
+				else {
+					stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
+					if(((BJCardUpdate)latestUpdate).isVisible()) stage.revealDealerHand();
+				}
+			}
+			else if(latestUpdate instanceof BJAvailActionUpdate){
+				stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
+			}
+			else if(latestUpdate instanceof BJSplit){
 
 			}
 			else if(latestUpdate instanceof BJHandEnd){
