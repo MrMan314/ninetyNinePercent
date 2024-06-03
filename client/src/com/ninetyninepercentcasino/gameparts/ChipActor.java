@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,33 +13,35 @@ import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 
 public class ChipActor extends Actor {
-    private final Chip chip;
+    private Chip chip;
+    protected ChipActor chipAbove;
     private ChipActor chipBelow;
-    private ChipActor chipAbove;
-    private final Sprite sprite;
-    private final static float POP_DISTANCE = 10;
-    private final static float CHIP_DISTANCE = 22; //distance between each chip in a stack
-    private final static float DETACH_DISTANCE = 40; //distance between chips where they will detach
-    private final static float ATTACH_DISTANCE = 20; //distance between chips where they will attach
+    private Sprite sprite;
+
+    protected final static float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
+    private final static float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
+    protected final static float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
+    protected final static float DETACH_DISTANCE = 50; //distance between chips where they will detach
+    protected final static float ATTACH_DISTANCE = 40; //distance between chips where they will attach
+
     private boolean popped = false;
-    private String name; //TODO remove this and methods
+
     public ChipActor(Chip chip){
         this.chip = chip;
         chipBelow = null;
         chipAbove = null;
         sprite = new Sprite(findTexture());
-        sprite.setSize(192, 192 * ((float) 72/128));
+        sprite.setSize(192*SCALE_FACTOR, 192 * ((float) 72/128) * SCALE_FACTOR);
         setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
         sprite.setPosition(getX(), getY());
         addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
                 if(pointer == -1) pop();
-                SFXManager.playStackSound();
             }
             public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
                 if(pointer == -1) unpop();
-                System.out.println("EXITED CHIP");
+                SFXManager.playChipLaySound();
             }
         });
         addListener(new DragListener(){
@@ -48,21 +51,35 @@ public class ChipActor extends Actor {
                     setZIndex(chipBelow.getZIndex()+1);
                     focusStack(chipBelow.getZIndex()+2);
                 }
+                else {
+                    setZIndex(getParent().getChildren().size);
+                    focusStack(getParent().getChildren().size+1);
+                }
                 if(isTopChip()) setZIndex(getParent().getChildren().size);
-                moveBy(x - getWidth() / 2, y - getHeight()/2);
+                moveBy(x - getWidth() / 2, y - getHeight() / 2);
+                sprite.translate(x - getWidth()/2, y - getHeight()/2);
                 if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE && pointer == 0){
+                    setZIndex(chipBelow.getZIndex()+1);
+                    focusStack(chipBelow.getZIndex()+2);
                     detach();
                     SFXManager.playChipGrabSound();
-                    System.out.println("DETACHED: " + isTopChip());
                 }
                 else if(chipBelow == null && pointer == 0){
                     for(Actor actor : getParent().getChildren()){
-                        if(actor instanceof ChipActor){
+                        if(actor instanceof ChipHolder){
+                            ChipHolder holder = (ChipHolder)actor;
+                            Vector2 distance = new Vector2(holder.getX() - getX(), holder.getY() - getY());
+                            if(distance.len() < ATTACH_DISTANCE + 20 && holder.isTopChip()){
+                                attachToChip(holder);
+                                SFXManager.playChipLaySound();
+                            }
+                        }
+                        else if(actor instanceof ChipActor){
                             ChipActor chipUnder = (ChipActor)actor;
-                            if(chipUnder.isTopChip() && chipUnder != event.getTarget() && Math.sqrt(Math.pow(chipUnder.getX()-getX(), 2) + Math.pow(chipUnder.getY()-getY(), 2)) < ATTACH_DISTANCE){
+                            Vector2 distance = new Vector2(chipUnder.getX() - getX(), chipUnder.getY() - getY());
+                            if(chipUnder.isTopChip() && chipUnder != event.getTarget() && distance.len() < ATTACH_DISTANCE){
                                 if(!isInStackAbove(chipUnder) && !isInStackBelow(chipUnder)){
                                     attachToChip(chipUnder);
-                                    System.out.println("ATTACHED UNDER");
                                     SFXManager.playChipLaySound();
                                 }
                             }
@@ -72,11 +89,11 @@ public class ChipActor extends Actor {
             }
         });
     }
-    public String getName(){
-        return name;
+
+    public ChipActor() {
     }
-    public void setName(String name){
-        this.name = name;
+    public void setGroup(ChipGroup chipGroup){
+        super.setParent(chipGroup);
     }
     public ChipActor getChipAbove() {
         return chipAbove;
@@ -94,13 +111,10 @@ public class ChipActor extends Actor {
     /**
      * attaches the chip to a chip underneath it
      */
-    public void attachToChip(ChipActor chipUnderneath){
-        this.chipBelow = chipUnderneath;
-        chipUnderneath.setChipAbove(this);
-    }
-    public void attachChipToThis(ChipActor chipAbove){
-        this.chipAbove = chipAbove;
-        chipAbove.setChipBelow(this);
+    public void attachToChip(ChipActor chipBelow){
+        this.chipBelow = chipBelow;
+        chipBelow.setChipAbove(this);
+        unpop();
     }
     public void clearChipAbove(){
         chipAbove = null;
@@ -114,7 +128,6 @@ public class ChipActor extends Actor {
             sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE);
             setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
         }
-        if(chipAbove != null && !chipAbove.isTopChip() && chipAbove.getChipAbove() == this) chipAbove.clearChipAbove();
         if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
         else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
     }
@@ -143,17 +156,14 @@ public class ChipActor extends Actor {
     }
     public void pop(){
         popped = true;
-        if(!isTopChip() && !chipAbove.isPopped()) chipAbove.pop();
+        if(!isTopChip()) chipAbove.pop();
     }
     public void unpop(){
         popped = false;
-        if(!isTopChip() && chipAbove.isPopped()) chipAbove.unpop();
+        if(!isTopChip()) chipAbove.unpop();
     }
     public boolean isTopChip(){
         return chipAbove == null;
-    }
-    public boolean isPopped(){
-        return popped;
     }
     public boolean isInStackAbove(ChipActor target){
         if(target == this) return true;
@@ -170,5 +180,9 @@ public class ChipActor extends Actor {
             chipAbove.setZIndex(z);
             chipAbove.focusStack(z+1);
         }
+    }
+    public double calculate(){
+        if(chipAbove != null) return chipAbove.calculate() + chip.getValue();
+        else return chip.getValue();
     }
 }

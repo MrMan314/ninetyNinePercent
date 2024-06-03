@@ -13,7 +13,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
-import com.ninetyninepercentcasino.gameparts.ChipStack;
+import com.ninetyninepercentcasino.gameparts.ChipGroup;
+import com.ninetyninepercentcasino.gameparts.ChipHolder;
 
 /**
  * Main menu of the game
@@ -46,7 +47,8 @@ private ChipActor chip3;
         Button playButton = new Button(skins.getDrawable("playButton"));
         Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-        stage.addActor(new ChipStack(5, 50)); // paid actor
+        ChipGroup chipGroup = new ChipGroup(5, 5, 5, 5, 5, 5);
+        stage.addActor(chipGroup);
 
         VerticalGroup middleMenu = new VerticalGroup();
         middleMenu.addActor(playButton);

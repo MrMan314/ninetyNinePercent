@@ -52,8 +52,7 @@ public class BJClient extends Connection {
                             case INFO: //the message contains information about the game state
                                 Object content = message.getContent();
                                 if(content instanceof BJBetRequest) {
-                                    ((BJBetRequest)content).setAmountBet(19);
-                                    out.writeObject(message);
+                                    screen.requestUpdate((DTO)content);
                                 }
                                 else if(content instanceof BJCardUpdate){
                                     screen.requestUpdate((DTO)content);

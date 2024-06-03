@@ -99,14 +99,12 @@ public class BJScreen extends CasinoScreen {
 
         try {
             client = new BJClient(new Socket("127.0.0.1", 9925), this);
-        } catch (IOException e) {
-            System.out.println();
+        } catch (IOException ignored) {
         }
         client.start();
         try {
-            client.message(new NetMessage(NetMessage.MessageType.INFO, "begin game."));
-        } catch (IOException e) {
-            System.out.println();
+            client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame()));
+        } catch (IOException ignored) {
         }
         stage.setClient(client);
 
@@ -120,7 +118,10 @@ public class BJScreen extends CasinoScreen {
         }
         if(!updates.isEmpty()){
             DTO latestUpdate = updates.remove(0);
-            if(latestUpdate instanceof BJCardUpdate){
+            if(latestUpdate instanceof BJBetRequest){
+                stage.startBetPhase();
+            }
+            else if(latestUpdate instanceof BJCardUpdate){
                 if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
                 else {
                     stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());

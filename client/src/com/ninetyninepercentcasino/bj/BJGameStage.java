@@ -6,18 +6,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
 import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Chip;
-import com.ninetyninepercentcasino.gameparts.CardGroup;
-import com.ninetyninepercentcasino.gameparts.ChipActor;
-import com.ninetyninepercentcasino.gameparts.ChipStack;
-import com.ninetyninepercentcasino.gameparts.DeckActor;
+import com.ninetyninepercentcasino.gameparts.*;
 import com.ninetyninepercentcasino.net.BJAction;
 import com.ninetyninepercentcasino.net.BJActionUpdate;
+import com.ninetyninepercentcasino.net.BJBetRequest;
 import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * this class contains all the actors in a BJGame stage
@@ -28,16 +24,43 @@ public class BJGameStage extends Stage {
     private CardGroup dealerHand;
     private CardGroup splits;
     private DeckActor deckActor;
+    private ChipGroup chips;
+
     private HitButton hitButton;
     private InsureButton insureButton;
     private SplitButton splitButton;
     private StandButton standButton;
     private DDButton doubleDownButton;
+
     private BJClient client;
-    private ChipStack whiteChips, redChips, blueChips, greenChips, blackChips;
 
     public BJGameStage(Viewport viewport){
         super(viewport);
+        final float WORLD_WIDTH = getViewport().getWorldWidth();
+        final float WORLD_HEIGHT = getViewport().getWorldHeight();
+        chips = new ChipGroup(5, 5, 5, 5, 5, 5);
+        addActor(chips);
+    }
+    public void startBetPhase(){
+        final float WORLD_WIDTH = getViewport().getWorldWidth();
+        final float WORLD_HEIGHT = getViewport().getWorldHeight();
+
+        BetButton betButton = new BetButton();
+        betButton.enable();
+        betButton.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2f);
+        addActor(betButton);
+    }
+    public void sendBet(){
+        BJBetRequest betRequest = new BJBetRequest(chips.calculate());
+        NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
+        try {
+            client.message(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        setupGame();
+    }
+    public void setupGame(){
         final float WORLD_WIDTH = getViewport().getWorldWidth();
         final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -76,19 +99,9 @@ public class BJGameStage extends Stage {
         root.add(splits).bottom();
         root.debug();
 
-        addActor(new ChipStack(5, 1));
-        addActor(new ChipStack(5, 5));
-        addActor(new ChipStack(5, 10));
-        addActor(new ChipStack(5, 50));
         addActor(upperTable);
         addActor(bottomUI);
         addActor(root);
-    }
-
-    public double placeBet(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Place bet:");
-        return input.nextDouble();
     }
     public void addPlayerCard(Card card){
         SFXManager.playSlideSound();
@@ -173,7 +186,7 @@ public class BJGameStage extends Stage {
         playerHand.hide();
     }
     /**
-     * this method NEEDS TO BE CALLED to set the client of a stage if the stage is to communicate with server
+     * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
      * @param client the client of the stage that communicates with the server
      */
     public void setClient(BJClient client){

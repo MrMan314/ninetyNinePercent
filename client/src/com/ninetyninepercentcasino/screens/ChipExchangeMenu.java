@@ -1,7 +1,6 @@
 package com.ninetyninepercentcasino.screens;
 
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.gameparts.ChipStack;
 
 public class ChipExchangeMenu extends CasinoScreen {
     public ChipExchangeMenu(MainCasino game) {
