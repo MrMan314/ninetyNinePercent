@@ -69,22 +69,18 @@ public class ServerConnection extends Connection {
 								break;
 							case INFO:
 								// Read content of message
-								Object content = message.getContent();
-								if (content instanceof String) {
-									// Start game if request says so, inform user as well
-									if (message.getContent().equals("begin game.")) {
-										bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this));
-										bjGame.start();
-										System.out.println("GAME BEGUN");
-									}
-								} else if (content instanceof BJBetRequest) {
+                                Object content = message.getContent();
+                                if(content instanceof BJBeginGame){
+                                    bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
+                                    bjGame.start();
+                                }
+                                if(content instanceof BJBetRequest) {
 									// Process BJBetRequest if it is a BJBetRequest
-									bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
-									synchronized(bjGame.getBjSynchronizer()) {
-										bjGame.getBjSynchronizer().notify();
-									}
-									System.out.println("BET PLACED: " + ((BJBetRequest)content).getAmountBet());
-								} else if (content instanceof BJActionUpdate) {
+                                    bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
+                                    synchronized(bjGame.getBjSynchronizer()) {
+                                        bjGame.getBjSynchronizer().notify();
+                                    }
+                                } else if(content instanceof BJActionUpdate){
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());
 									synchronized(bjGame.getBjSynchronizer()) {
