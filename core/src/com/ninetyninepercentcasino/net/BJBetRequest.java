@@ -5,6 +5,9 @@ public class BJBetRequest extends DTO{
 	public BJBetRequest(){
 
 	}
+	public BJBetRequest(double amountBet){
+		this.amountBet = amountBet;
+	}
 	public void setAmountBet(double amountBet){
 		this.amountBet = amountBet;
 	}
