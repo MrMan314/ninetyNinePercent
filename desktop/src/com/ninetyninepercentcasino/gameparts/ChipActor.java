@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.ninetyninepercentcasino.game.SFXManager;
@@ -75,11 +76,11 @@ public class ChipActor extends Actor {
 							}
 						}
 						else if(actor instanceof ChipActor){
-							ChipActor chipUnder = (ChipActor)actor;
-							Vector2 distance = new Vector2(chipUnder.getX() - getX(), chipUnder.getY() - getY());
-							if(chipUnder.isTopChip() && chipUnder != event.getTarget() && distance.len() < ATTACH_DISTANCE){
-								if(!isInStackAbove(chipUnder) && !isInStackBelow(chipUnder)){
-									attachToChip(chipUnder);
+							ChipActor chipAttachCandidate = (ChipActor)actor;
+							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY());
+							if(chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE){
+								if(!isInStack(chipAttachCandidate)){
+									attachToChip(chipAttachCandidate);
 									SFXManager.playChipLaySound();
 								}
 							}
@@ -162,15 +163,26 @@ public class ChipActor extends Actor {
 		popped = false;
 		if(!isTopChip()) chipAbove.unpop();
 	}
+
+	/**
+	 * disables this chip and all chips above it, making the user unable to interact with it
+	 */
+	public void disable(){
+		setTouchable(Touchable.disabled);
+		if(!isTopChip()) chipAbove.disable();
+	}
 	public boolean isTopChip(){
 		return chipAbove == null;
 	}
-	public boolean isInStackAbove(ChipActor target){
+	public boolean isInStack(ChipActor target){
+		return isInStackAbove(target) || isInStackBelow(target);
+	}
+	private boolean isInStackAbove(ChipActor target){
 		if(target == this) return true;
 		if(chipAbove != null) return chipAbove.isInStackAbove(target);
 		return false;
 	}
-	public boolean isInStackBelow(ChipActor target){
+	private boolean isInStackBelow(ChipActor target){
 		if(target == this) return true;
 		if(chipBelow != null) return chipBelow.isInStackBelow(target);
 		return false;
