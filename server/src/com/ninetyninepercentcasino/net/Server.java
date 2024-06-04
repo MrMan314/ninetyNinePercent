@@ -5,36 +5,18 @@
 
 package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.database.Database;
-
 import java.net.ServerSocket;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server extends Thread {
+public abstract class Server extends Thread {
 	// Server socket and port
-	private ServerSocket serverSocket;
-	private int port = 9925;
-	private Database database;
+	protected ServerSocket serverSocket;
+	private int port;
 
 	// List of connections
-	private List<Connection> clients = new ArrayList<Connection>();
-
-	/**
-	 * Constructor for Server without port
-	 * pre: none
-	 * post: Server started on port 9925 (default)
-	 */
-	public Server() throws IOException {
-		serverSocket = new ServerSocket(this.port);
-		try { 
-			database = new Database();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	protected List<Connection> clients = new ArrayList<Connection>();
 
 	/**
 	 * Constructor for Server with port
@@ -44,11 +26,6 @@ public class Server extends Thread {
 	public Server(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(this.port);
-		try {
-			database = new Database();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	/**
@@ -56,21 +33,7 @@ public class Server extends Thread {
 	 * pre: Server object is initialized
 	 * post: Server has been run
 	 */
-	public void run() {
-		// Running flag
-		boolean running = true;
-		while (running) {
-			try {
-				// Accept a new client from the next client connected
-				clients.add(new ServerConnection(serverSocket.accept(), clients, database));
-				// Start the new client connection thread
-				clients.get(clients.size() - 1).start();
-			} catch (IOException e) {
-				// Show erro
-				e.printStackTrace();
-			}
-		}
-	}
+	public abstract void run();
 
 	/**
 	 * Method to stop the server
