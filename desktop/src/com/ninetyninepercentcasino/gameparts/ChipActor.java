@@ -76,12 +76,12 @@ public class ChipActor extends Actor {
 				}
 				moveBy(x - getWidth() / 2, y - getHeight() / 2); //moves the chip by the given x and y values
 				sprite.translate(x - getWidth()/2, y - getHeight()/2); //translates the visual of the chip as well
-				if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE && pointer == 0){
+				if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE){
 					//this chip is more than DETACH_DISTANCE away from the chip below, so detach
 					detach();
 					SFXManager.playChipGrabSound();
 				}
-				else if(chipBelow == null && pointer == 0){ //search for chips to attach to if there is no chip below this chip
+				else if(chipBelow == null){ //search for chips to attach to if there is no chip below this chip
 					for(Actor actor : getParent().getChildren()){ //loop through each actor in the ChipGroup
 						if(actor instanceof ChipHolder){
 							ChipHolder holder = (ChipHolder)actor;
@@ -99,6 +99,7 @@ public class ChipActor extends Actor {
 								if(!isInStack(chipAttachCandidate)){
 									//attach to the chip if the distance is small enough and if the chip isn't already in the same stack as this chip
 									attachToChip(chipAttachCandidate);
+									System.out.println(getName() + " has attached to " + chipAttachCandidate.getName());
 									SFXManager.playChipLaySound();
 								}
 							}
@@ -136,6 +137,7 @@ public class ChipActor extends Actor {
 	 * attaches the chip to a chip underneath it
 	 */
 	public void attachToChip(ChipActor chipBelow){
+		if(this.chipBelow != null) detach();
 		this.chipBelow = chipBelow;
 		chipBelow.setChipAbove(this);
 		unpop();
@@ -160,8 +162,7 @@ public class ChipActor extends Actor {
 	 * draws the chip, popped if necessary.
 	 * chips will inherit the position of the chips underneath them
 	 * @param batch the batch used to draw
-	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
-	 *           children.
+	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all children.
 	 */
 	public void draw(Batch batch, float parentAlpha){
 		if(chipBelow != null) {
@@ -240,7 +241,7 @@ public class ChipActor extends Actor {
 	}
 
 	/**
-	 * helper method to see if target is in the stack above this chip
+	 * helper method that checks if target is in the stack above this chip
 	 * @param target the ChipActor to be searched for
 	 * @return if target is in the stack above this
 	 */
@@ -250,7 +251,7 @@ public class ChipActor extends Actor {
 		return false;
 	}
 	/**
-	 * helper method to see if target is in the stack below this chip
+	 * helper method that checks if target is in the stack below this chip
 	 * @param target the ChipActor to be searched for
 	 * @return if target is in the stack below this
 	 */
