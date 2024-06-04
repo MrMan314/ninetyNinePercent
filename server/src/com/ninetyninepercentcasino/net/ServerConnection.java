@@ -39,7 +39,7 @@ public class ServerConnection extends Connection {
 	 * pre: ServerConnection is started
 	 * post: ServerConnection is run
 	 */
-	public void run(){
+	public void run() {
 		try {
 			// Loop until dead
 			while (alive) {
