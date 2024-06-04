@@ -51,7 +51,7 @@ private ChipActor chip3;
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		ChipGroup chipGroup = new ChipGroup(5, 5, 5, 5, 5, 5);
+		ChipGroup chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 0);
 		stage.addActor(chipGroup);
 
 		VerticalGroup middleMenu = new VerticalGroup();

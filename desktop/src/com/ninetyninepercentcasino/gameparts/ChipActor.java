@@ -16,6 +16,7 @@ import com.ninetyninepercentcasino.game.gameparts.Chip;
 /**
  * models an interactive, visible Chip
  * ChipActors can be dragged around and will stack on top of each other when close enough
+ * @author Grant Liang
  */
 
 public class ChipActor extends Actor {

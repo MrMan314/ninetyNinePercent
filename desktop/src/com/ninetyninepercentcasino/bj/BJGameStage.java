@@ -97,7 +97,6 @@ public class BJGameStage extends Stage {
 		root.setPosition(WORLD_WIDTH / 2, 0);
 		root.add(playerHand).bottom();
 		root.add(splits).bottom();
-		root.debug();
 
 		addActor(upperTable);
 		addActor(bottomUI);
