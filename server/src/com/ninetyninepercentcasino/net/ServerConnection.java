@@ -39,7 +39,6 @@ public class ServerConnection extends Connection {
 	 * pre: ServerConnection is started
 	 * post: ServerConnection is run
 	 */
-	@Override
 	public void run(){
 		try {
 			// Loop until dead
