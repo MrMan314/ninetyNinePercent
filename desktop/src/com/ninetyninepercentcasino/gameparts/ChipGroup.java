@@ -72,6 +72,18 @@ public class ChipGroup extends Group {
 		setupHolders(numHolders);
 	}
 
+	public ChipGroup(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
+		calculator = new ChipCalculator();
+		spawnX = 0;
+		spawnY = 0;
+		addStack(1, whiteChips);
+		addStack(5, redChips);
+		addStack(10, blueChips);
+		addStack(25, greenChips);
+		addStack(100, blackChips);
+		setupHolders(numHolders);
+	}
+
 	/**
 	 * sets up the holders, spawning them from left to right with no overlap
 	 * @param numHolders the number of holders to spawn

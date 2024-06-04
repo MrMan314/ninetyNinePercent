@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -45,10 +46,12 @@ public class BJGameStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		NumberDisplay totalBet = new NumberDisplay(100);
 		BetButton betButton = new BetButton();
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2f);
 		addActor(betButton);
+		addActor(totalBet);
 	}
 	public void sendBet(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());

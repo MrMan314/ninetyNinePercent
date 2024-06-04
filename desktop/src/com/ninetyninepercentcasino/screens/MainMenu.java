@@ -19,6 +19,7 @@ import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipGroup;
 import com.ninetyninepercentcasino.gameparts.ChipHolder;
+import com.ninetyninepercentcasino.gameparts.NumberDisplay;
 
 /**
  * Main menu of the game
@@ -53,6 +54,9 @@ private ChipActor chip3;
 
 		ChipGroup chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 0);
 		stage.addActor(chipGroup);
+		NumberDisplay totalBet = new NumberDisplay(100);
+		totalBet.setPosition(100, 100);
+		stage.addActor(totalBet);
 
 		VerticalGroup middleMenu = new VerticalGroup();
 		middleMenu.addActor(playButton);

@@ -47,6 +47,9 @@ public class MusicManager implements Music.OnCompletionListener {
 	public void setVolume(float volume){
 		music.setVolume(volume);
 	}
+	public float getVolume(){
+		return music.getVolume();
+	}
 
 	/**
 	 * when the music is finished playing, this will be called to play the next track

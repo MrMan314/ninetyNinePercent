@@ -16,6 +16,7 @@ public class SFXManager {
 	private static final ArrayList<Sound> chipStackSounds = new ArrayList<>();
 	private static final ArrayList<Sound> chipLaySounds = new ArrayList<>();
 	private static final Sound chipGrabSound = Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsHandle5.ogg"));
+	private static float volume = 1f;
 
 	//no constructor needed because this is a utility class meant for only static methods
 
@@ -38,23 +39,29 @@ public class SFXManager {
 	 * plays a random card slide sound
 	 */
 	public static void playSlideSound(){
-		cardSlideSounds.get(MathUtils.random(cardSlideSounds.size()-1)).play();
+		cardSlideSounds.get(MathUtils.random(cardSlideSounds.size()-1)).play(volume);
 	}
 
 	/**
 	 * plays a random chip stack sound
 	 */
 	public static void playStackSound(){
-		cardSlideSounds.get(MathUtils.random(chipStackSounds.size()-1)).play();
+		cardSlideSounds.get(MathUtils.random(chipStackSounds.size()-1)).play(volume);
 	}
 
 	/**
 	 * plays the chip grabbing sound
 	 */
 	public static void playChipGrabSound(){
-		chipGrabSound.play();
+		chipGrabSound.play(volume);
 	}
 	public static void playChipLaySound(){
-		chipLaySounds.get(MathUtils.random(chipLaySounds.size()-1)).play();
+		chipLaySounds.get(MathUtils.random(chipLaySounds.size()-1)).play(volume);
+	}
+	public static float getVolume(){
+		return volume;
+	}
+	public static void setVolume(float volume){
+		SFXManager.volume = volume;
 	}
 }

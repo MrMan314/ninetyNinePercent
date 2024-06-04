@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.MainCasino;
+import com.ninetyninepercentcasino.game.SFXManager;
+import com.ninetyninepercentcasino.gameparts.ChipGroup;
 
 /**
  * Screen for settings menu
@@ -49,6 +51,11 @@ public class SettingsMenu extends CasinoScreen {
 //		middleMenu.addActor(masterVolumeSlider);
 		middleMenu.addActor(settingsButton);
 
+		ChipGroup sfxVolumeStack = new ChipGroup(0, 0, 0, 0, (int) (SFXManager.getVolume()*10), 0, 0f, 0f, 0f, 0f);
+		ChipGroup sfxExtraStack = new ChipGroup(0, 0, 0, 0, (int) ((1 - SFXManager.getVolume())*10), 0, 0f, 0f, 0f, 0f);
+		ChipGroup musicVolumeStack = new ChipGroup(0, 0, 0, 0, (int) (game.music.getVolume()*10), 0, 0f, 0f, 0f, 0f);
+		ChipGroup musicExtraStack = new ChipGroup(0, 0, 0, 0, (int) (1 - game.music.getVolume()*10), 0, 0f, 0f, 0f, 0f);
+
 		Table root = new Table();
 		root.setFillParent(true);
 //		root.setDebug(true);
@@ -63,7 +70,6 @@ public class SettingsMenu extends CasinoScreen {
 		stage.addCaptureListener(new InputListener(){
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
-				System.out.println("Capture listener.");
 				if(keycode == Input.Keys.ESCAPE) {
 					game.setScreen(new MainMenu(game));
 					return true;
