@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -51,6 +52,11 @@ public class MainMenu extends CasinoScreen {
 
 		chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 0);
 		stage.addActor(chipGroup);
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 12;
+		BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
+		generator.dispose(); // don't forget to dispose to avoid memory leaks!
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
 		Texture texture = new Texture(Gdx.files.internal("fonts.png"));
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

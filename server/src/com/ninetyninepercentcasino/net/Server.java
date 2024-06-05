@@ -32,7 +32,7 @@ public class Server extends Thread {
 		try { 
 			database = new Database();
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
 

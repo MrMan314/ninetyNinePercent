@@ -1,7 +1,11 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
@@ -32,6 +36,7 @@ public class BJGameStage extends Stage {
 	private SplitButton splitButton;
 	private StandButton standButton;
 	private DDButton doubleDownButton;
+	private Label betDisplay;
 
 	private BJClient client;
 
@@ -39,19 +44,33 @@ public class BJGameStage extends Stage {
 		super(viewport);
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
-		chips = new ChipGroup(5, 5, 5, 5, 5, 5);
+		chips = new ChipGroup(1000, 5, 5, 5, 5, 400);
 		addActor(chips);
 	}
 	public void startBetPhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		NumberDisplay totalBet = new NumberDisplay(100);
 		BetButton betButton = new BetButton();
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2f);
-		addActor(betButton);
-		addActor(totalBet);
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		Texture texture = new Texture(Gdx.files.internal("fonts.png"));
+		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		BitmapFont font = new BitmapFont(Gdx.files.classpath("fonts.fnt"), new TextureRegion(texture), false);
+		labelStyle.font = font;
+		betDisplay = new Label("", labelStyle);
+		betDisplay.setFontScale(5);
+
+		Table root = new Table();
+		root.setFillParent(true);
+		root.add(betButton);
+		root.add(betDisplay);
+		root.setZIndex(0);
+		addActor(root);
+	}
+	public void updateBetDisplay(){
+		if(betDisplay != null) betDisplay.setText((int)chips.calculate());
 	}
 	public void sendBet(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
