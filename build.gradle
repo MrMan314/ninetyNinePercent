@@ -67,6 +67,7 @@ project(":desktop") {
 
 project(":core") {
 	apply plugin: "java-library"
+/*
 	sourceSets {
 		main {
 			java {
@@ -74,6 +75,7 @@ project(":core") {
 			}
 		}
 	}
+*/
 }
 
 project(":server") {

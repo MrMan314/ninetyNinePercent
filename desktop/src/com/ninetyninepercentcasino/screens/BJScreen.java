@@ -21,6 +21,7 @@ import com.ninetyninepercentcasino.net.BJBetRequest;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 /**
@@ -106,6 +107,10 @@ public class BJScreen extends CasinoScreen {
 
 		try {
 			client = new BJClient(new Socket("127.0.0.1", 9925), this);
+		} catch (ConnectException e) {
+			game.setScreen(new MainMenu(game));
+			System.out.println("i shat myself");
+			return;
 		} catch (IOException ignored) {
 		}
 		client.start();
