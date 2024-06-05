@@ -37,7 +37,6 @@ public class BJClient extends Connection {
 	 * the method called by the connection when it is started
 	 * this will receive messages from the server on a separate thread from the main game
 	 */
-	@Override
 	public void run(){
 		try {
 			while (alive) {
@@ -55,7 +54,9 @@ public class BJClient extends Connection {
 								break;
 							case PING:
 								message.setType(NetMessage.MessageType.ACK);
-								out.writeObject(message);
+								synchronized (out) {
+									out.writeObject(message);
+								}
 								break;
 							case INFO: //the message contains information about the game state
 								Object content = message.getContent();

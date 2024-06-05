@@ -167,7 +167,9 @@ public abstract class Connection extends Thread {
 							aliveMessage = "";
 							// Create and send a new ping message
 							NetMessage pingMessage = new NetMessage(NetMessage.MessageType.PING, "ping");
-							out.writeObject(pingMessage);
+							synchronized (out) {
+								out.writeObject(pingMessage);
+							}
 							// Wait for a notification later from the keepAlive thread
 							aliveMessage.wait();
 						}
