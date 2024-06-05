@@ -54,7 +54,9 @@ public class BJClient extends Connection {
 								break;
 							case PING:
 								message.setType(NetMessage.MessageType.ACK);
-								out.writeObject(message);
+								synchronized (out) {
+									out.writeObject(message);
+								}
 								break;
 							case INFO: //the message contains information about the game state
 								Object content = message.getContent();

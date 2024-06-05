@@ -64,7 +64,9 @@ public class ServerConnection extends Connection {
 							case PING:
 								// Set the type of the message to ACK and send it back
 								message.setType(NetMessage.MessageType.ACK);
-								out.writeObject(message);
+								synchronized (out) {
+									out.writeObject(message);
+								}
 								break;
 							case INFO:
 								// Read content of message
@@ -96,7 +98,9 @@ public class ServerConnection extends Connection {
 									} catch (AccountNonExistent | PasswordIncorrect e) {
 										loginMessage = new NetMessage(NetMessage.MessageType.ERROR, new LoginError());
 									}
-									out.writeObject(loginMessage);
+									synchronized (out) {
+										out.writeObject(loginMessage);
+									}
 								} else if (content instanceof CreateUserRequest) {
 									NetMessage creationMessage;
 									try {
