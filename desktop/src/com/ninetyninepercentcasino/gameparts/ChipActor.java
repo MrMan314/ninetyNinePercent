@@ -99,7 +99,6 @@ public class ChipActor extends Actor {
 								if(!isInStack(chipAttachCandidate)){
 									//attach to the chip if the distance is small enough and if the chip isn't already in the same stack as this chip
 									attachToChip(chipAttachCandidate);
-									System.out.println(getName() + " has attached to " + chipAttachCandidate.getName());
 									SFXManager.playChipLaySound();
 								}
 							}
