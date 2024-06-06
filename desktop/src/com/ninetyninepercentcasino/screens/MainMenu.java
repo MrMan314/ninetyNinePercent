@@ -50,18 +50,6 @@ public class MainMenu extends CasinoScreen {
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		chipGroup = new ChipGroup(10000, 5, 0, 0, 0, 500);
-		stage.addActor(chipGroup);
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 260;
-		BitmapFont font = generator.generateFont(parameter);
-		generator.dispose();
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		labelStyle.font = font;
-		totalBet = new Label("", labelStyle);
-		totalBet.setPosition(100, 10);
-
 		VerticalGroup middleMenu = new VerticalGroup();
 		middleMenu.addActor(playButton);
 		middleMenu.addActor(settingsButton);
@@ -71,8 +59,6 @@ public class MainMenu extends CasinoScreen {
 		root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
 		root.row();
 		root.add(middleMenu).padBottom(160);
-		root.add(totalBet);
-		root.debug();
 
 		stage.addActor(root);
 
@@ -124,7 +110,6 @@ public class MainMenu extends CasinoScreen {
 		stage.getBatch().setColor(1, 1,1 ,1f);
 		stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
 		stage.getBatch().end();
-		totalBet.setText((int)chipGroup.calculate());
 		stage.draw(); //draw all actors on stage
 		stage.act(); //act all actors on stage
 	}
