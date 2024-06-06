@@ -67,15 +67,14 @@ project(":desktop") {
 
 project(":core") {
 	apply plugin: "java-library"
-/*
-	sourceSets {
-		main {
-			java {
-				exclude "com/ninetyninepercentcasino/chain/**"
-			}
-		}
+
+	dependencies {
+		implementation project(":chain")
 	}
-*/
+}
+
+project(":chain") {
+	apply plugin: "java-library"
 }
 
 project(":server") {
