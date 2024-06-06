@@ -4,10 +4,15 @@ import java.io.OptionalDataException;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.ServerSocket;
 
 public class HolePunchConnection extends Connection {
-	public HolePunchConnection(Socket clientSocket) throws IOException {
+	private Socket punchSocket;
+	private ServerSocket punchListener;
+
+	public HolePunchConnection(Socket clientSocket, Socket punchSocket) throws IOException {
 		super(clientSocket);
+		this.punchSocket = punchSocket;
 	}
 	
 	public void run() {
@@ -46,7 +51,7 @@ public class HolePunchConnection extends Connection {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Connection connection = new HolePunchConnection(new Socket("127.0.0.1", 9937));
+		Connection connection = new HolePunchConnection(new Socket("127.0.0.1", 9937), new Socket("127.0.0.1", 9938));
 		connection.start();
 	}
 }
