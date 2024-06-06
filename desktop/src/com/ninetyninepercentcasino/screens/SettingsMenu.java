@@ -28,6 +28,11 @@ import com.ninetyninepercentcasino.gameparts.ChipGroup;
 public class SettingsMenu extends CasinoScreen {
 	private Texture background;
 
+	public SettingsMenu(MainCasino game, CasinoScreen previousScreen) {
+		super(game, previousScreen);
+		stage = new Stage(new ScreenViewport());
+	}
+	
 	public SettingsMenu(MainCasino game) {
 		super(game);
 		stage = new Stage(new ScreenViewport());
@@ -71,7 +76,7 @@ public class SettingsMenu extends CasinoScreen {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
-					game.setScreen(new MainMenu(game));
+					game.setScreen(previousScreen);
 					return true;
 				}
 				return false;
@@ -92,7 +97,7 @@ public class SettingsMenu extends CasinoScreen {
 		settingsButton.addListener(buttonDown);
 		settingsButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new MainMenu(game));
+				game.setScreen(previousScreen);
 			}
 		});
 	}

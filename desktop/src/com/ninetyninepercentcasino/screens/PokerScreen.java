@@ -22,6 +22,10 @@ import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 public class PokerScreen extends CasinoScreen {
 	private Texture background;
 
+	public PokerScreen(MainCasino game, CasinoScreen previousScreen) {
+		super(game, previousScreen);
+	}
+	
 	public PokerScreen(MainCasino game) {
 		super(game);
 	}
@@ -61,7 +65,7 @@ public class PokerScreen extends CasinoScreen {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
-					game.setScreen(new MainMenu(game));
+					game.setScreen(previousScreen);
 					return true;
 				}
 				float distance = 100f;

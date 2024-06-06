@@ -14,6 +14,10 @@ import com.ninetyninepercentcasino.MainCasino;
 public class AccountMenu extends CasinoScreen {
 	private Texture background;
 
+	public AccountMenu(MainCasino game, CasinoScreen previousScreen) {
+		super(game, previousScreen);
+	}
+	
 	public AccountMenu(MainCasino game) {
 		super(game);
 	}

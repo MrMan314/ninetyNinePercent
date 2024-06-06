@@ -28,6 +28,10 @@ public class BJScreen extends CasinoScreen {
 	private BJGameStage stage;
 	private ArrayList<DTO> updates = new ArrayList<>();
 
+	public BJScreen(MainCasino game, CasinoScreen previousScreen) {
+		super(game, previousScreen);
+	}
+	
 	public BJScreen(MainCasino game) {
 		super(game);
 	}
@@ -56,7 +60,7 @@ public class BJScreen extends CasinoScreen {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if (keycode == Input.Keys.ESCAPE) {
-					game.setScreen(new MainMenu(game));
+					game.setScreen(previousScreen);
 					return true;
 				}
 				return false;
@@ -66,7 +70,7 @@ public class BJScreen extends CasinoScreen {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
-					game.setScreen(new MainMenu(game));
+					game.setScreen(previousScreen);
 					return true;
 				}
 				float distance = 100f;
@@ -101,7 +105,7 @@ public class BJScreen extends CasinoScreen {
 		try {
 			client = new BJClient(new Socket("127.0.0.1", 9925), this);
 		} catch (ConnectException e) {
-			game.setScreen(new MainMenu(game));
+			game.setScreen(previousScreen);
 			return;
 		} catch (IOException ignored) {
 		}

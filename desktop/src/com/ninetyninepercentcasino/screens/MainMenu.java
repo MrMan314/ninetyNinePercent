@@ -70,7 +70,7 @@ public class MainMenu extends CasinoScreen {
 		 */
 		settingsButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new AccountMenu(game));
+				game.setScreen(new AccountMenu(game, getThis()));
 			}
 		});
 		settingsButton.addListener(new ClickListener() {
@@ -84,7 +84,7 @@ public class MainMenu extends CasinoScreen {
 		});
 		playButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new GameSelect(game)); //set the screen to be a new game selection screen
+				game.setScreen(new GameSelect(game, getThis())); //set the screen to be a new game selection screen
 			}
 		});
 		playButton.addListener( new ClickListener() {

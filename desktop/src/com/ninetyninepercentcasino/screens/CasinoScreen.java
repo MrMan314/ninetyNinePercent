@@ -14,6 +14,7 @@ public abstract class CasinoScreen implements Screen {
 	Stage stage; //stage to manage the actors on the screen
 	float screenHeight = Gdx.graphics.getHeight(); //height of client area in pixels
 	float screenWidth = Gdx.graphics.getWidth(); //width of client area in pixels
+	CasinoScreen previousScreen;
 
 	/**
 	 * general constructor for a screen in the game
@@ -21,6 +22,15 @@ public abstract class CasinoScreen implements Screen {
 	 */
 	public CasinoScreen(MainCasino game){
 		this.game = game; //record the game as the one passed to the constructor
+	}
+
+	/**
+	 * general constructor for a screen in the game
+	 * @param game the game that the screen is a part of
+	 */
+	public CasinoScreen(MainCasino game, CasinoScreen previousScreen){
+		this.game = game; //record the game as the one passed to the constructor
+		this.previousScreen = previousScreen;
 	}
 
 	/**
@@ -33,6 +43,14 @@ public abstract class CasinoScreen implements Screen {
 		stage.getViewport().update(width, height, true); //update the viewport of the screen's stage to accurately represent the screen size change
 		screenHeight = Gdx.graphics.getHeight(); //update screenHeight and screenWidth variables as needed
 		screenWidth = Gdx.graphics.getWidth();
+	}
+
+	public CasinoScreen getThis() {
+		return this;
+	}
+
+	public CasinoScreen getPreviousScreen() {
+		return previousScreen;
 	}
 
 	/**
