@@ -9,12 +9,12 @@ import com.ninetyninepercentcasino.net.BJCardUpdate;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import com.ninetyninepercentcasino.net.BJHandEnd;
-import ninetyNinePercentChain.Keys;
+
+import ninetyNinePercentChain.Keys.KeyPairManager;
+import ninetyNinePercentChain.NetworkTransaction.NetworkInterface;
 
 import java.security.KeyPair;
 import java.io.IOException;
-import java.net.NetworkInterface;
-import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Stack;
 
