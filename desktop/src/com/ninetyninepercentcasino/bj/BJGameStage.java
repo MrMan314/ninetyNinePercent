@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -53,14 +54,15 @@ public class BJGameStage extends Stage {
 
 		BetButton betButton = new BetButton();
 		betButton.enable();
-		betButton.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2f);
+		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		Texture texture = new Texture(Gdx.files.internal("fonts.png"));
-		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		BitmapFont font = new BitmapFont(Gdx.files.classpath("fonts.fnt"), new TextureRegion(texture), false);
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
 		labelStyle.font = font;
 		betDisplay = new Label("", labelStyle);
-		betDisplay.setFontScale(5);
 
 		Table root = new Table();
 		root.setFillParent(true);
@@ -82,7 +84,7 @@ public class BJGameStage extends Stage {
 		}
 		setupGame();
 	}
-	public void setupGame(){
+	public void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -107,7 +109,7 @@ public class BJGameStage extends Stage {
 		bjButtons.add(doubleDownButton);
 
 		Table bottomUI = new Table();
-		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
+		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 		bottomUI.add(bjButtons).bottom();
 
 		Table upperTable = new Table();
@@ -122,6 +124,29 @@ public class BJGameStage extends Stage {
 
 		addActor(upperTable);
 		addActor(bottomUI);
+		addActor(root);
+	}
+	public void startInsurePhase(){
+		final float WORLD_WIDTH = getViewport().getWorldWidth();
+		final float WORLD_HEIGHT = getViewport().getWorldHeight();
+
+		BetButton betButton = new BetButton();
+		betButton.enable();
+		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		labelStyle.font = font;
+		betDisplay = new Label("", labelStyle);
+
+		Table root = new Table();
+		root.setFillParent(true);
+		root.add(betButton);
+		root.add(betDisplay);
+		root.setZIndex(0);
 		addActor(root);
 	}
 	public void addPlayerCard(Card card){

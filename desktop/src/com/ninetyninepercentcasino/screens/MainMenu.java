@@ -50,20 +50,16 @@ public class MainMenu extends CasinoScreen {
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 0);
+		chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 500);
 		stage.addActor(chipGroup);
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 12;
-		BitmapFont font12 = generator.generateFont(parameter); // font size 12 pixels
-		generator.dispose(); // don't forget to dispose to avoid memory leaks!
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		Texture texture = new Texture(Gdx.files.internal("fonts.png"));
-		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-		BitmapFont font = new BitmapFont(Gdx.files.classpath("fonts.fnt"), new TextureRegion(texture), false);
 		labelStyle.font = font;
 		totalBet = new Label("", labelStyle);
-		totalBet.setFontScale(5);
 		totalBet.setPosition(100, 10);
 
 		VerticalGroup middleMenu = new VerticalGroup();
