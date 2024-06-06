@@ -81,6 +81,7 @@ public class BJScreen extends CasinoScreen {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+					getThis().dispose();
 					return true;
 				}
 				float distance = 100f;
@@ -117,6 +118,7 @@ public class BJScreen extends CasinoScreen {
 		} catch (ConnectException e) {
 			game.setScreen(previousScreen);
 			previousScreen.displayDialogBox(e.getMessage());
+			getThis().dispose();
 			return;
 		} catch (IOException ignored) {
 		}
@@ -187,6 +189,11 @@ public class BJScreen extends CasinoScreen {
 
 	@Override
 	public void dispose() {
+		try {
+			client.finish();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		background.dispose();
 		stage.dispose();
 	}
