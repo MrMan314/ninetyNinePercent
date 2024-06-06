@@ -31,7 +31,7 @@ public class BJScreen extends CasinoScreen {
 	public BJScreen(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
-	
+
 	public BJScreen(MainCasino game) {
 		super(game);
 	}

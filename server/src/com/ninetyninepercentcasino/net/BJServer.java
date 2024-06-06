@@ -12,7 +12,7 @@ public class BJServer extends Server {
 	private int port = 9925;
 	private boolean running;
 	private Database database;
-	
+
 	public BJServer() throws IOException {
 		super(9925);
 //		try {

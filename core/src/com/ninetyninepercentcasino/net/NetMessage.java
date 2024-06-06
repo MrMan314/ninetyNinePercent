@@ -32,7 +32,7 @@ public class NetMessage implements Serializable {
 		this.type = type;
 		this.content = content;
 	}
-	
+
 	/**
 	 * Constructor for a NetMessage with an origin
 	 * pre: none

@@ -11,7 +11,7 @@ public class Broker extends Server {
 	private int punchPort = 9938;
 	private ServerSocket punchSocket;
 	private boolean running;
-	
+
 	public Broker() throws IOException {
 		super(9937);
 		punchSocket = new ServerSocket(punchPort);

@@ -17,7 +17,7 @@ public class AccountMenu extends CasinoScreen {
 	public AccountMenu(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
-	
+
 	public AccountMenu(MainCasino game) {
 		super(game);
 	}

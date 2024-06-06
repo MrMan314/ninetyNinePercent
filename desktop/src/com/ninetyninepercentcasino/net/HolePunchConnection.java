@@ -14,7 +14,7 @@ public class HolePunchConnection extends Connection {
 		super(clientSocket);
 		this.punchSocket = punchSocket;
 	}
-	
+
 	public void run() {
 		try {
 			while (alive) {

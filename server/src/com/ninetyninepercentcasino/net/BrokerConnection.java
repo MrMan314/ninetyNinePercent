@@ -31,7 +31,7 @@ public class BrokerConnection extends Connection {
 					if (message.getContent() != null) {
 						// Log the message to the console
 						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
-						switch(message.getType()) {						
+						switch(message.getType()) {
 							case ACK:
 								// Set the aliveMessage to the content of the message
 								aliveMessage = (String) message.getContent();
@@ -49,7 +49,7 @@ public class BrokerConnection extends Connection {
 				} catch (OptionalDataException e) {
 					// This error can be safely ignored.
 				} catch (EOFException e) {
-					// This occurs as a result of the 
+					// This occurs as a result of the
 					finish();
 				} catch (IOException | ClassNotFoundException e) {
 					// These errors cannot be ignored

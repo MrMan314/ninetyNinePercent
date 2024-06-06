@@ -27,7 +27,7 @@ public class GameSelect extends CasinoScreen {
 	public GameSelect(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
-	
+
 	public GameSelect(MainCasino game) {
 		super(game);
 	}

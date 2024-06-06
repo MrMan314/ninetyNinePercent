@@ -6,7 +6,7 @@ public class ChipExchangeMenu extends CasinoScreen {
 	public ChipExchangeMenu(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
-	
+
 	public ChipExchangeMenu(MainCasino game) {
 		super(game);
 	}

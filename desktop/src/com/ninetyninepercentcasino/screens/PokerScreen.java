@@ -25,7 +25,7 @@ public class PokerScreen extends CasinoScreen {
 	public PokerScreen(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
-	
+
 	public PokerScreen(MainCasino game) {
 		super(game);
 	}

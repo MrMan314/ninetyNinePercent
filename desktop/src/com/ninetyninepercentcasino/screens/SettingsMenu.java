@@ -32,7 +32,7 @@ public class SettingsMenu extends CasinoScreen {
 		super(game, previousScreen);
 		stage = new Stage(new ScreenViewport());
 	}
-	
+
 	public SettingsMenu(MainCasino game) {
 		super(game);
 		stage = new Stage(new ScreenViewport());
