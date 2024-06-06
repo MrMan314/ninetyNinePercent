@@ -33,15 +33,7 @@ public class BJHand extends Hand {
 	public Card drawCard(Deck deck){
 		return addCard(deck.drawCard());
 	}
-	public double getInsurance(){
-		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
-		try {
-			player.getConnection().message(insuranceMessage);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return 100; //TODO actuallg et insurance
-	}
+
 	/**
 	 * calculates the highest possible bj score of a hand that doesn't bust
 	 * @return score of the hand

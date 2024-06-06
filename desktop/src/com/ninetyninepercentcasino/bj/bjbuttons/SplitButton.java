@@ -25,8 +25,10 @@ public class SplitButton extends CasinoButton {
 		});
 	}
 	public void draw(Batch batch, float parentAlpha){
-		buttonSprite.setPosition(getX(), getY());
-		buttonSprite.draw(batch);
+		if(isAvailable){
+			buttonSprite.setPosition(getX(), getY());
+			buttonSprite.draw(batch);
+		}
 	}
 	/**
 	 * called when the button is clicked

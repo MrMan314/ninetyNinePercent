@@ -50,7 +50,7 @@ public class MainMenu extends CasinoScreen {
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 500);
+		chipGroup = new ChipGroup(10000, 5, 0, 0, 0, 500);
 		stage.addActor(chipGroup);
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

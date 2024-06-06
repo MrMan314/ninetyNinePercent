@@ -31,45 +31,49 @@ public class BJGameStage extends Stage {
 	private CardGroup splits;
 	private DeckActor deckActor;
 	private ChipGroup chips;
+	private Table betDisplays;
 
+	private BetButton betButton;
 	private HitButton hitButton;
 	private InsureButton insureButton;
 	private SplitButton splitButton;
 	private StandButton standButton;
 	private DDButton doubleDownButton;
 	private Label betDisplay;
+	private BitmapFont font;
 
 	private BJClient client;
 
 	public BJGameStage(Viewport viewport){
 		super(viewport);
-		final float WORLD_WIDTH = getViewport().getWorldWidth();
-		final float WORLD_HEIGHT = getViewport().getWorldHeight();
-		chips = new ChipGroup(1000, 5, 5, 5, 5, 400);
-		addActor(chips);
+
 	}
 	public void startBetPhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		BetButton betButton = new BetButton();
+		chips = new ChipGroup(1000, 5, 5, 5, 5, 400);
+		addActor(chips);
+
+		betButton = new BetButton();
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
+
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.size = 260;
-		BitmapFont font = generator.generateFont(parameter);
+		font = generator.generateFont(parameter);
 		generator.dispose();
 		labelStyle.font = font;
 		betDisplay = new Label("", labelStyle);
 
-		Table root = new Table();
-		root.setFillParent(true);
-		root.add(betButton);
-		root.add(betDisplay);
-		root.setZIndex(0);
-		addActor(root);
+		betDisplays = new Table();
+		betDisplays.setFillParent(true);
+		betDisplays.add(betButton);
+		betDisplays.add(betDisplay);
+		betDisplays.setZIndex(0);
+		addActor(betDisplays);
 	}
 	public void updateBetDisplay(){
 		if(betDisplay != null) betDisplay.setText((int)chips.calculate());
@@ -88,6 +92,8 @@ public class BJGameStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		betDisplays.setVisible(false);
+
 		playerHand = new CardGroup(true, true);
 		dealerHand = new CardGroup(false, false);
 		splits = new CardGroup(true, false);
@@ -98,13 +104,11 @@ public class BJGameStage extends Stage {
 
 		Table bjButtons = new Table();
 		hitButton = new HitButton();
-		insureButton = new InsureButton();
 		splitButton = new SplitButton();
 		standButton = new StandButton();
 		doubleDownButton = new DDButton();
 		bjButtons.add(hitButton);
 		bjButtons.add(standButton);
-		bjButtons.add(insureButton);
 		bjButtons.add(splitButton);
 		bjButtons.add(doubleDownButton);
 
@@ -130,24 +134,27 @@ public class BJGameStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		BetButton betButton = new BetButton();
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 260;
-		BitmapFont font = generator.generateFont(parameter);
-		generator.dispose();
 		labelStyle.font = font;
 		betDisplay = new Label("", labelStyle);
 
-		Table root = new Table();
-		root.setFillParent(true);
-		root.add(betButton);
-		root.add(betDisplay);
-		root.setZIndex(0);
-		addActor(root);
+		betDisplays = new Table();
+		betDisplays.setFillParent(true);
+		betDisplays.add(betButton);
+		betDisplays.add(betDisplay);
+		betDisplays.setZIndex(0);
+		betDisplays.setVisible(true);
+	}
+	public void sendInsure(){
+		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
+		try {
+			client.message(message);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	public void addPlayerCard(Card card){
 		SFXManager.playSlideSound();
@@ -174,8 +181,6 @@ public class BJGameStage extends Stage {
 		else standButton.disable();
 		if(actions.get(BJAction.SPLIT)) splitButton.enable();
 		else splitButton.disable();
-		if(actions.get(BJAction.INSURANCE)) insureButton.enable();
-		else insureButton.disable();
 		if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
 		else doubleDownButton.disable();
 	}
@@ -225,7 +230,6 @@ public class BJGameStage extends Stage {
 		hitButton.disable();
 		standButton.disable();
 		splitButton.disable();
-		insureButton.disable();
 		doubleDownButton.disable();
 	}
 	public void endHand(){
