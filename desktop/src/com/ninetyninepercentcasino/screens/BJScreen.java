@@ -61,6 +61,11 @@ public class BJScreen extends CasinoScreen {
 			public boolean keyDown(InputEvent event, int keycode) {
 				if (keycode == Input.Keys.ESCAPE) {
 					game.setScreen(previousScreen);
+					try {
+						client.finish();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					return true;
 				}
 				return false;
@@ -71,6 +76,11 @@ public class BJScreen extends CasinoScreen {
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
 					game.setScreen(previousScreen);
+					try {
+						client.finish();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					return true;
 				}
 				float distance = 100f;
