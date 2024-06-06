@@ -3,14 +3,13 @@ package com.ninetyninepercentcasino.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -19,6 +18,7 @@ import com.ninetyninepercentcasino.game.gameparts.Chip;
 import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipGroup;
 import com.ninetyninepercentcasino.gameparts.ChipHolder;
+import com.ninetyninepercentcasino.gameparts.NumberDisplay;
 
 /**
  * Main menu of the game
@@ -26,9 +26,8 @@ import com.ninetyninepercentcasino.gameparts.ChipHolder;
  */
 public class MainMenu extends CasinoScreen {
 	private Texture background;
-private ChipActor chip1;
-private ChipActor chip2;
-private ChipActor chip3;
+	private ChipGroup chipGroup;
+	private Label totalBet;
 	public MainMenu(MainCasino game) {
 		super(game);
 	}
@@ -51,8 +50,17 @@ private ChipActor chip3;
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		ChipGroup chipGroup = new ChipGroup(5, 5, 5, 5, 5, 5);
+		chipGroup = new ChipGroup(1295, 5, 0, 0, 0, 500);
 		stage.addActor(chipGroup);
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		labelStyle.font = font;
+		totalBet = new Label("", labelStyle);
+		totalBet.setPosition(100, 10);
 
 		VerticalGroup middleMenu = new VerticalGroup();
 		middleMenu.addActor(playButton);
@@ -63,6 +71,8 @@ private ChipActor chip3;
 		root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
 		root.row();
 		root.add(middleMenu).padBottom(160);
+		root.add(totalBet);
+		root.debug();
 
 		stage.addActor(root);
 
@@ -114,6 +124,7 @@ private ChipActor chip3;
 		stage.getBatch().setColor(1, 1,1 ,1f);
 		stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
 		stage.getBatch().end();
+		totalBet.setText((int)chipGroup.calculate());
 		stage.draw(); //draw all actors on stage
 		stage.act(); //act all actors on stage
 	}

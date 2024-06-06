@@ -16,7 +16,7 @@ import java.sql.PreparedStatement;
 public class Database {
 	private Connection database; //This is our database connection
 
-	private String serverAddress = "mysql://localhost:3306/nine";
+	private String serverAddress = "mysql://10.10.174.146:3306/nine";
 
 	/**
 	 * Name: Database

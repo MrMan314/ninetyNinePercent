@@ -152,6 +152,7 @@ public class BJScreen extends CasinoScreen {
 			}
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
+		stage.updateBetDisplay();
 		stage.getBatch().begin();
 		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
 		stage.getBatch().end();

@@ -1,6 +1,12 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
@@ -31,6 +37,7 @@ public class BJGameStage extends Stage {
 	private SplitButton splitButton;
 	private StandButton standButton;
 	private DDButton doubleDownButton;
+	private Label betDisplay;
 
 	private BJClient client;
 
@@ -38,7 +45,7 @@ public class BJGameStage extends Stage {
 		super(viewport);
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
-		chips = new ChipGroup(5, 5, 5, 5, 5, 5);
+		chips = new ChipGroup(1000, 5, 5, 5, 5, 400);
 		addActor(chips);
 	}
 	public void startBetPhase(){
@@ -47,8 +54,25 @@ public class BJGameStage extends Stage {
 
 		BetButton betButton = new BetButton();
 		betButton.enable();
-		betButton.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2f);
-		addActor(betButton);
+		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		labelStyle.font = font;
+		betDisplay = new Label("", labelStyle);
+
+		Table root = new Table();
+		root.setFillParent(true);
+		root.add(betButton);
+		root.add(betDisplay);
+		root.setZIndex(0);
+		addActor(root);
+	}
+	public void updateBetDisplay(){
+		if(betDisplay != null) betDisplay.setText((int)chips.calculate());
 	}
 	public void sendBet(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
@@ -60,7 +84,7 @@ public class BJGameStage extends Stage {
 		}
 		setupGame();
 	}
-	public void setupGame(){
+	public void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -85,7 +109,7 @@ public class BJGameStage extends Stage {
 		bjButtons.add(doubleDownButton);
 
 		Table bottomUI = new Table();
-		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT/2);
+		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
 		bottomUI.add(bjButtons).bottom();
 
 		Table upperTable = new Table();
@@ -97,10 +121,32 @@ public class BJGameStage extends Stage {
 		root.setPosition(WORLD_WIDTH / 2, 0);
 		root.add(playerHand).bottom();
 		root.add(splits).bottom();
-		root.debug();
 
 		addActor(upperTable);
 		addActor(bottomUI);
+		addActor(root);
+	}
+	public void startInsurePhase(){
+		final float WORLD_WIDTH = getViewport().getWorldWidth();
+		final float WORLD_HEIGHT = getViewport().getWorldHeight();
+
+		BetButton betButton = new BetButton();
+		betButton.enable();
+		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 260;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		labelStyle.font = font;
+		betDisplay = new Label("", labelStyle);
+
+		Table root = new Table();
+		root.setFillParent(true);
+		root.add(betButton);
+		root.add(betDisplay);
+		root.setZIndex(0);
 		addActor(root);
 	}
 	public void addPlayerCard(Card card){

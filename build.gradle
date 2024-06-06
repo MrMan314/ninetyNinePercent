@@ -27,7 +27,7 @@ allprojects {
 		return stdout.toString().trim()
 	}
 
-	version = getGitHash()
+    version = getGitHash()
 
 	ext {
 		appName = "ninety-nine-percent-casino"
@@ -60,8 +60,8 @@ project(":desktop") {
 		api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 		api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 		api "com.badlogicgames.gdx:gdx:$gdxVersion"
-		api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-		api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+		api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+		api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 	}
 }
 
@@ -79,7 +79,7 @@ project(":chain") {
 
 project(":server") {
 	apply plugin: "java-library"
-	
+
 	dependencies {
 		implementation project(":core")
 		implementation 'mysql:mysql-connector-java:8.0.33'
