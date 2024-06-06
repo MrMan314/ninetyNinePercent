@@ -9,8 +9,12 @@ import com.ninetyninepercentcasino.net.BJCardUpdate;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import com.ninetyninepercentcasino.net.BJHandEnd;
+import ninetyNinePercentChain.Keys;
 
+import java.security.KeyPair;
 import java.io.IOException;
+import java.net.NetworkInterface;
+import java.net.NetworkInterface;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -115,19 +119,19 @@ public class BJGame extends Thread {
 			double winnings = 0; //net earnings for the player
 			switch(outcome){
 				case PLAYER_BLACKJACK:
-					player.addBalance(currentHand.getAmountBet()*2.5);
+					NetworkInterface.createTransaction(currentHand.getAmountBet()*2.5, "ServerKey", player.getPublicKey());
 					winnings = currentHand.getAmountBet()*1.5;
 					break;
 				case PLAYER_WON:
-					player.addBalance(currentHand.getAmountBet()*2);
+					NetworkInterface.createTransaction(currentHand.getAmountBet()*2, "ServerKey", player.getPublicKey());
 					winnings = currentHand.getAmountBet();
 					break;
 				case TIE:
-					player.addBalance(currentHand.getAmountBet());
+					NetworkInterface.createTransaction(currentHand.getAmountBet(), "ServerKey", player.getPublicKey());
 					winnings = 0;
 					break;
 				case DEALER_WON:
-					if(dealer.getNumCards() == 2) player.addBalance(dealer.getInsuranceBet()*3);
+					if(dealer.getNumCards() == 2) NetworkInterface.createTransaction(dealer.getInsuranceBet()*3, "ServerKey", player.getPublicKey());
 					winnings = dealer.getInsuranceBet()*2;
 					break;
 			}
@@ -161,7 +165,7 @@ public class BJGame extends Thread {
 
 	/**
 	 * determines the winner of a blackjack game between the dealer and a player hand
-	 * @param playerHand the hand of the player to be compared with the dealer
+	 * @param playerHand the hand of the player to be compared add the dealer
 	 * @param dealer the dealer's hand
 	 * @return 0 if the player won, 1 if the dealer won, 2 for a tie
 	 */
