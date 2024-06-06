@@ -32,7 +32,6 @@ public class ChipHolder extends ChipActor {
 	public void unpop(){
 	}
 	public void draw(Batch batch, float parentAlpha){
-		if(calculate() > 0) System.out.println(calculate());
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 	public double calculate(){
