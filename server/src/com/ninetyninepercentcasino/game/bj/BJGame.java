@@ -26,8 +26,8 @@ public class BJGame extends Thread {
 	private Stack<BJHand> resolved;
 
 	private final BJSynchronizer bjSynchronizer;
-	private double firstBet;
-	private double insuranceBet;
+	private int firstBet;
+	private int insuranceBet;
 	private BJAction action;
 
 	/**
@@ -107,11 +107,11 @@ public class BJGame extends Thread {
 		while (!resolved.isEmpty()) {
 			BJHand currentHand = resolved.pop();
 			int outcome = findWinner(currentHand, dealer);
-			double winnings = 0; //net earnings for the player
+			int winnings = 0; //net earnings for the player
 			switch(outcome){
 				case PLAYER_BLACKJACK:
-					player.addBalance(currentHand.getAmountBet()*2.5);
-					winnings = currentHand.getAmountBet()*1.5;
+					player.addBalance((int) (currentHand.getAmountBet()*2.5));
+					winnings = (int) (currentHand.getAmountBet()*1.5);
 					break;
 				case PLAYER_WON:
 					player.addBalance(currentHand.getAmountBet()*2);
@@ -218,7 +218,7 @@ public class BJGame extends Thread {
 			throw new RuntimeException(e);
 		}
 	}
-	private void sendHandEnd(int winner, double winnings){
+	private void sendHandEnd(int winner, int winnings){
 		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(winner, winnings));
 		try {
 			player.getConnection().message(handEndUpdate);
@@ -237,7 +237,7 @@ public class BJGame extends Thread {
 	 * called by the ServerConnection managing the game when it receives the client's first bet
 	 * @param firstBet the amount the client has chosen to bet
 	 */
-	public void setFirstBet(double firstBet){
+	public void setFirstBet(int firstBet){
 		this.firstBet = firstBet;
 	}
 	/**

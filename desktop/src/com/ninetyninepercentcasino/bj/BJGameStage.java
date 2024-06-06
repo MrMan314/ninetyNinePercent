@@ -146,6 +146,8 @@ public class BJGameStage extends Stage {
 		betDisplays.add(betDisplay);
 		betDisplays.setZIndex(0);
 		betDisplays.setVisible(true);
+		addActor(betDisplays);
+
 	}
 	public void sendInsure(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());

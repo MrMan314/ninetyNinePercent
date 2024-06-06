@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class BJHand extends Hand {
 	private BJPlayer player; //owner of the hand
 	private HashMap<BJAction, Boolean> availableActions;
-	private double amountBet;
+	private int amountBet;
 
 	public BJHand(BJPlayer player){
 		this.player = player;
@@ -76,7 +76,7 @@ public class BJHand extends Hand {
 		int score = getScore();
 		return 9 <= score && score <= 11 && card1.getNum() != 1 && card2.getNum() != 1;
 	}
-	public void setBet(double amountBet){
+	public void setBet(int amountBet){
 		player.withdraw(amountBet-this.amountBet);
 		this.amountBet = amountBet;
 	}
@@ -84,7 +84,7 @@ public class BJHand extends Hand {
 		player.withdraw(amountBet);
 		amountBet *= 2;
 	}
-	public double getAmountBet(){
+	public int getAmountBet(){
 		return amountBet;
 	}
 

@@ -17,7 +17,7 @@ public class BJPlayer extends Player {
 	 * adds to the balance of the player's account
 	 * @param amountAdded the amount to add to the balance
 	 */
-	public void addBalance(double amountAdded){
+	public void addBalance(int amountAdded){
 		account.addBalance(amountAdded);
 	}
 
@@ -25,7 +25,7 @@ public class BJPlayer extends Player {
 	 * withdraws from the balance of the player's account
 	 * @param withdrawAmount amount to withdraw from the balance
 	 */
-	public void withdraw(double withdrawAmount){
+	public void withdraw(int withdrawAmount){
 		account.withdraw(withdrawAmount);
 	}
 }

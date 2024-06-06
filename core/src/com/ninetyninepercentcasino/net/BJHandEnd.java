@@ -4,16 +4,16 @@ public class BJHandEnd extends DTO {
 	private static final int PLAYER_WON = 0;
 	private static final int DEALER_WON = 1;
 
-	private double winnings;
+	private int winnings;
 	private int winner;
-	public BJHandEnd(int winner, double winnings){
+	public BJHandEnd(int winner, int winnings){
 		this.winner = winner;
 		this.winnings = winnings;
 	}
 	public int getWinner(){
 		return winner;
 	}
-	public double getWinnings() {
+	public int getWinnings() {
 		return winnings;
 	}
 }

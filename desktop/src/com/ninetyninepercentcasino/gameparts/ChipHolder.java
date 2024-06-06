@@ -34,7 +34,7 @@ public class ChipHolder extends ChipActor {
 	public void draw(Batch batch, float parentAlpha){
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
-	public double calculate(){
+	public int calculate(){
 		if(chipAbove != null) return chipAbove.calculate();
 		else return 0;
 	}
