@@ -84,7 +84,7 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		chips = new ChipGroup(1000, 5, 5, 5, 5, 400);
+		chips = new ChipGroup(1000, 5, WORLD_WIDTH/2, 0, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
 		addActor(chips);
 
 		betButton = new BetButton();
@@ -96,10 +96,9 @@ public class BJStage extends Stage {
 		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
-		betDisplays.setFillParent(true);
-		betDisplays.add(betButton);
-		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
-		betDisplays.setZIndex(0);
+		betDisplays.add(betButton).padRight(WORLD_WIDTH/80);
+		betDisplays.add(betDisplay).width(WORLD_HEIGHT/4);
+		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/1.2f);
 		addActor(betDisplays);
 	}
 
@@ -184,9 +183,10 @@ public class BJStage extends Stage {
 		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
-		betDisplays.setFillParent(true);
 		betDisplays.add(insureButton);
-		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
+		betDisplays.add(insureButton).spaceRight(WORLD_WIDTH/4);
+		betDisplays.add(betDisplay).spaceLeft(WORLD_WIDTH/4);
+		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/1.5f);
 		betDisplays.setVisible(true);
 
 		addActor(betDisplays);

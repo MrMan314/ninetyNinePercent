@@ -14,11 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
  */
 public class ChipHolder extends ChipActor {
 	private static final Sprite sprite = new Sprite(new TextureRegion(new Texture("GameAssets/Isometric/Chips/Template/Template_Outline_Flat_Small-87x54.png"), 0, 0, 88, 56));
-	protected final static float CHIP_DISTANCE = 26 * SCALE_FACTOR; //distance between each chip in a stack
 
 	public ChipHolder(){
 		chipAbove = null;
-		sprite.setSize(192*SCALE_FACTOR, 192 * ((float) 72/128) * SCALE_FACTOR);
+		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 	public void pop(){

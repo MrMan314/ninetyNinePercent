@@ -32,11 +32,14 @@ public class ChipActor extends Actor {
 	private ChipActor chipBelow;
 	private Sprite sprite;
 
-	protected final static float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
-	private final static float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
-	protected final static float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
-	protected final static float DETACH_DISTANCE = 50; //distance between chips where they will detach
-	protected final static float ATTACH_DISTANCE = 40; //distance between chips where they will attach
+	protected static final float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
+	private static final float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
+	protected static final float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
+	protected static final float DETACH_DISTANCE = 50; //distance between chips where they will detach
+	protected static final float ATTACH_DISTANCE = 40; //distance between chips where they will attach
+
+	public static final float CHIP_WIDTH = 192 * SCALE_FACTOR;
+	public static final float CHIP_HEIGHT = CHIP_WIDTH * (72f/128);
 
 	private boolean rising = false;
 	private ChipActor chipBelowBeforeRise;
@@ -51,7 +54,7 @@ public class ChipActor extends Actor {
 		chipBelow = null; //in the beginning there will be no chip above or below this chip
 		chipAbove = null;
 		sprite = new Sprite(findTexture()); //update the sprite to the appropriate texture
-		sprite.setSize(192*SCALE_FACTOR, 192 * ((float) 72/128) * SCALE_FACTOR);
+		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 		sprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){ //listens for cursor enter and exit events
