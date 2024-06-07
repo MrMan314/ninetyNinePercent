@@ -97,6 +97,8 @@ public class MainMenu extends CasinoScreen {
 			}
 		});
 
+		this.displayDialogBox("test");
+
 	}
 
 	/**

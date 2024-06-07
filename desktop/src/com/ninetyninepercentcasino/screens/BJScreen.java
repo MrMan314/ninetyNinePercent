@@ -193,6 +193,8 @@ public class BJScreen extends CasinoScreen {
 			client.finish();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+
 		}
 		background.dispose();
 		stage.dispose();
