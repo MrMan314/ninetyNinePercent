@@ -25,6 +25,10 @@ public class BJHand extends Hand {
 			availableActions.put(action, false);
 		}
 	}
+	public BJHand(BJPlayer player, Card card1){
+		this(player);
+		addCard(card1);
+	}
 	public BJHand(BJPlayer player, Card card1, Card card2){
 		this(player);
 		addCard(card1);

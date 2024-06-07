@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.gameparts.CasinoButton;
 
 public class BackButton extends CasinoButton {

@@ -2,6 +2,7 @@ package com.ninetyninepercentcasino.game.bj;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
+import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 
@@ -56,10 +57,7 @@ public class BJGame extends Thread {
 		firstHand.setBet(firstBet);
 		hands.push(firstHand);
 
-		if(dealer.hasVisibleAce()) {
-			getInsurance();
-			dealer.setInsuranceBet(insuranceBet);
-		}
+		if(dealer.hasVisibleAce()) getInsurance();
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
@@ -88,12 +86,11 @@ public class BJGame extends Thread {
 						resolved.push(hands.pop());
 						break;
 					case SPLIT:
-						Card card1 = deck.drawCard();
-						Card card2 = deck.drawCard();
-						BJHand hand1 = new BJHand(player, currentHand.getCard(0), card1);
-						BJHand hand2 = new BJHand(player, currentHand.getCard(1), card2);
+						BJHand hand1 = new BJHand(player, currentHand.getCard(0));
+						BJHand hand2 = new BJHand(player, currentHand.getCard(1));
 						hands.push(hand1);
 						hands.push(hand2);
+						signalSplit(hand1, hand2);
 						break;
 					case DOUBLE_DOWN:
 						drawCardUpdate(currentHand.drawCard(deck), true, true);
@@ -103,7 +100,7 @@ public class BJGame extends Thread {
 				}
 			}
 		}
-		dealerAction();
+		actDealer();
 		while (!resolved.isEmpty()) {
 			BJHand currentHand = resolved.pop();
 			int outcome = findWinner(currentHand, dealer);
@@ -122,7 +119,7 @@ public class BJGame extends Thread {
 					winnings = 0;
 					break;
 				case DEALER_WON:
-					if(dealer.getNumCards() == 2) player.addBalance(dealer.getInsuranceBet()*3);
+					if(dealer.getNumCards() == 2) player.addBalance(insuranceBet*3);
 					winnings = dealer.getInsuranceBet()*2;
 					break;
 			}
@@ -136,7 +133,7 @@ public class BJGame extends Thread {
 	/**
 	 * simulates the action of the dealer
 	 */
-	private void dealerAction(){
+	private void actDealer(){
 		while(dealer.getScore() < 17){
 			drawCardUpdate(dealer.drawCard(), false, false);
 		}
@@ -157,7 +154,7 @@ public class BJGame extends Thread {
 			}
 		}
 	}
-	public void getInsurance(){
+	private void getInsurance(){
 		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
 		try {
 			player.getConnection().message(insuranceMessage);
@@ -209,6 +206,17 @@ public class BJGame extends Thread {
 	}
 	private void sendOptions(HashMap<BJAction, Boolean> availableActions){
 		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
+		try {
+			player.getConnection().message(actionUpdate);
+			synchronized(bjSynchronizer) {
+				bjSynchronizer.wait(); //waits until the client returns the action
+			}
+		} catch (IOException | InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	private void signalSplit(Hand hand1, Hand hand2){
+		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJSplit(hand1, hand2));
 		try {
 			player.getConnection().message(actionUpdate);
 			synchronized(bjSynchronizer) {
