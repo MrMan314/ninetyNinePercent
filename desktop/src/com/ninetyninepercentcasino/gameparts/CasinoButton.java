@@ -15,10 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * @author Grant Liang
  */
 public abstract class CasinoButton extends Actor {
-	protected static final float BUTTON_ASSET_WIDTH = 64;
-	protected static final float BUTTON_ASSET_HEIGHT = 72;
+	protected static final int BUTTON_ASSET_WIDTH = 64;
+	protected static final int BUTTON_ASSET_HEIGHT = 72;
 	protected static final float BUTTON_WIDTH = 135;
-	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * (BUTTON_ASSET_WIDTH/BUTTON_ASSET_HEIGHT);
+	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * ((float) BUTTON_ASSET_HEIGHT /BUTTON_ASSET_WIDTH);
 
 	protected Sprite buttonSprite; //stores the sprite that will model the texture of the button
 	protected static final Sprite buttonOutlineSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("GameAssets/ButtonOutline.png"))));
@@ -62,9 +62,7 @@ public abstract class CasinoButton extends Actor {
 		buttonOutlineSprite.setPosition(getX(), getY());
 		if(!isAvailable) buttonOutlineSprite.draw(batch);
 		else {
-			setVisible(true);
 			buttonSprite.draw(batch);
-			System.out.println("drawing + " + buttonSprite);
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.ninetyninepercentcasino.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -101,14 +102,14 @@ public class BJScreen extends CasinoScreen {
 					stage.getCamera().translate(distance, 0, 0);
 					return true;
 				}
-//				if(keycode == Input.Keys.E){
-//					((OrthographicCamera)stage.getCamera()).zoom += 5;
-//					return true;
-//				}
-//				if(keycode == Input.Keys.F){
-//					((OrthographicCamera)stage.getCamera()).zoom -= 5;
-//					return true;
-//				}
+				if(keycode == Input.Keys.E){
+					((OrthographicCamera)stage.getCamera()).zoom += .5f;
+					return true;
+				}
+				if(keycode == Input.Keys.F){
+					((OrthographicCamera)stage.getCamera()).zoom -= 0.5f;
+					return true;
+				}
 				return false;
 			}
 		});
@@ -141,12 +142,12 @@ public class BJScreen extends CasinoScreen {
 			stage.handleDTO(updates.remove(0));
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
+		stage.updateBetDisplay();
 		stage.getBatch().begin();
 		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
 		stage.getBatch().end();
 		stage.act(delta);
 		stage.draw();
-		stage.updateBetDisplay();
 
 	}
 

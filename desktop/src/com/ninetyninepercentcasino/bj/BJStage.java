@@ -96,7 +96,7 @@ public class BJStage extends Stage {
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
-		betDisplays.add(betButton).bottom();
+		betDisplays.add(betButton);
 		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
 		betDisplays.setZIndex(0);
 		addActor(betDisplays);
@@ -149,23 +149,21 @@ public class BJStage extends Stage {
 		bjButtons.add(splitButton);
 		bjButtons.add(doubleDownButton);
 
-		Table bottomUI = new Table();
-		bottomUI.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-		bottomUI.add(bjButtons).bottom();
+		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
 
 		Table upperTable = new Table();
-		upperTable.add(deckActor).padRight(100);
+		upperTable.add(deckActor).spaceRight(100);
 		upperTable.add(dealerHand);
-		upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.5f);
+		upperTable.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 1.55f);
 
-		Table root = new Table();
-		root.setPosition(WORLD_WIDTH / 2, 0);
-		root.add(playerHand).bottom();
-		root.add(splits).bottom().padLeft(WORLD_WIDTH/16);
+		Table lowerTable = new Table();
+		lowerTable.setPosition(WORLD_WIDTH / 2, 0);
+		lowerTable.add(playerHand).bottom();
+		lowerTable.add(splits).bottom().padLeft(WORLD_WIDTH/16);
 
 		addActor(upperTable);
-		addActor(bottomUI);
-		addActor(root);
+		addActor(bjButtons);
+		addActor(lowerTable);
 	}
 
 	/**
@@ -185,12 +183,11 @@ public class BJStage extends Stage {
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
-		betDisplays.add(insureButton).bottom();
+		betDisplays.add(insureButton);
 		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
-		betDisplays.setZIndex(0);
 		betDisplays.setVisible(true);
-		addActor(betDisplays);
 
+		addActor(betDisplays);
 	}
 
 	/**

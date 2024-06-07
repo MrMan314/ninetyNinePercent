@@ -1,12 +1,13 @@
 package com.ninetyninepercentcasino.game.gameparts;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Models a player hand that manages Cards
  * @author Grant Liang
  */
-public class Hand {
+public class Hand implements Serializable {
 	private ArrayList<Card> hand;
 	/**
 	 * Constructor that initializes a new empty player hand

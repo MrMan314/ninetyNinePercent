@@ -5,6 +5,8 @@ import com.ninetyninepercentcasino.game.Player;
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.ServerConnection;
 
+import java.io.Serializable;
+
 /**
  * Models a blackjack player that manages a CardGroup, Connection, and links to an Account
  */
