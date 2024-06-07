@@ -15,6 +15,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.OptionalDataException;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * client of a blackjack game that receives messages from the server and handles them
@@ -83,6 +84,9 @@ public class BJClient extends Connection {
 					}
 				} catch (OptionalDataException e) {
 
+				} catch (SocketException e) {
+					System.err.println(e.getMessage());
+					finish();
 				} catch (EOFException e) {
 					finish();
 				} catch (IOException | ClassNotFoundException e) {
