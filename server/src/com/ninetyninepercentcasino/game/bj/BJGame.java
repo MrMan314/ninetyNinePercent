@@ -2,13 +2,8 @@ package com.ninetyninepercentcasino.game.bj;
 
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
+import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
-import com.ninetyninepercentcasino.net.BJHandEnd;
 
 import ninetyNinePercentChain.Keys.KeyPairManager;
 import ninetyNinePercentChain.NetworkTransaction.NetworkInterface;
@@ -19,7 +14,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 /**
- * Runs logic for a blackjack game
+ * Runs logic for a blackjack game and sends messages to client as needed
  * @author Grant Liang
  */
 public class BJGame extends Thread {
@@ -36,6 +31,7 @@ public class BJGame extends Thread {
 
 	private final BJSynchronizer bjSynchronizer;
 	private double firstBet;
+	private double insuranceBet;
 	private BJAction action;
 
 	/**
@@ -52,11 +48,7 @@ public class BJGame extends Thread {
 	 * main driver for a blackjack game
 	 */
 	public void run() {
-		try {
-			getInitialBet();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		getInitialBet();
 		Deck deck = new Deck();
 		deck.shuffle();
 
@@ -68,7 +60,10 @@ public class BJGame extends Thread {
 		firstHand.setBet(firstBet);
 		hands.push(firstHand);
 
-		if(dealer.hasVisibleAce()) dealer.setInsuranceBet(firstHand.getInsurance());
+		if(dealer.hasVisibleAce()) {
+			getInsurance();
+			dealer.setInsuranceBet(insuranceBet);
+		}
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
@@ -151,7 +146,7 @@ public class BJGame extends Thread {
 		}
 	}
 
-	private void getInitialBet() throws InterruptedException {
+	private void getInitialBet(){
 		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
 		try {
 			player.getConnection().message(getBet);
@@ -159,7 +154,26 @@ public class BJGame extends Thread {
 			throw new RuntimeException(e);
 		}
 		synchronized(bjSynchronizer) {
-			bjSynchronizer.wait(); //waits until the client returns the amount bet
+			try {
+				bjSynchronizer.wait(); //waits until the client returns the amount bet
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	public void getInsurance(){
+		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
+		try {
+			player.getConnection().message(insuranceMessage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		synchronized(bjSynchronizer) {
+			try {
+				bjSynchronizer.wait(); //waits until the client returns the amount bet
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -243,6 +257,5 @@ public class BJGame extends Thread {
 	private void pause(){
 		try { Thread.sleep(PAUSE_TIME);
 		} catch (InterruptedException e) { throw new RuntimeException(e);}
-		System.out.println("Paused.");
 	}
 }

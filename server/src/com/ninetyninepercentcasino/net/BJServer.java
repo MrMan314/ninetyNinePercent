@@ -15,22 +15,22 @@ public class BJServer extends Server {
 	
 	public BJServer() throws IOException {
 		super(9925);
-		try { 
-			database = new Database();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+//		try {
+//			database = new Database();
+//		} catch (SQLException e) {
+//			throw new RuntimeException(e);
+//		}
 		running = true;
 	}
 
 	public BJServer(int port) throws IOException {
 		super(port);
 		this.port = port;
-		try { 
-			database = new Database();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+//		try {
+//			database = new Database();
+//		} catch (SQLException e) {
+//			throw new RuntimeException(e);
+//		}
 		running = true;
 	}
 

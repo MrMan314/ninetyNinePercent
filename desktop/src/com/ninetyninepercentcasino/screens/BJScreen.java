@@ -10,14 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.BJGameStage;
 import com.ninetyninepercentcasino.bj.BJClient;
-import com.ninetyninepercentcasino.net.DTO;
-import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
-import com.ninetyninepercentcasino.net.BJSplit;
-import com.ninetyninepercentcasino.net.BJHandEnd;
-import com.ninetyninepercentcasino.net.BJBeginGame;
-import com.ninetyninepercentcasino.net.BJBetRequest;
+import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -109,7 +102,6 @@ public class BJScreen extends CasinoScreen {
 			client = new BJClient(new Socket("127.0.0.1", 9925), this);
 		} catch (ConnectException e) {
 			game.setScreen(new MainMenu(game));
-			System.out.println("i shat myself");
 			return;
 		} catch (IOException ignored) {
 		}
@@ -132,6 +124,9 @@ public class BJScreen extends CasinoScreen {
 			DTO latestUpdate = updates.remove(0);
 			if(latestUpdate instanceof BJBetRequest){
 				stage.startBetPhase();
+			}
+			else if(latestUpdate instanceof BJInsuranceRequest){
+				stage.startInsurePhase();
 			}
 			else if(latestUpdate instanceof BJCardUpdate){
 				if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());

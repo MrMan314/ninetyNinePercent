@@ -9,5 +9,4 @@ public enum BJAction {
 	STAND,
 	SPLIT,
 	DOUBLE_DOWN,
-	INSURANCE
 }
