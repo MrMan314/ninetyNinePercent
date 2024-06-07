@@ -90,7 +90,9 @@ public class BJStage extends Stage {
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 
-		betDisplay = new Label("", Text.getLeagueGothicLabelStyle(260));
+		Text text = new Text();
+
+		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
