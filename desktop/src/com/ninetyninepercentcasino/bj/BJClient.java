@@ -61,24 +61,7 @@ public class BJClient extends Connection {
 								break;
 							case INFO: //the message contains information about the game state
 								Object content = message.getContent();
-								if(content instanceof BJBetRequest) {
-									screen.requestUpdate((DTO)content);
-								}
-								else if(content instanceof BJCardUpdate){
-									screen.requestUpdate((DTO)content);
-								}
-								else if(content instanceof BJInsuranceRequest){
-
-								}
-								else if(content instanceof BJAvailActionUpdate){
-									screen.requestUpdate((DTO)content);
-								}
-								else if(content instanceof BJSplit){
-									screen.requestUpdate((DTO)content);
-								}
-								else if(content instanceof BJHandEnd){
-									screen.requestUpdate((DTO)content);
-								}
+								screen.requestUpdate((DTO)content);
 							default:
 						}
 					}

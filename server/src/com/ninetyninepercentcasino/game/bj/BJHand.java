@@ -4,7 +4,7 @@ import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
-import java.io.IOException;
+
 import java.util.HashMap;
 
 /**
@@ -54,7 +54,7 @@ public class BJHand extends Hand {
 		}
 		return score;
 	}
-	public  HashMap<BJAction, Boolean> updateOptions(){
+	public HashMap<BJAction, Boolean> getOptions(){
 		int score = getScore();
 		for(BJAction action : availableActions.keySet()){
 			availableActions.replace(action, false);
@@ -69,7 +69,7 @@ public class BJHand extends Hand {
 	}
 
 	private boolean canSplit(){
-		return getCards().get(0).getNum() == getCards().get(1).getNum();
+		return getCards().get(0).getNum() == getCards().get(1).getNum() && getCards().size() == 2;
 	}
 	private boolean canDoubleDown(){
 		Card card1 = getCards().get(0);

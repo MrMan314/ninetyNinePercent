@@ -65,8 +65,7 @@ public class BJGame extends Thread {
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
-			HashMap<BJAction, Boolean> availableActions = currentHand.updateOptions();
-			sendOptions(availableActions);
+			HashMap<BJAction, Boolean> availableActions = currentHand.getOptions();
 			boolean handOver = true;
 			for(Boolean available : availableActions.values()){
 				if (available) {
@@ -79,6 +78,7 @@ public class BJGame extends Thread {
 				System.out.println("HAND OVER.");
 			}
 			else {
+				sendOptions(availableActions);
 				switch(action){
 					case HIT:
 						drawCardUpdate(currentHand.drawCard(deck), true, true);
@@ -220,6 +220,12 @@ public class BJGame extends Thread {
 		}
 		pause();
 	}
+
+	/**
+	 * sends the available BJActions to the player
+	 * it is guaranteed that after this method is called setAction() will be called to resume the thread
+	 * @param availableActions the
+	 */
 	private void sendOptions(HashMap<BJAction, Boolean> availableActions){
 		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
 		try {
@@ -237,9 +243,9 @@ public class BJGame extends Thread {
 		}
 	}
 	private void signalSplit(Hand hand1, Hand hand2){
-		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJSplit(hand1, hand2));
+		NetMessage splitUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJSplit(hand1, hand2));
 		try {
-			player.getConnection().message(actionUpdate);
+			player.getConnection().message(splitUpdate);
 			synchronized(bjSynchronizer) {
 				bjSynchronizer.wait(); //waits until the client returns the action
 			}
