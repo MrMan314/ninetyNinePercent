@@ -30,9 +30,6 @@ public class StandButton extends CasinoButton {
 			}
 		});
 	}
-	public void draw(Batch batch, float parentAlpha){
-		super.draw(batch, parentAlpha);
-	}
 	/**
 	 * called when the button is clicked
 	 */
