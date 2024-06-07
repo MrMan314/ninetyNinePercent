@@ -159,4 +159,9 @@ public class ChipGroup extends Group {
 			holder.enable();
 		}
 	}
+	public void floatAway(){
+		for(ChipHolder holder : holders){
+			holder.floatAway();
+		}
+	}
 }

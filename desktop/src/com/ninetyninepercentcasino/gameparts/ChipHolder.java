@@ -32,4 +32,7 @@ public class ChipHolder extends ChipActor {
 		if(chipAbove != null) return chipAbove.calculate();
 		else return 0;
 	}
+	public void floatAway(){
+		if(chipAbove != null) chipAbove.floatAway();
+	}
 }

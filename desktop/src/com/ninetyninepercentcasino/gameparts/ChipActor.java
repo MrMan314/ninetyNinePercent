@@ -5,13 +5,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.VisibleAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * models an interactive, visible Chip
@@ -31,6 +38,8 @@ public class ChipActor extends Actor {
 	protected final static float DETACH_DISTANCE = 50; //distance between chips where they will detach
 	protected final static float ATTACH_DISTANCE = 40; //distance between chips where they will attach
 
+	private boolean rising = false;
+	private ChipActor chipBelowBeforeRise;
 	private boolean popped = false;
 
 	/**
@@ -170,6 +179,9 @@ public class ChipActor extends Actor {
 		}
 		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
+		if(rising && chipBelowBeforeRise != null && Math.abs(getY() - chipBelowBeforeRise.getY()) > DETACH_DISTANCE * 4 && !chipBelowBeforeRise.isRising()){
+			chipBelowBeforeRise.floatAway();
+		}
 	}
 
 	/**
@@ -283,5 +295,24 @@ public class ChipActor extends Actor {
 	public int calculate(){
 		if(chipAbove != null) return chipAbove.calculate() + chip.getValue();
 		else return chip.getValue();
+	}
+	public boolean isRising(){
+		return rising;
+	}
+	public void floatAway(){
+		if(isTopChip()){
+			if(chipBelow != null) {
+				chipBelowBeforeRise = chipBelow;
+				detach();
+			}
+			rising = true;
+			MoveByAction floatAction = new MoveByAction();
+			floatAction.setAmountY(getStage().getHeight()*2f);
+			floatAction.setDuration(3f);
+			VisibleAction disappear = new VisibleAction();
+			disappear.setVisible(false);
+			addAction(sequence(floatAction, disappear));
+		}
+		else chipAbove.floatAway();
 	}
 }

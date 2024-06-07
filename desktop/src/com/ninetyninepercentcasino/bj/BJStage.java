@@ -33,6 +33,7 @@ public class BJStage extends Stage {
 	private SplitButton splitButton;
 	private StandButton standButton;
 	private DDButton doubleDownButton;
+	private Table bjButtons;
 	private Label betDisplay;
 	private BitmapFont font;
 
@@ -72,7 +73,7 @@ public class BJStage extends Stage {
 		}
 		else if(update instanceof BJHandEnd){
 			revealDealerHand();
-			endHand();
+			endHand((BJHandEnd)update);
 		}
 	}
 
@@ -139,7 +140,7 @@ public class BJStage extends Stage {
 		splits = new CardGroup(true, false);
 		deckActor = new DeckActor();
 
-		Table bjButtons = new Table();
+		bjButtons = new Table();
 		hitButton = new HitButton();
 		splitButton = new SplitButton();
 		standButton = new StandButton();
@@ -173,13 +174,14 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		bjButtons.setVisible(false);
 		InsureButton insureButton = new InsureButton();
 		chips.enableChipsHeld();
 		insureButton.enable();
-		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		labelStyle.font = font;
-		betDisplay = new Label("", labelStyle);
+		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
+
+		Text text = new Text();
+		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
@@ -202,6 +204,8 @@ public class BJStage extends Stage {
 			throw new RuntimeException(e);
 		}
 		chips.disableChipsHeld();
+		betDisplays.setVisible(false);
+		bjButtons.setVisible(true);
 	}
 
 	/**
@@ -327,8 +331,9 @@ public class BJStage extends Stage {
 		doubleDownButton.disable();
 	}
 
-	private void endHand(){
+	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
+		if(handEnd.getWinner() != BJHandEnd.PLAYER_WON) chips.floatAway();
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
