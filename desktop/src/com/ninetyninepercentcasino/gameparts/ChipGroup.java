@@ -21,7 +21,7 @@ public class ChipGroup extends Group {
 	 * @param totalValue the total value of the chips to spawn
 	 * @param numHolders the number of chip holders
 	 */
-	public ChipGroup(double totalValue, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
+	public ChipGroup(int totalValue, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
 		int whiteChips = 0;
 		int redChips = 0;
 		int blueChips = 0;
@@ -129,8 +129,8 @@ public class ChipGroup extends Group {
 	/**
 	 * @return the value of all the chips on the chipHolders
 	 */
-	public double calculate(){
-		double total = 0;
+	public int calculate(){
+		int total = 0;
 		for(Actor actor : getChildren()){
 			if(actor instanceof ChipHolder){
 				ChipHolder holder = (ChipHolder)actor;

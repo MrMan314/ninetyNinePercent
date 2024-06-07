@@ -1,22 +1,16 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.bj.bjbuttons.*;
+import com.ninetyninepercentcasino.game.Text;
 import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.gameparts.*;
-import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJActionUpdate;
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.NetMessage;
+import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +19,7 @@ import java.util.HashMap;
  * this class contains all the actors in a BJGame stage
  * also includes methods for changing the game state
  */
-public class BJGameStage extends Stage {
+public class BJStage extends Stage {
 	private CardGroup playerHand;
 	private CardGroup dealerHand;
 	private CardGroup splits;
@@ -44,11 +38,35 @@ public class BJGameStage extends Stage {
 
 	private BJClient client;
 
-	public BJGameStage(Viewport viewport){
+	public BJStage(Viewport viewport){
 		super(viewport);
-
 	}
-	public void startBetPhase(){
+	public void handleDTO(DTO update){
+		if(update instanceof BJBetRequest){
+			startBetPhase();
+		}
+		else if(update instanceof BJInsuranceRequest){
+			startInsurePhase();
+		}
+		else if(update instanceof BJCardUpdate){
+			if(((BJCardUpdate)update).isPlayerCard()) addPlayerCard(((BJCardUpdate)update).getCard());
+			else {
+				addDealerCard(((BJCardUpdate)update).getCard());
+				if(((BJCardUpdate)update).isVisible()) revealDealerHand();
+			}
+		}
+		else if(update instanceof BJAvailActionUpdate){
+			updateButtons(((BJAvailActionUpdate)update).getActions());
+		}
+		else if(update instanceof BJSplit){
+			handleSplit((BJSplit)update);
+		}
+		else if(update instanceof BJHandEnd){
+			revealDealerHand();
+			endHand();
+		}
+	}
+	private void startBetPhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -59,24 +77,17 @@ public class BJGameStage extends Stage {
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 260;
-		font = generator.generateFont(parameter);
-		generator.dispose();
-		labelStyle.font = font;
-		betDisplay = new Label("", labelStyle);
+		betDisplay = new Label("", Text.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
-		betDisplays.add(betButton);
-		betDisplays.add(betDisplay);
+		betDisplays.add(betButton).bottom();
+		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
 		betDisplays.setZIndex(0);
 		addActor(betDisplays);
 	}
 	public void updateBetDisplay(){
-		if(betDisplay != null) betDisplay.setText((int)chips.calculate());
+		if(betDisplay != null) betDisplay.setText(chips.calculate());
 	}
 	public void sendBet(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
@@ -86,9 +97,10 @@ public class BJGameStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		chips.disableChipsHeld();
 		setupGame();
 	}
-	public void setupGame() {
+	private void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -98,9 +110,6 @@ public class BJGameStage extends Stage {
 		dealerHand = new CardGroup(false, false);
 		splits = new CardGroup(true, false);
 		deckActor = new DeckActor();
-
-		playerHand.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 24);
-		dealerHand.setPosition(WORLD_WIDTH / 2, 4 * WORLD_HEIGHT / 6);
 
 		Table bjButtons = new Table();
 		hitButton = new HitButton();
@@ -119,21 +128,22 @@ public class BJGameStage extends Stage {
 		Table upperTable = new Table();
 		upperTable.add(deckActor).padRight(100);
 		upperTable.add(dealerHand);
-		upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.2f);
+		upperTable.setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 1.5f);
 
 		Table root = new Table();
 		root.setPosition(WORLD_WIDTH / 2, 0);
 		root.add(playerHand).bottom();
-		root.add(splits).bottom();
+		root.add(splits).bottom().padLeft(WORLD_WIDTH/16);
 
 		addActor(upperTable);
 		addActor(bottomUI);
 		addActor(root);
 	}
-	public void startInsurePhase(){
+	private void startInsurePhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		chips.enableChipsHeld();
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -142,12 +152,14 @@ public class BJGameStage extends Stage {
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
-		betDisplays.add(betButton);
-		betDisplays.add(betDisplay);
+		betDisplays.add(betButton).bottom();
+		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
 		betDisplays.setZIndex(0);
 		betDisplays.setVisible(true);
+		addActor(betDisplays);
+
 	}
-	public void sendInsure(){
+	public void sendInsure() {
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
 		try {
@@ -155,16 +167,17 @@ public class BJGameStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		chips.disableChipsHeld();
 	}
-	public void addPlayerCard(Card card){
+	private void addPlayerCard(Card card){
 		SFXManager.playSlideSound();
 		playerHand.addCard(card);
 	}
-	public void addDealerCard(Card card){
+	private void addDealerCard(Card card){
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
 	}
-	public void revealDealerHand(){
+	private void revealDealerHand(){
 		dealerHand.reveal();
 	}
 	@Override
@@ -174,7 +187,7 @@ public class BJGameStage extends Stage {
 	public CardGroup getPlayerHand(){
 		return playerHand;
 	}
-	public void updateButtons(HashMap<BJAction, Boolean> actions){
+	private void updateButtons(HashMap<BJAction, Boolean> actions){
 		if(actions.get(BJAction.HIT)) hitButton.enable();
 		else hitButton.disable();
 		if(actions.get(BJAction.STAND)) standButton.enable();
@@ -215,8 +228,6 @@ public class BJGameStage extends Stage {
 		disableAllButtons();
 	}
 	public void split(){
-		splits.addCard(playerHand.getHand().getCard(0));
-		playerHand.removeCard(playerHand.getHand().getCard(0));
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
 		try {
@@ -226,13 +237,17 @@ public class BJGameStage extends Stage {
 		}
 		disableAllButtons();
 	}
+	private void handleSplit(BJSplit bjSplit){
+		splits.addCard(bjSplit.getHand2().getCard(0));
+		playerHand.removeCard(bjSplit.getHand1().getCard(0));
+	}
 	private void disableAllButtons(){
 		hitButton.disable();
 		standButton.disable();
 		splitButton.disable();
 		doubleDownButton.disable();
 	}
-	public void endHand(){
+	private void endHand(){
 		playerHand.hide();
 	}
 	/**

@@ -24,7 +24,7 @@ public class NumberDisplay extends Actor {
         label.setFontScale(10);
         label.setPosition(100, 10);
     }
-    public NumberDisplay(double number){
+    public NumberDisplay(int number){
         this();
         setText(number);
     }
@@ -32,7 +32,7 @@ public class NumberDisplay extends Actor {
     public void draw(Batch batch, float parentAlpha){
         label.draw(batch, parentAlpha);
     }
-    public void setText(double number){
+    public void setText(int number){
         label.setText((int)number);
     }
 

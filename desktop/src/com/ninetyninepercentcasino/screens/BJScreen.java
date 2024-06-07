@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.bj.BJGameStage;
+import com.ninetyninepercentcasino.bj.BJStage;
 import com.ninetyninepercentcasino.bj.BJClient;
 import com.ninetyninepercentcasino.net.*;
 
@@ -25,7 +25,7 @@ public class BJScreen extends CasinoScreen {
 	private Texture background;
 	private boolean firstRender;
 	private BJClient client;
-	private BJGameStage stage;
+	private BJStage stage;
 	private ArrayList<DTO> updates = new ArrayList<>();
 
 	public BJScreen(MainCasino game, CasinoScreen previousScreen) {
@@ -51,7 +51,7 @@ public class BJScreen extends CasinoScreen {
 	@Override
 	public void show() {
 		firstRender = true;
-		stage = new BJGameStage(new ExtendViewport(1312, 738, 1312, 738));
+		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
 
 		background = new Texture("GameAssets/PokerTable.png");
@@ -138,30 +138,7 @@ public class BJScreen extends CasinoScreen {
 			firstRender = false;
 		}
 		if(!updates.isEmpty()){
-			DTO latestUpdate = updates.remove(0);
-			if(latestUpdate instanceof BJBetRequest){
-				stage.startBetPhase();
-			}
-			else if(latestUpdate instanceof BJInsuranceRequest){
-				stage.startInsurePhase();
-			}
-			else if(latestUpdate instanceof BJCardUpdate){
-				if(((BJCardUpdate)latestUpdate).isPlayerCard()) stage.addPlayerCard(((BJCardUpdate)latestUpdate).getCard());
-				else {
-					stage.addDealerCard(((BJCardUpdate)latestUpdate).getCard());
-					if(((BJCardUpdate)latestUpdate).isVisible()) stage.revealDealerHand();
-				}
-			}
-			else if(latestUpdate instanceof BJAvailActionUpdate){
-				stage.updateButtons(((BJAvailActionUpdate)latestUpdate).getActions());
-			}
-			else if(latestUpdate instanceof BJSplit){
-
-			}
-			else if(latestUpdate instanceof BJHandEnd){
-				stage.revealDealerHand();
-				stage.endHand();
-			}
+			stage.handleDTO(updates.remove(0));
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
 		stage.updateBetDisplay();

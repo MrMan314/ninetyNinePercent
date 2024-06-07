@@ -9,9 +9,9 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
  */
 public class PokerPlayer {
 	Hand hand;
-	private double balance;
+	private int balance;
 	boolean folded;
-	private double balanceInPot; //stores how much money the player has bet during a street
+	private int balanceInPot; //stores how much money the player has bet during a street
 	public enum Actions{
 		FOLD,
 		CHECK,
@@ -35,7 +35,7 @@ public class PokerPlayer {
 	public void fold(){
 		folded = true;
 	}
-	public double getBalanceInPot(){
+	public int getBalanceInPot(){
 		return balanceInPot;
 	}
 	/**
@@ -44,12 +44,12 @@ public class PokerPlayer {
 	public void clearBalanceInPot(){
 		balanceInPot = 0;
 	}
-	public double bet(double betAmount){
+	public int bet(int betAmount){
 		balance -= betAmount;
 		balanceInPot += betAmount;
 		return betAmount;
 	}
-	public void addToBalance(double addAmount){
+	public void addToBalance(int addAmount){
 		balance += addAmount;
 	}
 	/**
