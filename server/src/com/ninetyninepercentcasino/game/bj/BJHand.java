@@ -4,9 +4,6 @@ import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.game.gameparts.Deck;
 import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
-import com.ninetyninepercentcasino.net.BJInsuranceRequest;
-import com.ninetyninepercentcasino.net.NetMessage;
-
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -14,7 +11,7 @@ import java.util.HashMap;
  * models a bj hand that the player bets on
  */
 public class BJHand extends Hand {
-	private BJPlayer player; //owner of the hand
+	private final BJPlayer player; //owner of the hand
 	private HashMap<BJAction, Boolean> availableActions;
 	private int amountBet;
 

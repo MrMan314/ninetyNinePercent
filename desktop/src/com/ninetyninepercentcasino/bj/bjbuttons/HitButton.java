@@ -1,15 +1,12 @@
 package com.ninetyninepercentcasino.bj.bjbuttons;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.ninetyninepercentcasino.bj.BJGameStage;
+import com.ninetyninepercentcasino.bj.BJStage;
 import com.ninetyninepercentcasino.gameparts.CasinoButton;
-
-import java.io.IOException;
 
 /**
  * Models a calling button in a poker game
@@ -18,8 +15,8 @@ import java.io.IOException;
 public class HitButton extends CasinoButton {
 	public HitButton(){
 		super();
-		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 192, 0, 64, 72));
-		buttonSprite.setSize(192, 192 * ((float) 72/64));
+		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 192, 0, BUTTON_ASSET_WIDTH, BUTTON_ASSET_HEIGHT));
+		buttonSprite.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){
@@ -32,16 +29,10 @@ public class HitButton extends CasinoButton {
 			}
 		});
 	}
-	public void draw(Batch batch, float parentAlpha){
-		if(isAvailable){
-			buttonSprite.setPosition(getX(), getY());
-			buttonSprite.draw(batch);
-		}
-	}
 	/**
 	 * called when the button is clicked
 	 */
 	public void signalHit() {
-		((BJGameStage)getStage()).hit();
+		((BJStage)getStage()).hit();
 	}
 }

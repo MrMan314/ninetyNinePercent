@@ -222,6 +222,13 @@ public class ChipActor extends Actor {
 		setTouchable(Touchable.disabled);
 		if(!isTopChip()) chipAbove.disable();
 	}
+	/**
+	 * enable this chip and all chips above it, making the user able to interact with it
+	 */
+	public void enable(){
+		setTouchable(Touchable.enabled);
+		if(!isTopChip()) chipAbove.enable();
+	}
 
 	/**
 	 * @return if this is the top chip in a stack
