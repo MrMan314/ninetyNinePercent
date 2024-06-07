@@ -17,7 +17,8 @@ import java.util.HashMap;
 
 /**
  * this class contains all the actors in a BJGame stage
- * also includes methods for changing the game state
+ * also includes methods for changing the game state and handles DTOs coming in from the server
+ * @author Grant Liang
  */
 public class BJStage extends Stage {
 	private CardGroup playerHand;
@@ -29,7 +30,6 @@ public class BJStage extends Stage {
 
 	private BetButton betButton;
 	private HitButton hitButton;
-	private InsureButton insureButton;
 	private SplitButton splitButton;
 	private StandButton standButton;
 	private DDButton doubleDownButton;
@@ -38,9 +38,18 @@ public class BJStage extends Stage {
 
 	private BJClient client;
 
+	/**
+	 * initializes a new BJStage
+	 * @param viewport the viewport to be used
+	 */
 	public BJStage(Viewport viewport){
 		super(viewport);
 	}
+
+	/**
+	 * called by a BJScreen to update the game state
+	 * @param update the DTO containing information about the game update
+	 */
 	public void handleDTO(DTO update){
 		if(update instanceof BJBetRequest){
 			startBetPhase();
@@ -52,7 +61,7 @@ public class BJStage extends Stage {
 			if(((BJCardUpdate)update).isPlayerCard()) addPlayerCard(((BJCardUpdate)update).getCard());
 			else {
 				addDealerCard(((BJCardUpdate)update).getCard());
-				if(((BJCardUpdate)update).isVisible()) revealDealerHand();
+				if(((BJCardUpdate)update).isVisible()) revealDealerHand(); //only the first card for the dealer will be sent as visible, so revealing the hand will just reveal that first card
 			}
 		}
 		else if(update instanceof BJAvailActionUpdate){
@@ -66,6 +75,10 @@ public class BJStage extends Stage {
 			endHand();
 		}
 	}
+
+	/**
+	 * begins the betting phase before cards are drawn
+	 */
 	private void startBetPhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
@@ -86,9 +99,18 @@ public class BJStage extends Stage {
 		betDisplays.setZIndex(0);
 		addActor(betDisplays);
 	}
+
+	/**
+	 * updates the number displayed by the chip value calculator
+	 * called by the BJScreen every render
+	 */
 	public void updateBetDisplay(){
 		if(betDisplay != null) betDisplay.setText(chips.calculate());
 	}
+
+	/**
+	 * sends a bet to the server
+	 */
 	public void sendBet(){
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
@@ -100,6 +122,10 @@ public class BJStage extends Stage {
 		chips.disableChipsHeld();
 		setupGame();
 	}
+
+	/**
+	 * sets up the player hand, dealer hand, buttons, and everything else needed for the BJ gaem
+	 */
 	private void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
@@ -139,26 +165,35 @@ public class BJStage extends Stage {
 		addActor(bottomUI);
 		addActor(root);
 	}
+
+	/**
+	 * begins the insurance phase of betting
+	 */
 	private void startInsurePhase(){
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		InsureButton insureButton = new InsureButton();
 		chips.enableChipsHeld();
-		betButton.enable();
-		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
+		insureButton.enable();
+		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
 		labelStyle.font = font;
 		betDisplay = new Label("", labelStyle);
 
 		betDisplays = new Table();
 		betDisplays.setFillParent(true);
-		betDisplays.add(betButton).bottom();
+		betDisplays.add(insureButton).bottom();
 		betDisplays.add(betDisplay).bottom().spaceLeft(WORLD_WIDTH/6);
 		betDisplays.setZIndex(0);
 		betDisplays.setVisible(true);
 		addActor(betDisplays);
 
 	}
+
+	/**
+	 * sends an insurance bet to the server
+	 */
 	public void sendInsure() {
 		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
@@ -169,24 +204,46 @@ public class BJStage extends Stage {
 		}
 		chips.disableChipsHeld();
 	}
+
+	/**
+	 * adds a Card to the player's hand
+	 * the card is immediately displayed
+	 * @param card the card to be added
+	 */
 	private void addPlayerCard(Card card){
 		SFXManager.playSlideSound();
 		playerHand.addCard(card);
 	}
+	/**
+	 * adds a Card to the dealer's hand
+	 * the card is immediately displayed
+	 * @param card the card to be added
+	 */
 	private void addDealerCard(Card card){
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
 	}
+
+	/**
+	 * reveals all cards in the dealer's hand
+	 */
 	private void revealDealerHand(){
 		dealerHand.reveal();
 	}
+
+	/**
+	 * getter for the stage's viewport
+	 * @return this stage's viewport
+	 */
 	@Override
 	public Viewport getViewport(){
 		return super.getViewport();
 	}
-	public CardGroup getPlayerHand(){
-		return playerHand;
-	}
+
+	/**
+	 * updates the BJ buttons given the available actions
+	 * @param actions describes the available and unavailable actions
+	 */
 	private void updateButtons(HashMap<BJAction, Boolean> actions){
 		if(actions.get(BJAction.HIT)) hitButton.enable();
 		else hitButton.disable();
@@ -197,6 +254,11 @@ public class BJStage extends Stage {
 		if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
 		else doubleDownButton.disable();
 	}
+
+	/**
+	 * performs the hit action in blackjack
+	 * sends the action to the server
+	 */
 	public void hit() {
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.HIT);
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -207,6 +269,10 @@ public class BJStage extends Stage {
 		}
 		disableAllButtons();
 	}
+	/**
+	 * performs the stand action in blackjack
+	 * sends the action to the server
+	 */
 	public void stand() {
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.STAND);
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -217,6 +283,10 @@ public class BJStage extends Stage {
 		}
 		disableAllButtons();
 	}
+	/**
+	 * performs the double down action in blackjack
+	 * sends the action to the server
+	 */
 	public void doubleDown(){
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -227,6 +297,10 @@ public class BJStage extends Stage {
 		}
 		disableAllButtons();
 	}
+	/**
+	 * performs the splitting action in blackjack
+	 * sends the action to the server
+	 */
 	public void split(){
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -237,16 +311,23 @@ public class BJStage extends Stage {
 		}
 		disableAllButtons();
 	}
+	/**
+	 * handles the server sending over a successful split
+	 */
 	private void handleSplit(BJSplit bjSplit){
 		splits.addCard(bjSplit.getHand2().getCard(0));
 		playerHand.removeCard(bjSplit.getHand1().getCard(0));
 	}
+	/**
+	 * disables each button
+	 */
 	private void disableAllButtons(){
 		hitButton.disable();
 		standButton.disable();
 		splitButton.disable();
 		doubleDownButton.disable();
 	}
+
 	private void endHand(){
 		playerHand.hide();
 	}

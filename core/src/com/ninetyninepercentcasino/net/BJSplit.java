@@ -6,8 +6,8 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
  * DTO to signal a split in a blackjack game
  */
 public class BJSplit extends DTO {
-	private Hand hand1;
-	private Hand hand2;
+	private final Hand hand1;
+	private final Hand hand2;
 
 	/**
 	 * initializes a BJSplit with two given hands
