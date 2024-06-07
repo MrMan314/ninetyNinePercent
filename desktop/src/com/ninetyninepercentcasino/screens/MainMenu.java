@@ -28,6 +28,7 @@ public class MainMenu extends CasinoScreen {
 	private Texture background;
 	private ChipGroup chipGroup;
 	private Label totalBet;
+	private CasinoScreen nextScreen;
 	public MainMenu(MainCasino game) {
 		super(game);
 	}
@@ -70,7 +71,8 @@ public class MainMenu extends CasinoScreen {
 		 */
 		settingsButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new AccountMenu(game, getThis()));
+				nextScreen = new AccountMenu(game, getThis());
+				game.setScreen(nextScreen);
 			}
 		});
 		settingsButton.addListener(new ClickListener() {
@@ -84,7 +86,8 @@ public class MainMenu extends CasinoScreen {
 		});
 		playButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new GameSelect(game, getThis())); //set the screen to be a new game selection screen
+				nextScreen = new GameSelect(game, getThis());
+				game.setScreen(nextScreen); //set the screen to be a new game selection screen
 			}
 		});
 		playButton.addListener( new ClickListener() {
@@ -133,6 +136,10 @@ public class MainMenu extends CasinoScreen {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		try {
+			nextScreen.dispose();
+		} catch (NullPointerException e) {
+		}
 		background.dispose();
 	}
 }

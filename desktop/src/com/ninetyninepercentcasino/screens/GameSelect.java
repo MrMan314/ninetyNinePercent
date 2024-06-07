@@ -23,6 +23,7 @@ import com.ninetyninepercentcasino.MainCasino;
  */
 public class GameSelect extends CasinoScreen {
 	private Texture background;
+	private CasinoScreen nextScreen;
 
 	public GameSelect(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
@@ -68,14 +69,16 @@ public class GameSelect extends CasinoScreen {
 
 		BJButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new BJScreen(game, getThis().getPreviousScreen()));
+				nextScreen = new BJScreen(game, getThis().getPreviousScreen());
+				game.setScreen(nextScreen);
 			}
 		});
 		BJButton.addListener(buttonDown);
 
 		pokerButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new PokerScreen(game, getThis().getPreviousScreen()));
+				nextScreen = new PokerScreen(game, getThis().getPreviousScreen());
+				game.setScreen(nextScreen);
 			}
 		});
 		pokerButton.addListener(buttonDown);
@@ -110,6 +113,9 @@ public class GameSelect extends CasinoScreen {
 
 	@Override
 	public void dispose() {
-
+		try {
+			nextScreen.dispose();
+		} catch (NullPointerException e) {
+		}
 	}
 }
