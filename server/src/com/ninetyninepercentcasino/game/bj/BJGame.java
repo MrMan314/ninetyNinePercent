@@ -9,6 +9,7 @@ import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
+import java.net.SocketException;
 
 /**
  * Runs logic for a blackjack game and sends messages to client as needed
@@ -143,6 +144,11 @@ public class BJGame extends Thread {
 		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
 		try {
 			player.getConnection().message(getBet);
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -158,6 +164,11 @@ public class BJGame extends Thread {
 		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
 		try {
 			player.getConnection().message(insuranceMessage);
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -199,6 +210,11 @@ public class BJGame extends Thread {
 		NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible, isPlayerCard));
 		try {
 			player.getConnection().message(cardUpdate);
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -211,6 +227,11 @@ public class BJGame extends Thread {
 			synchronized(bjSynchronizer) {
 				bjSynchronizer.wait(); //waits until the client returns the action
 			}
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -222,6 +243,11 @@ public class BJGame extends Thread {
 			synchronized(bjSynchronizer) {
 				bjSynchronizer.wait(); //waits until the client returns the action
 			}
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -232,6 +258,11 @@ public class BJGame extends Thread {
 			player.getConnection().message(handEndUpdate);
 			synchronized(bjSynchronizer) {
 				bjSynchronizer.wait(); //waits until the client returns the action
+			}
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
 			}
 		} catch (IOException | InterruptedException e) {
 			throw new RuntimeException(e);

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.OptionalDataException;
 import java.io.EOFException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import java.sql.SQLException;
 
@@ -118,8 +119,8 @@ public class ServerConnection extends Connection {
 					}
 				} catch (OptionalDataException e) {
 					// This error can be safely ignored.
-				} catch (EOFException e) {
-					// This occurs as a result of the
+				} catch (SocketException | EOFException e) {
+					// This occurs as a result of the client disconnectiong
 					finish();
 				} catch (IOException | ClassNotFoundException e) {
 					// These errors cannot be ignored
