@@ -17,18 +17,21 @@ public class HolePunchConnection extends Connection {
 
 	private ObjectInputStream punchIn;
 	private ObjectOutputStream punchOut;
+	private String sync = "", sync2 = "";
 
 	public HolePunchConnection(Socket clientSocket, Socket punchSocket) throws IOException {
 		super(clientSocket);
 		try {
 			// Initialize the input and output streams, should be switched around from the order of the server
-			punchIn = new ObjectInputStream(clientSocket.getInputStream());
-			punchOut = new ObjectOutputStream(clientSocket.getOutputStream());
+			punchIn = new ObjectInputStream(punchSocket.getInputStream());
+			punchOut = new ObjectOutputStream(punchSocket.getOutputStream());
 		} catch (StreamCorruptedException e) {
 			// In case of a corrupt connection, exit
+			e.printStackTrace();
 			finish();
 		}
 		this.punchSocket = punchSocket;
+		this.externalAddress = clientSocket.getRemoteSocketAddress();
 	}
 
 	public void run() {
@@ -50,28 +53,31 @@ public class HolePunchConnection extends Connection {
 										break;
 									case PING:
 										message.setType(NetMessage.MessageType.ACK);
-										out.writeObject(message);
+										synchronized (out) {
+											out.writeObject(message);
+										}
 										break;
 									case INFO:
 										if (message.getContent() instanceof SocketAddress) {
-											synchronized (externalAddress) {
+											synchronized (sync) {
 												externalAddress = (SocketAddress) message.getContent();
-												externalAddress.notify();
+												sync.notify();
 											}
 										}
 									case NORMAL:
 										if (message.getContent() instanceof SocketAddress) {
-											synchronized (externalAddress) {
+											synchronized (sync2) {
 												externalAddress = (SocketAddress) message.getContent();
-												externalAddress.notify();
+												sync2.notify();
 											}
 										}
 									default:
 								}
 							}
 						} catch (OptionalDataException e) {
-
+							e.printStackTrace();
 						} catch (EOFException e) {
+							e.printStackTrace();
 							finish();
 						} catch (IOException | ClassNotFoundException e) {
 							e.printStackTrace();
@@ -85,17 +91,16 @@ public class HolePunchConnection extends Connection {
 		new Thread() {
 			public void run() {
 				try {
-					synchronized (externalAddress) {
-						externalAddress.wait();
+					synchronized (sync) {
+						sync.wait();
 					}
 					synchronized (punchOut) {
 						NetMessage message = new NetMessage(NetMessage.MessageType.INFO, externalAddress);
 						punchOut.writeObject(message);
 					}
-					synchronized (externalAddress) {
-						externalAddress.wait();
+					synchronized (sync2) {
+						sync2.wait();
 					}
-					System.out.println(externalAddress);
 	//				punchListener = new ServerSocket(externalAddress.);
 				} catch (IOException | InterruptedException e) {
 					e.printStackTrace();
@@ -105,6 +110,7 @@ public class HolePunchConnection extends Connection {
 	}
 
 	public static void main(String[] args) throws IOException {
+		System.out.println("Asdflnsdkjc");
 		Connection connection = new HolePunchConnection(new Socket("127.0.0.1", 9937), new Socket("127.0.0.1", 9938));
 		connection.start();
 	}
