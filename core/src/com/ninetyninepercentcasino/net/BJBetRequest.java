@@ -1,17 +1,17 @@
 package com.ninetyninepercentcasino.net;
 
 public class BJBetRequest extends DTO{
-	private double amountBet;
+	private int amountBet;
 	public BJBetRequest(){
 
 	}
-	public BJBetRequest(double amountBet){
+	public BJBetRequest(int amountBet){
 		this.amountBet = amountBet;
 	}
-	public void setAmountBet(double amountBet){
+	public void setAmountBet(int amountBet){
 		this.amountBet = amountBet;
 	}
-	public double getAmountBet(){
+	public int getAmountBet(){
 		return amountBet;
 	}
 }

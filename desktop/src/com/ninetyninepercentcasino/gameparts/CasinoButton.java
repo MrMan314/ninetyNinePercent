@@ -1,7 +1,10 @@
 package com.ninetyninepercentcasino.gameparts;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -12,7 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * @author Grant Liang
  */
 public abstract class CasinoButton extends Actor {
+	protected static final float BUTTON_ASSET_WIDTH = 64;
+	protected static final float BUTTON_ASSET_HEIGHT = 72;
+	protected static final float BUTTON_WIDTH = 135;
+	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * (BUTTON_ASSET_WIDTH/BUTTON_ASSET_HEIGHT);
+
 	protected Sprite buttonSprite; //stores the sprite that will model the texture of the button
+	protected static final Sprite buttonOutlineSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("GameAssets/ButtonOutline.png"))));
 	protected boolean isAvailable; //stores whether the button is available or not
 
 	/**
@@ -21,6 +30,7 @@ public abstract class CasinoButton extends Actor {
 	public CasinoButton(){
 		isAvailable = false;
 		setTouchable(Touchable.enabled); //let the button be touchable
+		buttonOutlineSprite.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		addListener(new ClickListener(){ //listens for cursor entering and exiting actor events
 			/**
 			 * //TODO
@@ -48,7 +58,14 @@ public abstract class CasinoButton extends Actor {
 	 *		   children.
 	 */
 	public void draw(Batch batch, float parentAlpha){
-		buttonSprite.draw(batch);
+		buttonSprite.setPosition(getX(), getY());
+		buttonOutlineSprite.setPosition(getX(), getY());
+		if(!isAvailable) buttonOutlineSprite.draw(batch);
+		else {
+			setVisible(true);
+			buttonSprite.draw(batch);
+			System.out.println("drawing + " + buttonSprite);
+		}
 	}
 
 	/**
@@ -56,7 +73,6 @@ public abstract class CasinoButton extends Actor {
 	 */
 	public void disable(){
 		isAvailable = false;
-		buttonSprite.setColor(65, 65, 65, 0.8f);
 	}
 
 	/**
@@ -64,6 +80,5 @@ public abstract class CasinoButton extends Actor {
 	 */
 	public void enable(){
 		isAvailable = true;
-		buttonSprite.setColor(1, 1,1 ,1f);
 	}
 }

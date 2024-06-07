@@ -20,12 +20,6 @@ public class ChipHolder extends ChipActor {
 		chipAbove = null;
 		sprite.setSize(192*SCALE_FACTOR, 192 * ((float) 72/128) * SCALE_FACTOR);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
-//		addListener(new DragListener(){
-//			@Override
-//			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-//				moveBy(x - getWidth() / 2, y - getHeight()/2);
-//			}
-//		});
 	}
 	public void pop(){
 	}
@@ -34,7 +28,7 @@ public class ChipHolder extends ChipActor {
 	public void draw(Batch batch, float parentAlpha){
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
-	public double calculate(){
+	public int calculate(){
 		if(chipAbove != null) return chipAbove.calculate();
 		else return 0;
 	}

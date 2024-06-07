@@ -7,7 +7,7 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
 public class BJDealer {
 	private Hand hand;
 	private Deck deck;
-	private double insuranceBet;
+	private int insuranceBet;
 
 	public BJDealer(Deck deck){
 		this.deck = deck;
@@ -42,10 +42,10 @@ public class BJDealer {
 	public int getNumCards(){
 		return hand.getCards().size();
 	}
-	public void setInsuranceBet(double insuranceBet){
+	public void setInsuranceBet(int insuranceBet){
 		this.insuranceBet = insuranceBet;
 	}
-	public double getInsuranceBet(){
+	public int getInsuranceBet(){
 		return insuranceBet;
 	}
 }

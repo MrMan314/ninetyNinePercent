@@ -180,7 +180,7 @@ public class ChipActor extends Actor {
 		Texture chips = new Texture("GameAssets/Isometric/Chips/ChipsA_Outline_Flat_Small-128x72.png");
 		int x = 0;
 		int y = 0;
-		double chipValue = chip.getValue();
+		int chipValue = chip.getValue();
 		if(chipValue <= 1) {
 			x = 0;
 		}
@@ -221,6 +221,13 @@ public class ChipActor extends Actor {
 	public void disable(){
 		setTouchable(Touchable.disabled);
 		if(!isTopChip()) chipAbove.disable();
+	}
+	/**
+	 * enable this chip and all chips above it, making the user able to interact with it
+	 */
+	public void enable(){
+		setTouchable(Touchable.enabled);
+		if(!isTopChip()) chipAbove.enable();
 	}
 
 	/**
@@ -273,7 +280,7 @@ public class ChipActor extends Actor {
 	 * calculates the currency value of this chip and all chips above it
 	 * @return the value of this chip and all chips above it
 	 */
-	public double calculate(){
+	public int calculate(){
 		if(chipAbove != null) return chipAbove.calculate() + chip.getValue();
 		else return chip.getValue();
 	}

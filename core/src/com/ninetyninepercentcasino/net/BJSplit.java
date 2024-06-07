@@ -1,20 +1,27 @@
 package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
+import com.ninetyninepercentcasino.game.gameparts.Hand;
 
+/**
+ * DTO to signal a split in a blackjack game
+ */
 public class BJSplit extends DTO {
-	private Card card;
-	private boolean visible;
+	private final Hand hand1;
+	private final Hand hand2;
 
-	public BJSplit(Card card, boolean visible){
-		this.card = card;
-		this.visible = visible;
+	/**
+	 * initializes a BJSplit with two given hands
+	 * @param hand1 the hand that will be played out first
+	 * @param hand2 the hand that will be played out second
+	 */
+	public BJSplit(Hand hand1, Hand hand2){
+		this.hand1 = hand1;
+		this.hand2 = hand2;
 	}
-	public Card getCard(){
-		if(visible) return card;
-		else return new Card(0, 0);
+	public Hand getHand1(){
+		return hand1;
 	}
-	public boolean isVisible(){
-		return visible;
+	public Hand getHand2(){
+		return hand2;
 	}
 }

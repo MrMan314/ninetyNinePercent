@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 
+import java.util.ArrayList;
+
 /**
  * manages a group of chips that can interact with one another
  * includes chip holders and normal chips
@@ -15,13 +17,15 @@ public class ChipGroup extends Group {
 	private float spawnY; //the y spawn location of the next chip stack
 	private float holderSpawnX; //the x spawn location of the next chip holder
 	private float holderSpawnY; //the y spawn location of the next chip holder
+	private ArrayList<ChipHolder> holders;
 
 	/**
 	 * initializes and spawns a group of chips as evenly as possible
 	 * @param totalValue the total value of the chips to spawn
 	 * @param numHolders the number of chip holders
 	 */
-	public ChipGroup(double totalValue, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
+	public ChipGroup(int totalValue, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
+		holders = new ArrayList<>();
 		int whiteChips = 0;
 		int redChips = 0;
 		int blueChips = 0;
@@ -76,6 +80,7 @@ public class ChipGroup extends Group {
 	}
 
 	public ChipGroup(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
+		holders = new ArrayList<>();
 		spawnX = 0;
 		spawnY = 0;
 		addChips(1, whiteChips);
@@ -95,6 +100,7 @@ public class ChipGroup extends Group {
 			ChipHolder chipHolder = new ChipHolder();
 			chipHolder.setPosition(holderSpawnX, holderSpawnY);
 			addActor(chipHolder);
+			holders.add(chipHolder);
 			holderSpawnX += chipHolder.getWidth(); //move the spawn location over by the width of the chip so the next holder spawns to the right of this one
 		}
 	}
@@ -129,13 +135,10 @@ public class ChipGroup extends Group {
 	/**
 	 * @return the value of all the chips on the chipHolders
 	 */
-	public double calculate(){
-		double total = 0;
-		for(Actor actor : getChildren()){
-			if(actor instanceof ChipHolder){
-				ChipHolder holder = (ChipHolder)actor;
-				total += holder.calculate();
-			}
+	public int calculate(){
+		int total = 0;
+		for(ChipHolder holder : holders){
+			total += holder.calculate();
 		}
 		return total;
 	}
@@ -144,10 +147,16 @@ public class ChipGroup extends Group {
 	 * disables all the chips on the chipHolders of this group so the client can no longer interact with them
 	 */
 	public void disableChipsHeld(){
-		for(Actor actor : getChildren().toArray()){
-			if(actor instanceof ChipHolder){
-				((ChipHolder)actor).disable();
-			}
+		for(ChipHolder holder : holders){
+			holder.disable();
+		}
+	}
+	/**
+	 * enables all the chips on the chipHolders of this group so the client can interact with them
+	 */
+	public void enableChipsHeld(){
+		for(ChipHolder holder : holders){
+			holder.enable();
 		}
 	}
 }

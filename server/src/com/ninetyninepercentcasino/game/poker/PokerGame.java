@@ -13,8 +13,8 @@ import com.ninetyninepercentcasino.game.gameparts.Deck;
  * @author Grant Liang
  */
 public class PokerGame {
-	private final double SMALL_BLIND = 4;
-	private final double BIG_BLIND = 8;
+	private final int SMALL_BLIND = 4;
+	private final int BIG_BLIND = 8;
 	private Deck deck;
 	final int numPlayers;
 	int numPlayersIn;
@@ -26,7 +26,7 @@ public class PokerGame {
 	PokerPlayer dealer;
 	PokerPlayer smallBlind;
 	PokerPlayer bigBlind;
-	double pot;
+	int pot;
 
 	public PokerGame(ArrayList<PokerPlayer> players){
 		round = 0;
@@ -100,8 +100,8 @@ public class PokerGame {
 		communityCards.add(deck.drawCard());
 	}
 	public void betPhase(){
-		double tempPot = 0;
-		double highestBet = 0;
+		int tempPot = 0;
+		int highestBet = 0;
 		int numConsecutiveChecks = 0;
 		int currentPlayerIndex = dealerIndex;
 

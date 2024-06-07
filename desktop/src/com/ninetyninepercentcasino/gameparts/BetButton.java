@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.ninetyninepercentcasino.bj.BJGameStage;
+import com.ninetyninepercentcasino.bj.BJStage;
 
 public class BetButton extends CasinoButton {
 	public BetButton(){
@@ -33,7 +33,7 @@ public class BetButton extends CasinoButton {
 	 * called when the button is clicked
 	 */
 	public void bet() {
-		((BJGameStage)getStage()).sendBet();
+		((BJStage)getStage()).sendBet();
 		setVisible(false);
 	}
 }
