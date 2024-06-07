@@ -3,9 +3,6 @@ package com.ninetyninepercentcasino.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,11 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.game.gameparts.Chip;
-import com.ninetyninepercentcasino.gameparts.ChipActor;
 import com.ninetyninepercentcasino.gameparts.ChipGroup;
-import com.ninetyninepercentcasino.gameparts.ChipHolder;
-import com.ninetyninepercentcasino.gameparts.NumberDisplay;
 
 /**
  * Main menu of the game
