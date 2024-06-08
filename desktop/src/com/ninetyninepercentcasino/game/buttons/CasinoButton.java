@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public abstract class CasinoButton extends Actor {
 	protected static final int BUTTON_ASSET_WIDTH = 64;
 	protected static final int BUTTON_ASSET_HEIGHT = 72;
-	protected static final float BUTTON_WIDTH = 135;
+	protected static final float BUTTON_WIDTH = 150;
 	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * ((float) BUTTON_ASSET_HEIGHT /BUTTON_ASSET_WIDTH);
 
 	protected Sprite buttonSprite; //stores the sprite that will model the texture of the button

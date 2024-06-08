@@ -17,6 +17,7 @@ public class ChipGroup extends Group {
 	private float holderSpawnX; //the left bound of the x spawn location of the next chip holder
 	private float holderSpawnY; //the bottom bound of the y spawn location of the next chip holder
 	private ArrayList<ChipHolder> holders;
+	private ArrayList<ChipHolder> insuranceHolders;
 
 	/**
 	 * initializes and spawns a group of chips as evenly as possible
@@ -186,5 +187,7 @@ public class ChipGroup extends Group {
 		for(ChipHolder holder : holders){
 			holder.floatAway();
 		}
+	}
+	public void stowHolders(){
 	}
 }

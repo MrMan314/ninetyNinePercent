@@ -136,7 +136,7 @@ public class BJGame extends Thread {
 	 */
 	private void actDealer(){
 		while(dealer.getScore() < 17){
-			drawCardUpdate(dealer.drawCard(), false, false);
+			drawCardUpdate(dealer.drawCard(), true, false);
 		}
 	}
 
