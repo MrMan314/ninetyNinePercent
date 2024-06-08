@@ -30,7 +30,7 @@ public class SFXManager {
 		for(int i = 1; i <= 6; i++){
 			chipStackSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsStack" + i + ".ogg")));
 		}
-		for(int i = 1; i <= 3; i++){
+		for(int i = 1; i <= 2; i++){
 			chipLaySounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipLay" + i + ".ogg")));
 		}
 	}
