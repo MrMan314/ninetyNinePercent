@@ -14,6 +14,7 @@ import java.io.EOFException;
 import java.io.StreamCorruptedException;
 import java.io.OptionalDataException;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.lang.IllegalStateException;
@@ -40,7 +41,7 @@ public abstract class Connection extends Thread {
 	public Connection(Socket clientSocket) throws IOException {
 		// Copy clientSocket reference
 		this.clientSocket = clientSocket;
-
+		timerThreads = new ArrayList<Thread>();
 		// Set server flag
 		isServer = false;
 		try {
@@ -122,6 +123,10 @@ public abstract class Connection extends Thread {
 
 		}
 
+		for(Thread timerThread: timerThreads) {
+			timerThread.interrupt();
+		}
+
 		// Remove self from clients list if it is a server thread
 		if(isServer) {
 			clients.remove(this);
@@ -135,6 +140,7 @@ public abstract class Connection extends Thread {
 	protected String aliveMessage = "";
 	protected boolean alive = false;
 	protected Timer timer = new Timer();
+	protected List<Thread> timerThreads;
 
 	// Timer task for keepAlive
 	protected TimerTask keepAliveTimeout = new TimerTask() {
@@ -144,8 +150,9 @@ public abstract class Connection extends Thread {
 		 * post: the keepAlive thread is started
 		 */
 		public void run() {
-			// Create a new thread to allow for concurrent executions
-			new Thread() {
+			// Create a new thread to allow for concurrent executions, set initial value to avoid some goofy ahh error about not being initialized possibly
+			Thread timerThread = null;
+			timerThread = new Thread() {
 				/**
 				 * Main method of the keepAlive thread
 				 * pre: none
@@ -179,8 +186,9 @@ public abstract class Connection extends Thread {
 							finish();
 							return;
 						}
-					} catch (IllegalMonitorStateException e) {
-						// This error can be ignored.
+						timerThreads.remove(this);
+					} catch (IllegalMonitorStateException | InterruptedException e) {
+						// These errors can be ignored.
 						return;
 					} catch (SocketException | NullPointerException e) {
 						// If the connection is unexpectedly closed, these errors are thrown
@@ -191,13 +199,16 @@ public abstract class Connection extends Thread {
 							f.printStackTrace();
 						}
 						return;
-					} catch (IOException | InterruptedException e) {
-						// These errors should not be ignored
+					} catch (IOException e) {
+						// This error should not be ignored
 						e.printStackTrace();
 						return;
 					}
 				}
-			}.start();
+			};
+			timerThread.setName("timer");
+			timerThread.start();
+			timerThreads.add(timerThread);
 		}
 	};
 

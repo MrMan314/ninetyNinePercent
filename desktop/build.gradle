@@ -2,8 +2,8 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../assets"]
 
-//project.ext.mainClassName = "com.ninetyninepercentcasino.game.DesktopLauncher"
-project.ext.mainClassName = "com.ninetyninepercentcasino.net.HolePunchConnection"
+project.ext.mainClassName = "com.ninetyninepercentcasino.game.DesktopLauncher"
+//project.ext.mainClassName = "com.ninetyninepercentcasino.net.HolePunchConnection"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
