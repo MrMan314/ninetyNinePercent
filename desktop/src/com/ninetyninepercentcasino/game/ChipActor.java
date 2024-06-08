@@ -1,21 +1,18 @@
-package com.ninetyninepercentcasino.gameparts;
+package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.VisibleAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.ninetyninepercentcasino.game.SFXManager;
+import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;

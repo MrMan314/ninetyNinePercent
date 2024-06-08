@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.gameparts;
+package com.ninetyninepercentcasino.game.buttons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

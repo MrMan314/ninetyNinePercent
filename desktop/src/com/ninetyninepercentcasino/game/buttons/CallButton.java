@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.game.buttons;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -6,19 +6,22 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.ninetyninepercentcasino.gameparts.CasinoButton;
 
-public class BackButton extends CasinoButton {
-	public BackButton(){
+/**
+ * Models a calling button in a poker game
+ * @author Grant Liang
+ */
+public class CallButton extends CasinoButton {
+	public CallButton(){
 		super();
-		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 0, 0, 64, 72));
+		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 192, 0, 64, 72));
 		buttonSprite.setSize(192, 192 * ((float) 72/64));
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) signalSplit();
+				signalCall();
 				return true;
 			}
 		});
@@ -30,7 +33,6 @@ public class BackButton extends CasinoButton {
 	/**
 	 * called when the button is clicked
 	 */
-	public void signalSplit(){
-		System.out.println("among us");
+	public void signalCall(){
 	}
 }

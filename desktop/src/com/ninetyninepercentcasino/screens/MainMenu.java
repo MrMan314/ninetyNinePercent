@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.gameparts.ChipGroup;
+import com.ninetyninepercentcasino.game.ChipGroup;
 
 /**
  * Main menu of the game
