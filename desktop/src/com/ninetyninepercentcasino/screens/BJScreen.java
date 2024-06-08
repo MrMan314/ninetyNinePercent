@@ -148,7 +148,6 @@ public class BJScreen extends CasinoScreen {
 		stage.getBatch().end();
 		stage.act(delta);
 		stage.draw();
-
 	}
 
 	@Override

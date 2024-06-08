@@ -1,7 +1,7 @@
 package com.ninetyninepercentcasino.net;
 
 /**
- * enum for the available actions in bj
+ * Available actions in a blackjack game
  * @author Grant Liang
  */
 public enum BJAction {

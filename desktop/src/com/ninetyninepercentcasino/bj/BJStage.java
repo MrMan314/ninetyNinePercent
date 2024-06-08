@@ -3,7 +3,6 @@ package com.ninetyninepercentcasino.bj;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -57,7 +56,7 @@ public class BJStage extends Stage {
 	 * @param update the DTO containing information about the game update
 	 */
 	public void handleDTO(DTO update){
-		if(update instanceof BJBetRequest){
+		if(update instanceof BJBetMessage){
 			startBetPhase();
 		}
 		else if(update instanceof BJInsuranceRequest){
@@ -123,7 +122,7 @@ public class BJStage extends Stage {
 	 * sends a bet to the server
 	 */
 	public void sendBet(){
-		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
+		BJBetMessage betRequest = new BJBetMessage(chips.calculate());
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
 		try {
 			client.message(message);
@@ -202,7 +201,7 @@ public class BJStage extends Stage {
 	 * sends an insurance bet to the server
 	 */
 	public void sendInsure() {
-		BJBetRequest betRequest = new BJBetRequest(chips.calculate());
+		BJBetMessage betRequest = new BJBetMessage(chips.calculate());
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
 		try {
 			client.message(message);
@@ -340,7 +339,7 @@ public class BJStage extends Stage {
 
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
-		if(handEnd.getWinner() != BJHandEnd.PLAYER_WON) chips.floatAway();
+		if(handEnd.getOutcome() != BJHandEnd.PLAYER_WON) chips.floatAway();
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server

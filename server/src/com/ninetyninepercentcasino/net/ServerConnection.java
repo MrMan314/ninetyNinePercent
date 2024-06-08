@@ -76,9 +76,9 @@ public class ServerConnection extends Connection {
 									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
 									bjGame.start();
 								}
-								if(content instanceof BJBetRequest) {
-									// Process BJBetRequest if it is a BJBetRequest
-									bjGame.setFirstBet(((BJBetRequest)content).getAmountBet());
+								if(content instanceof BJBetMessage) {
+									// Process BJBetMessage if it is a BJBetMessage
+									bjGame.setFirstBet(((BJBetMessage)content).getAmountBet());
 									synchronized(bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}

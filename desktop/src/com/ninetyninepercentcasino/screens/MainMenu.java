@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.game.ChipGroup;
@@ -47,7 +48,7 @@ public class MainMenu extends CasinoScreen {
 		VerticalGroup middleMenu = new VerticalGroup();
 		middleMenu.addActor(playButton);
 		middleMenu.addActor(settingsButton);
-
+		ChipGroup chips = new ChipGroup(1000, 10, 500, 500, 10, 10);
 		Table root = new Table();
 		root.setFillParent(true);
 		root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
@@ -55,9 +56,16 @@ public class MainMenu extends CasinoScreen {
 		root.add(middleMenu).padBottom(160);
 
 		stage.addActor(root);
+		stage.addActor(chips);
 
 		background = new Texture("Menus/Background.jpg");
 
+		titleBanner.addListener(new DragListener(){
+			public void touchDragged(InputEvent event, float x, float y, int pointer) {
+				titleBanner.moveBy(x - titleBanner.getWidth() / 2, y - titleBanner.getHeight() / 2); //moves the chip by the given x and y values
+			}
+
+		});
 		/*
 		 * adding change listeners to the buttons on the main menu
 		 * this gives them their functionality to switch the game over to another screen when clicked
@@ -92,8 +100,6 @@ public class MainMenu extends CasinoScreen {
 				(event.getTarget()).setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
 			}
 		});
-
-		this.displayDialogBox("test");
 
 	}
 

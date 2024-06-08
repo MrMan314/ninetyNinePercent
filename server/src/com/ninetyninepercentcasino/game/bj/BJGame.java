@@ -141,7 +141,7 @@ public class BJGame extends Thread {
 	}
 
 	private void getInitialBet(){
-		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
+		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetMessage());
 		try {
 			player.getConnection().message(getBet);
 		} catch (SocketException e) {

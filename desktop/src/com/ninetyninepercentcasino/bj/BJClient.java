@@ -2,12 +2,6 @@ package com.ninetyninepercentcasino.bj;
 
 import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
-import com.ninetyninepercentcasino.net.BJInsuranceRequest;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
-import com.ninetyninepercentcasino.net.BJSplit;
-import com.ninetyninepercentcasino.net.BJHandEnd;
 import com.ninetyninepercentcasino.net.DTO;
 import com.ninetyninepercentcasino.screens.BJScreen;
 

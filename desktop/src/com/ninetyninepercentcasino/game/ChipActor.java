@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -38,6 +39,7 @@ public class ChipActor extends Actor {
 	public static final float CHIP_WIDTH = 192 * SCALE_FACTOR;
 	public static final float CHIP_HEIGHT = CHIP_WIDTH * (72f/128);
 
+	private Vector2 cursorToOrigin;
 	private boolean rising = false;
 	private ChipActor chipBelowBeforeRise;
 	private boolean popped = false;
@@ -54,25 +56,31 @@ public class ChipActor extends Actor {
 		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 		sprite.setPosition(getX(), getY());
+		cursorToOrigin = new Vector2();
 		addListener(new ClickListener(){ //listens for cursor enter and exit events
 			/**
 			 * pops this ChipActor and the stack above it because the cursor has entered it
 			 */
-			@Override
-			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-				if(pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
-			}
-			/**
-			 * unpops this ChipActor and the stack above it because the cursor has exited it
-			 */
-			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-				if(pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
-				SFXManager.playChipLaySound();
-			}
+//			@Override
+//			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+//				if(pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
+//			}
+//			/**
+//			 * unpops this ChipActor and the stack above it because the cursor has exited it
+//			 */
+//			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+//				if(pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
+//				SFXManager.playChipLaySound();
+//			}
 		});
 		addListener(new DragListener(){ //add a drag listener that will enable the chips to be dragged around by the mouse
+			public void dragStart (InputEvent event, float x, float y, int pointer) {
+				cursorToOrigin.x = getDragStartX() - getOriginX();
+				cursorToOrigin.y = getDragStartY() - getOriginY();
+				setOrigin(cursorToOrigin.x, cursorToOrigin.y);
+			}
 			/**
-			 * called when the mouse is dragging across the screen
+			 * called when the mouse is dragging across the screen,
 			 * will update the chip's position and check for attachment/detachment parameters
 			 */
 			@Override
@@ -83,8 +91,10 @@ public class ChipActor extends Actor {
 				else { //there no chip below this chip, so just focus the stack based on how many chips the ChipGroup has
 					focusStack(getParent().getChildren().size+1);
 				}
-				moveBy(x - getWidth() / 2, y - getHeight() / 2); //moves the chip by the given x and y values
-				sprite.translate(x - getWidth()/2, y - getHeight()/2); //translates the visual of the chip as well
+				moveBy(x - getWidth() / 2, y - getHeight() / 2 ); //moves the chip by the given x and y values
+				sprite.translate(x - getWidth() / 2, y - getHeight() / 2); //translates the visual of the chip as well
+				System.out.println(x - getWidth() / 2 + " , " + (y - getHeight() / 2));
+				System.out.println("X: " + x + " Y: " + y);
 				if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE){
 					//this chip is more than DETACH_DISTANCE away from the chip below, so detach
 					detach();
