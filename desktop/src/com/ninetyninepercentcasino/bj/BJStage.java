@@ -17,7 +17,6 @@ import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
 import com.ninetyninepercentcasino.net.*;
-import com.ninetyninepercentcasino.text.TextDisplay;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +41,6 @@ public class BJStage extends Stage {
 	private DDButton doubleDownButton;
 	private Table bjButtons;
 	private Label betDisplay;
-	private BitmapFont font;
 
 	private BJClient client;
 
@@ -100,7 +98,7 @@ public class BJStage extends Stage {
 
 		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
 
-		betDisplay = new TextDisplay("", 260);
+		betDisplay = new Label("", labelStyleGenerator.getLeagueGothicLabelStyle(260));
 		Pixmap labelColor = new Pixmap((int) betDisplay.getWidth(), (int) betDisplay.getHeight(), Pixmap.Format.RGB888);
 		labelColor.setColor(Color.BLACK);
 		labelColor.fill();
@@ -190,9 +188,6 @@ public class BJStage extends Stage {
 		insureButton.enable();
 		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
 
-		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-		betDisplay = new Label("", labelStyleGenerator.getLeagueGothicLabelStyle(260));
-
 		betDisplays = new Table();
 		betDisplays.add(insureButton);
 		betDisplays.add(insureButton).spaceRight(WORLD_WIDTH/4);
@@ -230,10 +225,11 @@ public class BJStage extends Stage {
 	}
 	/**
 	 * adds a Card to the dealer's hand
-	 * the card is immediately displayed
+	 * the card is immediately shown on screen either face up or face down
 	 * @param card the card to be added
 	 */
 	private void addDealerCard(Card card){
+		if(dealerHand.getHand().getCards().size() == 2) dealerHand.reveal();
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
 	}
