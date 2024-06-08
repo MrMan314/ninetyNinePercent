@@ -1,45 +1,45 @@
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-project.ext.mainClassName = "com.ninetyninepercentcasino.game.ServerLauncher"
+project.ext.mainClassName = "com.ninetyninepercentcasino.net.ServerLauncher"
 
 import org.gradle.internal.os.OperatingSystem
 
 tasks.register('run', JavaExec) {
-    dependsOn classes
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    ignoreExitValue = true
+	dependsOn classes
+	mainClass = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	ignoreExitValue = true
 
-    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
-        // Required to run on macOS
-        jvmArgs += "-XstartOnFirstThread"
-    }
+	if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+		// Required to run on macOS
+		jvmArgs += "-XstartOnFirstThread"
+	}
 }
 
 tasks.register('debug', JavaExec) {
-    dependsOn classes
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    ignoreExitValue = true
-    debug = true
+	dependsOn classes
+	mainClass = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	ignoreExitValue = true
+	debug = true
 }
 
 tasks.register('dist', Jar) {
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-    manifest {
-        attributes (
+	duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+	manifest {
+		attributes (
 		'Class-Path': configurations.runtimeClasspath,
 		'Main-Class': project.mainClassName
 	)
-    }
-    dependsOn configurations.runtimeClasspath
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
+	}
+	dependsOn configurations.runtimeClasspath
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+	with jar
 }
 
 dist.dependsOn classes

@@ -1,3 +1,8 @@
+/**
+ * Server.java
+ * Server object to accept connections from clients
+ */
+
 package com.ninetyninepercentcasino.net;
 
 import java.net.ServerSocket;
@@ -5,56 +10,61 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.NetMessage;
+public abstract class Server extends Thread {
+	// Server socket and port
+	protected ServerSocket serverSocket;
+	private int port;
 
-public class Server extends Thread {
-	private ServerSocket serverSocket;
-	private int port = 9925;
+	// List of connections
+	protected List<Connection> clients = new ArrayList<Connection>();
 
-	private List<Connection> clients = new ArrayList<Connection>();
-
-	public Server() throws IOException {
-		serverSocket = new ServerSocket(this.port);
-	}
-
+	/**
+	 * Constructor for Server with port
+	 * pre: none
+	 * post: Server started on the specified ports
+	 */
 	public Server(int port) throws IOException {
 		this.port = port;
 		serverSocket = new ServerSocket(this.port);
 	}
 
-	public void run() {
-		boolean running = true;
-		while (running) {
-			try {
-				clients.add(new Connection(serverSocket.accept(), clients));
-				clients.get(clients.size() - 1).start();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	/**
+	 * Main method of the server to accept connections
+	 * pre: Server object is initialized
+	 * post: Server has been run
+	 */
+	public abstract void run();
 
+	/**
+	 * Method to stop the server
+	 * pre: Server is started
+	 * post: Server is stopped
+	 */
 	public void finish() throws IOException {
 		serverSocket.close();
 	}
 
+	/**
+	 * Method to send a message to all client connection threads
+	 * pre: Server is started
+	 * post: message is sent to all connected and alive clients
+	 */
 	public void sendAll(NetMessage message) throws IOException {
 		for (Connection client: clients) {
 			client.message(message);
 		}
 	}
-	
+
+	/**
+	 * Method to send a message to all client connection threads, with an origin
+	 * pre: Server is started
+	 * post: message is sent to all connected and alive clients
+	 */
 	public void sendAll(NetMessage message, Connection origin) throws IOException {
 		for (Connection client: clients) {
 			if (client != origin) {
 				client.message(message);
 			}
 		}
-	}
-	
-	public static void main(String[] args) throws IOException {
-		Server server = new Server();
-		server.start();
 	}
 }
