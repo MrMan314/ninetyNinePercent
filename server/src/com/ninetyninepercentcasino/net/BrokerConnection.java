@@ -4,6 +4,7 @@ import java.io.OptionalDataException;
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 
 public class BrokerConnection extends Connection {
@@ -48,7 +49,7 @@ public class BrokerConnection extends Connection {
 					}
 				} catch (OptionalDataException e) {
 					// This error can be safely ignored.
-				} catch (EOFException e) {
+				} catch (EOFException | SocketException e) {
 					// This occurs as a result of the
 					finish();
 				} catch (IOException | ClassNotFoundException e) {
@@ -59,5 +60,8 @@ public class BrokerConnection extends Connection {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void dispose() {
 	}
 }

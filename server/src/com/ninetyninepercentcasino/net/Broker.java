@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Broker extends Server {
 	private int port = 9937;
@@ -12,9 +13,12 @@ public class Broker extends Server {
 	private ServerSocket punchSocket;
 	private boolean running;
 
+	private ArrayList<BrokerHolePunch> punchClients;
+
 	public Broker() throws IOException {
 		super(9937);
 		punchSocket = new ServerSocket(punchPort);
+		punchClients = new ArrayList<BrokerHolePunch>();
 		running = true;
 	}
 
@@ -23,6 +27,7 @@ public class Broker extends Server {
 		this.port = port;
 		this.punchPort = punchPort;
 		punchSocket = new ServerSocket(punchPort);
+		punchClients = new ArrayList<BrokerHolePunch>();
 		running = true;
 	}
 
@@ -39,7 +44,7 @@ public class Broker extends Server {
 				}
 			}
 		}.start();
-/*
+
 		new Thread() {
 			public void run() {
 				while (running) {
@@ -52,6 +57,5 @@ public class Broker extends Server {
 				}
 			}
 		}.start();
-*/
 	}
 }
