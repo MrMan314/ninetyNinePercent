@@ -17,9 +17,6 @@ public class Hand implements Serializable {
 	public Hand(){
 		hand = new ArrayList<>();
 	}
-	public Hand(ArrayList<Card> hand){
-		this.hand = hand;
-	}
 	/**
 	 * Method that adds a Card to the hand and returns the card added
 	 * pre: none
@@ -45,11 +42,20 @@ public class Hand implements Serializable {
 	public void removeCard(int index){
 		hand.remove(index);
 	}
+
+	/**
+	 * draws a card from a given deck
+	 * @param deck the deck that the card is to be drawn from
+	 * @return the card drawn
+	 */
 	public Card drawCard(Deck deck){
 		Card card = deck.drawCard();
 		hand.add(card);
 		return card;
 	}
+	/**
+	 * @return all cards in the hand
+	 */
 	public ArrayList<Card> getCards(){
 		return hand;
 	}
