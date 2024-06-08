@@ -71,6 +71,7 @@ public abstract class Connection extends Thread {
 		// Copy clientSocket and clients List reference
 		this.clients = clients;
 		this.clientSocket = clientSocket;
+		timerThreads = new ArrayList<Thread>();
 
 		// Set server flag
 		isServer = true;
