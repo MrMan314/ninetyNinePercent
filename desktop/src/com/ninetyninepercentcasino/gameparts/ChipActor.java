@@ -5,13 +5,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.VisibleAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.ninetyninepercentcasino.game.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * models an interactive, visible Chip
@@ -25,12 +32,17 @@ public class ChipActor extends Actor {
 	private ChipActor chipBelow;
 	private Sprite sprite;
 
-	protected final static float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
-	private final static float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
-	protected final static float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
-	protected final static float DETACH_DISTANCE = 50; //distance between chips where they will detach
-	protected final static float ATTACH_DISTANCE = 40; //distance between chips where they will attach
+	protected static final float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
+	private static final float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
+	protected static final float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
+	protected static final float DETACH_DISTANCE = 50; //distance between chips where they will detach
+	protected static final float ATTACH_DISTANCE = 40; //distance between chips where they will attach
 
+	public static final float CHIP_WIDTH = 192 * SCALE_FACTOR;
+	public static final float CHIP_HEIGHT = CHIP_WIDTH * (72f/128);
+
+	private boolean rising = false;
+	private ChipActor chipBelowBeforeRise;
 	private boolean popped = false;
 
 	/**
@@ -42,7 +54,7 @@ public class ChipActor extends Actor {
 		chipBelow = null; //in the beginning there will be no chip above or below this chip
 		chipAbove = null;
 		sprite = new Sprite(findTexture()); //update the sprite to the appropriate texture
-		sprite.setSize(192*SCALE_FACTOR, 192 * ((float) 72/128) * SCALE_FACTOR);
+		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 		sprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){ //listens for cursor enter and exit events
@@ -170,6 +182,9 @@ public class ChipActor extends Actor {
 		}
 		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
+		if(rising && chipBelowBeforeRise != null && Math.abs(getY() - chipBelowBeforeRise.getY()) > DETACH_DISTANCE * 4 && !chipBelowBeforeRise.isRising()){
+			chipBelowBeforeRise.floatAway();
+		}
 	}
 
 	/**
@@ -283,5 +298,24 @@ public class ChipActor extends Actor {
 	public int calculate(){
 		if(chipAbove != null) return chipAbove.calculate() + chip.getValue();
 		else return chip.getValue();
+	}
+	public boolean isRising(){
+		return rising;
+	}
+	public void floatAway(){
+		if(isTopChip()){
+			if(chipBelow != null) {
+				chipBelowBeforeRise = chipBelow;
+				detach();
+			}
+			rising = true;
+			MoveByAction floatAction = new MoveByAction();
+			floatAction.setAmountY(getStage().getHeight()*2f);
+			floatAction.setDuration(3f);
+			VisibleAction disappear = new VisibleAction();
+			disappear.setVisible(false);
+			addAction(sequence(floatAction, disappear));
+		}
+		else chipAbove.floatAway();
 	}
 }

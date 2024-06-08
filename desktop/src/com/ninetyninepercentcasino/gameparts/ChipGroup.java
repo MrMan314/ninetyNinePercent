@@ -15,8 +15,8 @@ public class ChipGroup extends Group {
 	private static final int STACK_SIZE = 50; //the maximum height of each stack
 	private float spawnX; //the x spawn location of the next chip stack
 	private float spawnY; //the y spawn location of the next chip stack
-	private float holderSpawnX; //the x spawn location of the next chip holder
-	private float holderSpawnY; //the y spawn location of the next chip holder
+	private float holderSpawnX; //the left bound of the x spawn location of the next chip holder
+	private float holderSpawnY; //the bottom bound of the y spawn location of the next chip holder
 	private ArrayList<ChipHolder> holders;
 
 	/**
@@ -62,15 +62,15 @@ public class ChipGroup extends Group {
 				whiteChips++;
 				redChips++;
 			}
-			else if(totalValue >= 1){
+			else {
 				totalValue--;
 				whiteChips++;
 			}
 		}
-		this.spawnX = spawnX;
-		spawnY = 0;
-		holderSpawnX = 0;
-		holderSpawnY = 0;
+		this.spawnX = spawnX - (calculateNumStacks(whiteChips, redChips, blueChips, greenChips, blackChips) * ChipActor.CHIP_WIDTH) / 2;
+		this.spawnY = spawnY;
+		this.holderSpawnX = holderSpawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2; //calculates the left bound of the x position of the leftmost holder
+		this.holderSpawnY = holderSpawnY;
 		addChips(1, whiteChips);
 		addChips(5, redChips);
 		addChips(10, blueChips);
@@ -142,6 +142,30 @@ public class ChipGroup extends Group {
 		}
 		return total;
 	}
+	private int calculateNumStacks(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips){
+		int numStacks = 0;
+		while(whiteChips > 0){
+			whiteChips -= STACK_SIZE;
+			numStacks++;
+		}
+		while(redChips > 0){
+			redChips -= STACK_SIZE;
+			numStacks++;
+		}
+		while(blueChips > 0){
+			blueChips -= STACK_SIZE;
+			numStacks++;
+		}
+		while(greenChips > 0){
+			greenChips -= STACK_SIZE;
+			numStacks++;
+		}
+		while(blackChips > 0){
+			blackChips -= STACK_SIZE;
+			numStacks++;
+		}
+		return numStacks;
+	}
 
 	/**
 	 * disables all the chips on the chipHolders of this group so the client can no longer interact with them
@@ -157,6 +181,11 @@ public class ChipGroup extends Group {
 	public void enableChipsHeld(){
 		for(ChipHolder holder : holders){
 			holder.enable();
+		}
+	}
+	public void floatAway(){
+		for(ChipHolder holder : holders){
+			holder.floatAway();
 		}
 	}
 }
