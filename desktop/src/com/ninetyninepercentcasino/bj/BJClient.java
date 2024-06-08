@@ -80,4 +80,7 @@ public class BJClient extends Connection {
 			e.printStackTrace();
 		}
 	}
+
+	public void dispose() {
+	}
 }

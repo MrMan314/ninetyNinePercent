@@ -133,6 +133,8 @@ public abstract class Connection extends Thread {
 			clients.remove(this);
 		}
 
+		dispose();
+
 		// Log the connection to the console
 		System.out.printf("Connection closed from %s\n", clientSocket.getRemoteSocketAddress().toString());
 	}
@@ -230,6 +232,13 @@ public abstract class Connection extends Thread {
 	public void message(NetMessage message) throws IOException {
 		out.writeObject(message);
 	}
+
+	/**
+	 * Method for additional dispositions of child classes, called from finish
+	 * pre: Connection is being closed
+	 * post: More things are disposed of
+	 */
+	public abstract void dispose();
 
 	/**
 	 * Main method of the Connection thread, to be implemented by children

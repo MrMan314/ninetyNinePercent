@@ -131,4 +131,8 @@ public class ServerConnection extends Connection {
 			e.printStackTrace();
 		}
 	}
+
+	public void dispose() {
+		bjGame.interrupt();
+	}
 }

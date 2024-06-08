@@ -61,4 +61,7 @@ public class BrokerConnection extends Connection {
 			e.printStackTrace();
 		}
 	}
+
+	public void dispose() {
+	}
 }

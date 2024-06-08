@@ -156,7 +156,6 @@ public class BJGame extends Thread {
 			try {
 				bjSynchronizer.wait(); //waits until the client returns the amount bet
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -176,7 +175,6 @@ public class BJGame extends Thread {
 			try {
 				bjSynchronizer.wait(); //waits until the client returns the amount bet
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
 			}
 		}
 	}
@@ -238,7 +236,8 @@ public class BJGame extends Thread {
 				player.getConnection().finish();
 			} catch (IOException f) {
 			}
-		} catch (IOException | InterruptedException e) {
+		} catch (InterruptedException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -254,7 +253,8 @@ public class BJGame extends Thread {
 				player.getConnection().finish();
 			} catch (IOException f) {
 			}
-		} catch (IOException | InterruptedException e) {
+		} catch (InterruptedException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -270,7 +270,8 @@ public class BJGame extends Thread {
 				player.getConnection().finish();
 			} catch (IOException f) {
 			}
-		} catch (IOException | InterruptedException e) {
+		} catch (InterruptedException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
@@ -296,7 +297,9 @@ public class BJGame extends Thread {
 	 * sleeps the thread to prevent multiple DTOs being sent to client at the same time
 	 */
 	private void pause(){
-		try { Thread.sleep(PAUSE_TIME);
-		} catch (InterruptedException e) { throw new RuntimeException(e);}
+		try {
+			Thread.sleep(PAUSE_TIME);
+		} catch (InterruptedException e) {
+		}
 	}
 }

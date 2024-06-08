@@ -114,4 +114,7 @@ public class HolePunchConnection extends Connection {
 		Connection connection = new HolePunchConnection(new Socket("127.0.0.1", 9937), new Socket("127.0.0.1", 9938));
 		connection.start();
 	}
+
+	public void dispose() {
+	}
 }
