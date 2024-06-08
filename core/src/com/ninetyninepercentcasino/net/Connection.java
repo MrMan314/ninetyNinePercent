@@ -209,7 +209,6 @@ public abstract class Connection extends Thread {
 					}
 				}
 			};
-			timerThread.setName("timer");
 			timerThread.start();
 			timerThreads.add(timerThread);
 		}
