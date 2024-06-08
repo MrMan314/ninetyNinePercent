@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.text;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
  * utility class to retrieve LabelStyles
  * @author Grant Liang
  */
-public class Text {
+public class LabelStyleGenerator {
 	public BitmapFont leagueGothicFont;
 	private FreeTypeFontGenerator generator;
 	private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-	public Text() {
+	public LabelStyleGenerator() {
 		leagueGothicFont = new BitmapFont();
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
 		parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

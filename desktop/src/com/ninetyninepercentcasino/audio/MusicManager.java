@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game;
+package com.ninetyninepercentcasino.audio;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;

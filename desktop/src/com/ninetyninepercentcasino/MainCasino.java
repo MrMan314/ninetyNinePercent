@@ -2,8 +2,8 @@ package com.ninetyninepercentcasino;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.ninetyninepercentcasino.game.MusicManager;
-import com.ninetyninepercentcasino.game.SFXManager;
+import com.ninetyninepercentcasino.audio.MusicManager;
+import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.screens.MainMenu;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
 

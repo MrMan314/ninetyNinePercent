@@ -1,6 +1,5 @@
-package com.ninetyninepercentcasino.gameparts;
+package com.ninetyninepercentcasino.game;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.ninetyninepercentcasino.game.gameparts.Chip;
 

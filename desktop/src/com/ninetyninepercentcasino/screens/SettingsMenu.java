@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.game.SFXManager;
-import com.ninetyninepercentcasino.gameparts.ChipGroup;
+import com.ninetyninepercentcasino.audio.SFXManager;
+import com.ninetyninepercentcasino.game.ChipGroup;
 
 /**
  * Screen for settings menu

@@ -1,16 +1,23 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.ninetyninepercentcasino.bj.bjbuttons.*;
-import com.ninetyninepercentcasino.game.Text;
-import com.ninetyninepercentcasino.game.SFXManager;
+import com.ninetyninepercentcasino.game.buttons.*;
+import com.ninetyninepercentcasino.game.CardGroup;
+import com.ninetyninepercentcasino.game.ChipGroup;
+import com.ninetyninepercentcasino.game.DeckActor;
+import com.ninetyninepercentcasino.text.LabelStyleGenerator;
+import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.gameparts.*;
 import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.text.TextDisplay;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -91,9 +98,13 @@ public class BJStage extends Stage {
 		betButton.enable();
 		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 
-		Text text = new Text();
+		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
 
-		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
+		betDisplay = new TextDisplay("", 260);
+		Pixmap labelColor = new Pixmap((int) betDisplay.getWidth(), (int) betDisplay.getHeight(), Pixmap.Format.RGB888);
+		labelColor.setColor(Color.BLACK);
+		labelColor.fill();
+		betDisplay.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
 
 		betDisplays = new Table();
 		betDisplays.add(betButton).padRight(WORLD_WIDTH/80);
@@ -179,8 +190,8 @@ public class BJStage extends Stage {
 		insureButton.enable();
 		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
 
-		Text text = new Text();
-		betDisplay = new Label("", text.getLeagueGothicLabelStyle(260));
+		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
+		betDisplay = new Label("", labelStyleGenerator.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
 		betDisplays.add(insureButton);

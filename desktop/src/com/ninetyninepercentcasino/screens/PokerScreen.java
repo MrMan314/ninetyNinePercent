@@ -8,12 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.poker.pokerbuttons.CallButton;
-import com.ninetyninepercentcasino.poker.pokerbuttons.FoldButton;
-import com.ninetyninepercentcasino.poker.pokerbuttons.RaiseButton;
+import com.ninetyninepercentcasino.game.buttons.CallButton;
+import com.ninetyninepercentcasino.game.buttons.FoldButton;
+import com.ninetyninepercentcasino.game.buttons.RaiseButton;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.Input;
-import com.ninetyninepercentcasino.game.poker.PokerPlayer;
 
 /**
  * Screen that renders poker screen
