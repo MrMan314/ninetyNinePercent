@@ -9,7 +9,7 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
- * Models a hand's visuals that manages CardActors and a Hand
+ * Models a group of CardActors and formats them like a hand of cards
  * @author Grant Liang
  */
 public class CardGroup extends Table {
@@ -33,7 +33,7 @@ public class CardGroup extends Table {
 	 * Constructor that initializes a new player hand with a given Hand
 	 * @param hand the hand to create the CardGroup with
 	 * @param faceUp the orientation that new cards will automatically have
-	 * @param isLocalHand
+	 * @param isLocalHand whether this CardGroup should be drawn bigger
 	 */
 	public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand){
 		this(faceUp, isLocalHand);
@@ -72,9 +72,9 @@ public class CardGroup extends Table {
 	}
 	public void removeCard(Card card){
 		int index = 0;
-		for(int i = 0; i < hand.getCards().size(); i++){
+		for(int i = 0; i < hand.getCards().size(); i++){ //loop through each card
 			Card cardInHand = hand.getCard(i);
-			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){
+			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){ //card matches the target card
 				index = i;
 				hand.removeCard(i);
 			}
