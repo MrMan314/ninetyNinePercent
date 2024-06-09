@@ -26,7 +26,7 @@ public class Account {
 	 * @param amountAdded the amount added
 	 */
 	public void addBalance(int amountAdded){
-		database.addBalance(this, amountAdded);
+		//database.addBalance(this, amountAdded);
 	}
 
 	/**
@@ -34,6 +34,6 @@ public class Account {
 	 * @param withdrawAmount the amount withdrawn
 	 */
 	public void withdraw(int withdrawAmount){
-		database.withdraw(this, amountAdded);
+		//database.withdraw(this, amountAdded);
 	}
 }
