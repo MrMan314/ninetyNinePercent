@@ -13,24 +13,24 @@ public class BJServer extends Server {
 	private boolean running;
 	private Database database;
 
-	public BJServer() throws IOException {
+	public BJServer(String DBAddr, String DBUser, String DBPassword) throws IOException {
 		super(9925);
-//		try {
-//			database = new Database();
-//		} catch (SQLException e) {
-//			throw new RuntimeException(e);
-//		}
+		try {
+			database = new Database(DBAddr, DBUser, DBPassword);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 		running = true;
 	}
 
-	public BJServer(int port) throws IOException {
+	public BJServer(String DBAddr, String DBUser, String DBPassword, int port) throws IOException {
 		super(port);
 		this.port = port;
-//		try {
-//			database = new Database();
-//		} catch (SQLException e) {
-//			throw new RuntimeException(e);
-//		}
+		try {
+			database = new Database(DBAddr, DBUser, DBPassword);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 		running = true;
 	}
 

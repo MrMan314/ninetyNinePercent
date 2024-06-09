@@ -16,16 +16,14 @@ import java.sql.PreparedStatement;
 public class Database {
 	private Connection database; //This is our database connection
 
-	private String serverAddress = "mysql://127.0.0.1:3306/nine";
-
 	/**
 	 * Name: Database
 	 * Description: Constructor. Initializes the database connection.
 	 * Precondition: None
 	 * Postcondition: Connection to the database established
 	*/
-	public Database() throws SQLException {
-		database=DriverManager.getConnection("jdbc:" + serverAddress, "ninetyNineMan", "amogus69420");
+	public Database(String DBAddr, String DBUser, String DBPassword) throws SQLException {
+		database=DriverManager.getConnection("jdbc:" + DBAddr, DBUser, DBPassword);
 	}
 	/**
 	 * Name: loadUser

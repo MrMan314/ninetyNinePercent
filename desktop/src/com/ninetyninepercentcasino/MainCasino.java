@@ -10,6 +10,15 @@ import com.ninetyninepercentcasino.screens.CasinoScreen;
 public class MainCasino extends Game {
 	public MusicManager music;
 	public CasinoScreen menu;
+	private String serverAddress;
+	private int serverPort;
+
+	public MainCasino(String serverAddress, int serverPort) {
+		super();
+		this.serverAddress = serverAddress;
+		this.serverPort = serverPort;
+	}
+
 	@Override
 	public void create () {
 		Gdx.graphics.setContinuousRendering(false); //this project is a turn-based game that doesn't require continuous rendering
@@ -19,6 +28,14 @@ public class MainCasino extends Game {
 		SFXManager.loadSFX();
 		menu = new MainMenu(this);
 		setScreen(menu); //set the screen to be the main menu screen, passing it an instance of the game
+	}
+
+	public String getServerAddress() {
+		return serverAddress;
+	}
+
+	public int getServerPort() {
+		return serverPort;
 	}
 
 	@Override

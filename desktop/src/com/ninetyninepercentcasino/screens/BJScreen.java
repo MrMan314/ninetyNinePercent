@@ -74,7 +74,7 @@ public class BJScreen extends CasinoScreen {
 		});
 
 		try {
-			client = new BJClient(new Socket("127.0.0.1", 9925), this);
+			client = new BJClient(new Socket(game.getServerAddress(), game.getServerPort()), this);
 		} catch (ConnectException e) {
 			game.setScreen(previousScreen);
 			previousScreen.displayDialogBox(e.getMessage());

@@ -12,6 +12,10 @@ tasks.register('run', JavaExec) {
 	standardInput = System.in
 	ignoreExitValue = true
 
+	File runDir = new File("build/run")
+	mkdir('build/run')
+	workingDir = runDir
+
 	if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
 		// Required to run on macOS
 		jvmArgs += "-XstartOnFirstThread"
