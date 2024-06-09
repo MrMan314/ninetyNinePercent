@@ -6,6 +6,8 @@ import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
 
 import java.util.HashMap;
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransactionManager;
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransaction;
 
 /**
  * Models a blackjack hand that the player bets on
@@ -109,12 +111,12 @@ public class BJHand extends Hand {
 	 * @param amountBet the amount bet on this hand
 	 */
 	public void setBet(int amountBet){
-		player.withdraw(amountBet-this.amountBet);
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
 		this.amountBet = amountBet;
 	}
 
 	public void doubleBet(){
-		player.withdraw(amountBet);
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
 		amountBet *= 2;
 	}
 
