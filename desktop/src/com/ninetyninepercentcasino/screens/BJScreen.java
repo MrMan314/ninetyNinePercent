@@ -72,47 +72,6 @@ public class BJScreen extends CasinoScreen {
 				return false;
 			}
 		});
-		stage.addCaptureListener(new InputListener(){
-			@Override
-			public boolean keyDown(InputEvent event, int keycode) {
-				if(keycode == Input.Keys.ESCAPE) {
-					game.setScreen(previousScreen);
-					try {
-						client.finish();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					getThis().dispose();
-					return true;
-				}
-				float distance = 100f;
-				if(keycode == Input.Keys.W){
-					stage.getCamera().translate(0, distance, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.A){
-					stage.getCamera().translate(-distance, 0, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.S){
-					stage.getCamera().translate(0, -distance, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.D){
-					stage.getCamera().translate(distance, 0, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.E){
-					((OrthographicCamera)stage.getCamera()).zoom += .5f;
-					return true;
-				}
-				if(keycode == Input.Keys.F){
-					((OrthographicCamera)stage.getCamera()).zoom -= 0.5f;
-					return true;
-				}
-				return false;
-			}
-		});
 
 		try {
 			client = new BJClient(new Socket("127.0.0.1", 9925), this);
