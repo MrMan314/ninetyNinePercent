@@ -30,7 +30,7 @@ public class BJStage extends Stage {
 	private CardGroup dealerHand;
 	private CardGroup splits;
 	private DeckActor deckActor;
-	private ChipGroup chips;
+	private ChipGroup chips; //the chips displayed on screen
 	private Table betDisplays;
 
 	private BetButton betButton;

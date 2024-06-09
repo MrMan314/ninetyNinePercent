@@ -15,10 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * @author Grant Liang
  */
 public abstract class CasinoButton extends Actor {
-	protected static final int BUTTON_ASSET_WIDTH = 64;
-	protected static final int BUTTON_ASSET_HEIGHT = 72;
-	protected static final float BUTTON_WIDTH = 150;
-	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * ((float) BUTTON_ASSET_HEIGHT /BUTTON_ASSET_WIDTH);
+	protected static final int BUTTON_ASSET_WIDTH = 64; //the width of a single button in the raw asset
+	protected static final int BUTTON_ASSET_HEIGHT = 72; //the height of a single button in the raw asset
+	protected static final float BUTTON_WIDTH = 150; //the width of a button in game
+	protected static final float BUTTON_HEIGHT = BUTTON_WIDTH * ((float) BUTTON_ASSET_HEIGHT /BUTTON_ASSET_WIDTH); //the height of a button in game
 
 	protected Sprite buttonSprite; //stores the sprite that will model the texture of the button
 	protected static final Sprite buttonOutlineSprite = new Sprite(new TextureRegion(new Texture(Gdx.files.internal("GameAssets/ButtonOutline.png"))));
@@ -33,17 +33,15 @@ public abstract class CasinoButton extends Actor {
 		buttonOutlineSprite.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		addListener(new ClickListener(){ //listens for cursor entering and exiting actor events
 			/**
-			 * //TODO
-			 * @param event
-			 * @param x
-			 * @param y
-			 * @param pointer
-			 * @param fromActor May be null.
+			 * called when the cursor hovers over the button to make it fade out a little
 			 */
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
 				if(isAvailable) buttonSprite.setColor(65, 65, 65, 0.8f);
 			}
+			/**
+			 * called when the cursor exits the button to make it solid again
+			 */
 			@Override
 			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
 				if(isAvailable) buttonSprite.setColor(1, 1,1 ,1f);

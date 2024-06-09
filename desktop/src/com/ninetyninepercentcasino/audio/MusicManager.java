@@ -47,6 +47,10 @@ public class MusicManager implements Music.OnCompletionListener {
 	public void setVolume(float volume){
 		music.setVolume(volume);
 	}
+
+	/**
+	 * @return the current volume of the music
+	 */
 	public float getVolume(){
 		return music.getVolume();
 	}

@@ -39,7 +39,7 @@ public class BJClient extends Connection {
 					finish();
 				}
 				try {
-					NetMessage message = (NetMessage) in.readObject();
+					NetMessage message = (NetMessage) in.readObject(); //read the object coming from server
 					message.setOrigin(clientSocket.getRemoteSocketAddress());
 					if (message.getContent() != null) {
 						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
@@ -55,7 +55,7 @@ public class BJClient extends Connection {
 								break;
 							case INFO: //the message contains information about the game state
 								Object content = message.getContent();
-								screen.requestUpdate((DTO)content);
+								screen.requestUpdate((DTO)content); //pass the update content to the BJScreen and request an update with it
 							default:
 						}
 					}

@@ -55,12 +55,23 @@ public class SFXManager {
 	public static void playChipGrabSound(){
 		chipGrabSound.play(volume);
 	}
+	/**
+	 * plays the chip lay sound
+	 */
 	public static void playChipLaySound(){
 		chipLaySounds.get(MathUtils.random(chipLaySounds.size()-1)).play(volume);
 	}
+	/**
+	 * @return the volume of the SFX
+	 */
 	public static float getVolume(){
 		return volume;
 	}
+
+	/**
+	 * updates SFX volume
+	 * @param volume the new volume
+	 */
 	public static void setVolume(float volume){
 		SFXManager.volume = volume;
 	}
