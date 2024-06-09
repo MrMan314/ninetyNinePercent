@@ -38,6 +38,7 @@ public class BJStage extends Stage {
 
 	private BJClient client;
 
+	private int currentBet;
 	/**
 	 * initializes a new BJStage
 	 * @param viewport the viewport to be used
@@ -119,6 +120,8 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		TransactionComposer.createTransaction(chips.calculate(), KeyPairManager.readKey("Client").getPrivate(), KeyPairManager.readKey("ServerPublic").getPublic());
+		currentBet=chips.calculate();
 		chips.disableChipsHeld();
 		setupGame();
 	}
@@ -295,6 +298,7 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		TransactionComposer.createTransaction(amountBet), KeyPairManager.readKey("Client").getPrivate(), KeyPairManager.readKey("ServerPublic").getPublic());
 		disableAllButtons();
 	}
 	/**

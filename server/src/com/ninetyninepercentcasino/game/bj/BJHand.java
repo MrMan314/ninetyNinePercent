@@ -6,6 +6,8 @@ import com.ninetyninepercentcasino.game.gameparts.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
 import java.io.IOException;
 import java.util.HashMap;
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransactionManager;
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransaction;
 
 /**
  * models a bj hand that the player bets on
@@ -78,11 +80,11 @@ public class BJHand extends Hand {
 		return 9 <= score && score <= 11 && card1.getNum() != 1 && card2.getNum() != 1;
 	}
 	public void setBet(int amountBet){
-		player.withdraw(amountBet-this.amountBet);
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
 		this.amountBet = amountBet;
 	}
 	public void doubleBet(){
-		player.withdraw(amountBet);
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
 		amountBet *= 2;
 	}
 	public int getAmountBet(){

@@ -7,7 +7,7 @@ import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 
 import ninetyNinePercentChain.Keys.KeyPairManager;
-import ninetyNinePercentChain.NetworkTransaction.NetworkInterface;
+import ninetyNinePercentChain.NetworkTransaction.TransactionComposer;
 
 import java.security.KeyPair;
 import java.io.IOException;
@@ -111,21 +111,21 @@ public class BJGame extends Thread {
 			int winnings = 0; //net earnings for the player
 			switch(outcome){
 				case PLAYER_BLACKJACK:
-					NetworkInterface.createTransaction((int) (currentHand.getAmountBet()*2.5), "ServerKey", player.getPublicKey());
+					TransactionComposer.createTransaction((int) (currentHand.getAmountBet()*2.5), "ServerKey", player.getPublicKey());
 					player.addBalance((int) (currentHand.getAmountBet()*2.5));
 					winnings = (int) (currentHand.getAmountBet()*1.5);
 					break;
 				case PLAYER_WON:
-					NetworkInterface.createTransaction(currentHand.getAmountBet()*2, "ServerKey", player.getPublicKey());
+					TransactionComposer.createTransaction(currentHand.getAmountBet()*2, "ServerKey", player.getPublicKey());
 					winnings = currentHand.getAmountBet();
 					break;
 				case TIE:
-					NetworkInterface.createTransaction(currentHand.getAmountBet(), "ServerKey", player.getPublicKey());
+					TransactionComposer.createTransaction(currentHand.getAmountBet(), "ServerKey", player.getPublicKey());
 					winnings = 0;
 					break;
 				case DEALER_WON:
 <<<<<<< HEAD
-					if(dealer.getNumCards() == 2) NetworkInterface.createTransaction(dealer.getInsuranceBet()*3, "ServerKey", player.getPublicKey());
+					if(dealer.getNumCards() == 2) TransactionComposer.createTransaction(dealer.getInsuranceBet()*3, "ServerKey", player.getPublicKey());
 =======
 					if(dealer.getNumCards() == 2) player.addBalance(insuranceBet*3);
 >>>>>>> 8d2fb038415ab223f79a255729574204a65ca21d
