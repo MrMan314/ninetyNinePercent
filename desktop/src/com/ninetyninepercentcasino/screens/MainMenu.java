@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.game.ChipGroup;
 
 /**
  * Main menu of the game
@@ -20,8 +19,6 @@ import com.ninetyninepercentcasino.game.ChipGroup;
  */
 public class MainMenu extends CasinoScreen {
 	private Texture background;
-	private ChipGroup chipGroup;
-	private Label totalBet;
 	private CasinoScreen nextScreen;
 	public MainMenu(MainCasino game) {
 		super(game);
@@ -36,6 +33,8 @@ public class MainMenu extends CasinoScreen {
 		stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
 		Gdx.input.setInputProcessor(stage); //set the input processor to be the stage of the current screen so inputs are handled by the visible screen first
 
+		stage.addActor(globalUI);
+
 		Skin skins = new Skin();
 		skins.add("titleBanner", new Texture("Menus/TitleBanner.png"));
 		skins.add("playButton", new Texture("Menus/PlayButton.png"));
@@ -48,7 +47,7 @@ public class MainMenu extends CasinoScreen {
 		VerticalGroup middleMenu = new VerticalGroup();
 		middleMenu.addActor(playButton);
 		middleMenu.addActor(settingsButton);
-		ChipGroup chips = new ChipGroup(1000, 10, 500, 500, 10, 10);
+
 		Table root = new Table();
 		root.setFillParent(true);
 		root.add(titleBanner).width(800).height(800*((float) 191/446)).fillX().top().padBottom(80);
@@ -56,7 +55,6 @@ public class MainMenu extends CasinoScreen {
 		root.add(middleMenu).padBottom(160);
 
 		stage.addActor(root);
-		stage.addActor(chips);
 
 		background = new Texture("Menus/Background.jpg");
 
@@ -114,6 +112,7 @@ public class MainMenu extends CasinoScreen {
 		stage.getBatch().setColor(1, 1,1 ,1f);
 		stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
 		stage.getBatch().end();
+		updateGlobalUI();
 		stage.draw(); //draw all actors on stage
 		stage.act(); //act all actors on stage
 	}

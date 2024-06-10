@@ -9,15 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.bj.BJStage;
 import com.ninetyninepercentcasino.bj.BJClient;
-import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.bj.BJStage;
+import com.ninetyninepercentcasino.net.BJBeginGame;
+import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.ConnectException;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 /**
  * Screen that renders a BJ game
@@ -67,6 +68,8 @@ public class BJScreen extends CasinoScreen {
 		firstRender = true;
 		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
+
+		stage.addActor(globalUI);
 
 		updates = new ArrayList<>();
 
@@ -144,6 +147,7 @@ public class BJScreen extends CasinoScreen {
 		} catch (IOException ignored) {
 		}
 		stage.setClient(client);
+		stage.setScreen(this);
 
 	}
 
@@ -165,6 +169,7 @@ public class BJScreen extends CasinoScreen {
 		stage.getBatch().begin();
 		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
 		stage.getBatch().end();
+		updateGlobalUI();
 		stage.act(delta); //act all actors in the stage
 		stage.draw(); //draw all actors in the stage
 	}

@@ -1,22 +1,16 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.ninetyninepercentcasino.game.ChipGroupBet;
-import com.ninetyninepercentcasino.game.buttons.*;
-import com.ninetyninepercentcasino.game.CardGroup;
-import com.ninetyninepercentcasino.game.ChipGroup;
-import com.ninetyninepercentcasino.game.DeckActor;
-import com.ninetyninepercentcasino.text.LabelStyleGenerator;
+import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.audio.SFXManager;
-import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.*;
+import com.ninetyninepercentcasino.game.buttons.*;
 import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.screens.CasinoScreen;
+import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,6 +21,7 @@ import java.util.HashMap;
  * @author Grant Liang
  */
 public class BJStage extends Stage {
+	private CasinoScreen screen; //the screen that displays this stage
 	private CardGroup playerHand;
 	private CardGroup dealerHand;
 	private CardGroup splitHands;
@@ -92,7 +87,7 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		chips = new ChipGroup(1000, 5, WORLD_WIDTH/2, 0, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
+		chips = new ChipGroup(((MainCasino)screen.getGame()).balance, 5, WORLD_WIDTH/2, 0, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
 		addActor(chips);
 
 		betButton = new BetButton();
@@ -102,10 +97,6 @@ public class BJStage extends Stage {
 		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
 
 		betDisplay = new Label("", labelStyleGenerator.getLeagueGothicLabelStyle(260));
-		Pixmap labelColor = new Pixmap((int) betDisplay.getWidth(), (int) betDisplay.getHeight(), Pixmap.Format.RGB888);
-		labelColor.setColor(Color.BLACK);
-		labelColor.fill();
-		betDisplay.getStyle().background = new Image(new Texture(labelColor)).getDrawable();
 
 		betDisplays = new Table();
 		betDisplays.add(betButton).padRight(WORLD_WIDTH/80);
@@ -379,7 +370,11 @@ public class BJStage extends Stage {
 
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
-		if(handEnd.getOutcome() != BJHandEnd.PLAYER_WON) betChips.floatAway();
+		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
+			((MainCasino)screen.getGame()).balance -= betChips.calculate();
+			betChips.floatAway();
+		}
+		else if(handEnd.getWinnings() > 0) ((MainCasino)screen.getGame()).balance += handEnd.getWinnings();
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
@@ -387,5 +382,8 @@ public class BJStage extends Stage {
 	 */
 	public void setClient(BJClient client){
 		this.client = client;
+	}
+	public void setScreen(CasinoScreen screen){
+		this.screen = screen;
 	}
 }

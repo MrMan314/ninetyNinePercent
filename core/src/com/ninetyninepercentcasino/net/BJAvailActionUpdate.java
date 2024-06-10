@@ -19,11 +19,6 @@ public class BJAvailActionUpdate extends DTO {
 		this.actions[1] = actions.get(BJAction.STAND);
 		this.actions[2] = actions.get(BJAction.SPLIT);
 		this.actions[3] = actions.get(BJAction.DOUBLE_DOWN);
-		key = Math.random();
-		System.out.println(key);
-		for(BJAction action : actions.keySet()){
-			System.out.println(action + " " + actions.get(action));
-		}
 	}
 
 	/**

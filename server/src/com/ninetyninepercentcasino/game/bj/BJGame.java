@@ -4,12 +4,11 @@ import com.ninetyninepercentcasino.game.Card;
 import com.ninetyninepercentcasino.game.Deck;
 import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.*;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Stack;
-import java.net.SocketException;
 
 /**
  * Runs logic for a blackjack game and sends messages to client as needed
@@ -61,8 +60,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance();
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
-		//drawCardUpdate(firstHand.drawCard(deck), true, true);
+		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();

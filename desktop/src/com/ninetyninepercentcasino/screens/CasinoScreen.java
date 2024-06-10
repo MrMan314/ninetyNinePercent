@@ -1,24 +1,26 @@
 package com.ninetyninepercentcasino.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.ninetyninepercentcasino.MainCasino;
+import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 
 /**
  * Describes general characteristics of screens used in the project
  * @author Grant Liang
  */
 public abstract class CasinoScreen implements Screen {
-	MainCasino game; //screen has a game instance, so it can create a new screen for the same game
-	Stage stage; //stage to manage the actors on the screen
-	float screenHeight = Gdx.graphics.getHeight(); //height of client area in pixels
-	float screenWidth = Gdx.graphics.getWidth(); //width of client area in pixels
-	CasinoScreen previousScreen;
+	protected MainCasino game; //screen has a game instance, so it can create a new screen for the same game
+	protected Stage stage; //stage to manage the actors on the screen
+	protected float screenHeight = Gdx.graphics.getHeight(); //height of client area in pixels
+	protected float screenWidth = Gdx.graphics.getWidth(); //width of client area in pixels
+	protected CasinoScreen previousScreen;
+	protected Table globalUI;
+	protected Label balanceDisplay;
 
 	/**
 	 * general constructor for a screen in the game
@@ -26,6 +28,13 @@ public abstract class CasinoScreen implements Screen {
 	 */
 	public CasinoScreen(MainCasino game){
 		this.game = game; //record the game as the one passed to the constructor
+		LabelStyleGenerator LSG = new LabelStyleGenerator();
+		Label.LabelStyle labelStyle = LSG.getLeagueGothicLabelStyle(60);
+		balanceDisplay = new Label("$1000", labelStyle);
+		globalUI = new Table();
+		globalUI.setFillParent(true);
+		globalUI.top().left();
+		globalUI.add(balanceDisplay).padTop(balanceDisplay.getHeight()/12f).padLeft(balanceDisplay.getHeight()/8f);
 	}
 
 	/**
@@ -33,7 +42,7 @@ public abstract class CasinoScreen implements Screen {
 	 * @param game the game that the screen is a part of
 	 */
 	public CasinoScreen(MainCasino game, CasinoScreen previousScreen){
-		this.game = game; //record the game as the one passed to the constructor
+		this(game);
 		this.previousScreen = previousScreen;
 	}
 
@@ -58,20 +67,20 @@ public abstract class CasinoScreen implements Screen {
 	}
 
 	public void displayDialogBox(String message) {
-		Label betDisplay;
-		BitmapFont font;
-		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 60;
-		font = generator.generateFont(parameter);
-		generator.dispose();
-		labelStyle.font = font;
-		betDisplay = new Label(message, labelStyle);
+		LabelStyleGenerator LSG = new LabelStyleGenerator();
+		Label text;
+		Label.LabelStyle labelStyle = LSG.getLeagueGothicLabelStyle(60);
+		text = new Label(message, labelStyle);
+		text.setPosition(500, 500);
 
-		betDisplay.setPosition(500, 500);
+		stage.addActor(text);
+	}
 
-		stage.addActor(betDisplay);
+	public void updateGlobalUI(){
+		balanceDisplay.setText("$" + game.balance);
+	}
+	public Game getGame(){
+		return game;
 	}
 
 	/**
@@ -79,7 +88,6 @@ public abstract class CasinoScreen implements Screen {
 	 */
 	@Override
 	public abstract void show ();
-
 	/**
 	 * called when the screen is hidden from view
 	 */
