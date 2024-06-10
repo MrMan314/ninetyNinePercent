@@ -120,7 +120,7 @@ public class ChipGroup extends Group {
 	 * @param value the value of each chip in the stack
 	 * @param numChips the number of chips to spawn
 	 */
-	public void spawnChips(int value, int numChips){
+	private void spawnChips(int value, int numChips){
 		int leftInStack = STACK_SIZE;
 		while(numChips > 0){
 			ChipActor chipBelow = new ChipActor(new Chip(value));
@@ -139,6 +139,19 @@ public class ChipGroup extends Group {
 			spawnX += chipBelow.getWidth(); //increment spawnX to spawn the next stack to the right of this stack
 			leftInStack = STACK_SIZE;
 		}
+	}
+	/**
+	 * spawns a chip into this group
+	 * @param value the value of the chip
+	 * @param x the x location of the spawned chip
+	 * @param y the y location of the spawned chip
+	 */
+	public void spawnChip(int value, float x, float y){
+		ChipActor chipActor = new ChipActor(new Chip(value));
+		chipActor.setPosition(x, y);
+		chipActor.setZIndex(Integer.MAX_VALUE);
+		addActor(chipActor);
+
 	}
 
 	/**

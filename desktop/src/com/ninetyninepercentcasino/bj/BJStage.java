@@ -22,6 +22,7 @@ import java.util.HashMap;
  */
 public class BJStage extends Stage {
 	private CasinoScreen screen; //the screen that displays this stage
+	private MainCasino game;
 	private CardGroup playerHand;
 	private CardGroup dealerHand;
 	private CardGroup splitHands;
@@ -30,7 +31,6 @@ public class BJStage extends Stage {
 	private ChipGroup chips; //the chips displayed on screen
 	private ChipGroupBet betChips;
 	private ChipGroupBet insuredChips;
-	private Table betDisplays;
 
 	private BetButton betButton;
 	private HitButton hitButton;
@@ -38,7 +38,10 @@ public class BJStage extends Stage {
 	private StandButton standButton;
 	private DDButton doubleDownButton;
 	private Table bjButtons;
+	private Table betDisplays;
 	private Label betDisplay;
+
+	private Table chipSpawners;
 
 	private BJClient client;
 
@@ -87,21 +90,35 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		chips = new ChipGroup(((MainCasino)screen.getGame()).balance, 5, WORLD_WIDTH/2, 0, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
+		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
 		addActor(chips);
+
+		chipSpawners = new Table();
+		ChipSpawner whiteSpawner = new ChipSpawner(game, chips, 1);
+		ChipSpawner redSpawner = new ChipSpawner(game, chips, 5);
+		ChipSpawner blueSpawner = new ChipSpawner(game, chips, 10);
+		ChipSpawner greenSpawner = new ChipSpawner(game, chips, 25);
+		ChipSpawner blackSpawner = new ChipSpawner(game, chips, 100);
+		chipSpawners.add(whiteSpawner);
+		chipSpawners.add(redSpawner);
+		chipSpawners.add(blueSpawner);
+		chipSpawners.add(greenSpawner);
+		chipSpawners.add(blackSpawner);
+		chipSpawners.setFillParent(true);
+		chipSpawners.top().left().padTop(WORLD_HEIGHT/16).padLeft(WORLD_WIDTH/16);
+
+		//addActor(chipSpawners);
 
 		betButton = new BetButton();
 		betButton.enable();
-		betButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2f);
 
 		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-
 		betDisplay = new Label("", labelStyleGenerator.getLeagueGothicLabelStyle(260));
 
 		betDisplays = new Table();
 		betDisplays.add(betButton).padRight(WORLD_WIDTH/80);
 		betDisplays.add(betDisplay).width(WORLD_HEIGHT/4);
-		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/1.2f);
+		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/5.8f);
 		addActor(betDisplays);
 	}
 
@@ -155,7 +172,7 @@ public class BJStage extends Stage {
 		bjButtons.add(splitButton);
 		bjButtons.add(doubleDownButton);
 
-		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
+		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.5f);
 
 		Table upperTable = new Table();
 		upperTable.add(deckActor).spaceRight(100);
@@ -368,10 +385,10 @@ public class BJStage extends Stage {
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
 		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
-			((MainCasino)screen.getGame()).balance -= betChips.calculate();
+			game.balance -= betChips.calculate();
 			betChips.floatAway();
 		}
-		else if(handEnd.getWinnings() > 0) ((MainCasino)screen.getGame()).balance += handEnd.getWinnings();
+		else if(handEnd.getWinnings() > 0) game.balance += handEnd.getWinnings();
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
@@ -386,5 +403,6 @@ public class BJStage extends Stage {
 	 */
 	public void setScreen(CasinoScreen screen){
 		this.screen = screen;
+		game = (MainCasino)screen.getGame();
 	}
 }

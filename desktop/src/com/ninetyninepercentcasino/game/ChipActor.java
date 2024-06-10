@@ -30,11 +30,11 @@ public class ChipActor extends Actor {
 
 	protected static final float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
 	private static final float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
-	protected static final float CHIP_DISTANCE = 20 * SCALE_FACTOR; //distance between each chip in a stack
+	protected static final float CHIP_DISTANCE = 16 * SCALE_FACTOR; //distance between each chip in a stack
 	protected static final float DETACH_DISTANCE = 50; //distance between chips where they will detach
 	protected static final float ATTACH_DISTANCE = 40; //distance between chips where they will attach
 
-	public static final float CHIP_WIDTH = 192 * SCALE_FACTOR;
+	public static final float CHIP_WIDTH = 150 * SCALE_FACTOR;
 	public static final float CHIP_HEIGHT = CHIP_WIDTH * (72f/128);
 
 	private Vector2 cursorToOrigin;
@@ -47,10 +47,11 @@ public class ChipActor extends Actor {
 	 * @param chip the Chip this will wrap
 	 */
 	public ChipActor(Chip chip){
+		setOrigin(getOriginX(), 0);
 		this.chip = chip;
 		chipBelow = null; //in the beginning there will be no chip above or below this chip
 		chipAbove = null;
-		sprite = new Sprite(findTexture()); //update the sprite to the appropriate texture
+		sprite = new Sprite(findTexture(chip.getValue())); //update the sprite to the appropriate texture
 		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
 		sprite.setPosition(getX(), getY());
@@ -109,7 +110,7 @@ public class ChipActor extends Actor {
 								SFXManager.playChipLaySound();
 							}
 						}
-						else if(actor instanceof ChipActor){
+						else if(actor instanceof ChipActor && !(actor instanceof ChipSpawner)){
 							ChipActor chipAttachCandidate = (ChipActor)actor;
 							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY());
 							if(chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE){
@@ -128,7 +129,7 @@ public class ChipActor extends Actor {
 
 	/**
 	 * initializes a new chipActor
-	 * this is for the subclass ChipHolder to use
+	 * this is for the subclasses to use that don't want the chip to pop up or be draggable
 	 */
 	public ChipActor() {
 
@@ -196,11 +197,10 @@ public class ChipActor extends Actor {
 	 * finds the appropriately colored chip texture for this chip
 	 * @return the TextureRegion corresponding to the Chip
 	 */
-	private TextureRegion findTexture(){
+	protected TextureRegion findTexture(int chipValue){
 		Texture chips = new Texture("GameAssets/Isometric/Chips/ChipsA_Outline_Flat_Small-128x72.png");
 		int x = 0;
 		int y = 0;
-		int chipValue = chip.getValue();
 		if(chipValue <= 1) {
 			x = 0;
 		}

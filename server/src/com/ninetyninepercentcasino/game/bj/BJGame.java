@@ -70,7 +70,7 @@ public class BJGame extends Thread {
 			HashMap<BJAction, Boolean> availableActions = currentHand.getOptions();
 			boolean handOver = true;
 			for(Boolean available : availableActions.values()){
-				if (available) {
+				if(available){
 					handOver = false;
 					break;
 				}
