@@ -61,8 +61,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance();
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
-		//drawCardUpdate(firstHand.drawCard(deck), true, true);
+		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
@@ -74,11 +74,11 @@ public class BJGame extends Thread {
 					break;
 				}
 			}
+			sendOptions(availableActions);
 			if(handOver) {
 				resolved.push(hands.pop());
 			}
 			else {
-				sendOptions(availableActions);
 				switch(action){
 					case HIT:
 						drawCardUpdate(currentHand.drawCard(deck), true, true);
@@ -160,7 +160,7 @@ public class BJGame extends Thread {
 		}
 	}
 	private void getInsurance(){
-		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
+		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceMessage());
 		try {
 			player.getConnection().message(insuranceMessage);
 		} catch (SocketException e) {
@@ -225,7 +225,8 @@ public class BJGame extends Thread {
 	 * @param availableActions the
 	 */
 	private void sendOptions(HashMap<BJAction, Boolean> availableActions){
-		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
+		BJAvailActionUpdate update = new BJAvailActionUpdate(availableActions);
+		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, update);
 		try {
 			player.getConnection().message(actionUpdate);
 			synchronized(bjSynchronizer) {
@@ -296,6 +297,9 @@ public class BJGame extends Thread {
 	 */
 	public void setFirstBet(int firstBet){
 		this.firstBet = firstBet;
+	}
+	public void setInsuranceBet(int insuranceBet){
+		this.insuranceBet = insuranceBet;
 	}
 	/**
 	 * called by the ServerConnection managing the game when it receives the client's action

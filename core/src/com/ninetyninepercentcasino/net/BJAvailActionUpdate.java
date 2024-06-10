@@ -7,7 +7,7 @@ import java.util.HashMap;
  * @author Grant Liang
  */
 public class BJAvailActionUpdate extends DTO {
-	private HashMap<BJAction, Boolean> actions; //stores the available actions in key value pairs. key is the action, value is its availability
+	private final HashMap<BJAction, Boolean> actions; //stores the available actions in key value pairs. key is the action, value is its availability
 
 	/**
 	 * initializes a new BJAvailActionUpdate with a given HashMap of actions

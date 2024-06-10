@@ -183,7 +183,6 @@ public class ChipActor extends Actor {
 	 */
 	public void draw(Batch batch, float parentAlpha){
 		if(chipBelow != null) {
-			if(chipBelow instanceof ChipHolder) System.out.println("location set.");
 			sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE);
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		}

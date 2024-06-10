@@ -229,6 +229,12 @@ public abstract class Connection extends Thread {
 	 * post: NetMessage is sent
 	 */
 	public void message(NetMessage message) throws IOException {
+		if(message.getContent() instanceof BJAvailActionUpdate){
+			DTO dto = ((DTO)message.getContent());
+			for(BJAction action : (((BJAvailActionUpdate)dto).getActions().keySet())){
+				System.out.println(action + " " + (((BJAvailActionUpdate)dto).getActions().get(action)));
+			}
+		}
 		out.writeObject(message);
 	}
 

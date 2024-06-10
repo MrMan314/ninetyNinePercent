@@ -36,7 +36,7 @@ public class BJHand extends Hand {
 	}
 
 	/**
-	 * calculates the highest possible bj score of a hand that doesn't bust
+	 * calculates the highest possible blackjack score of a hand that doesn't bust
 	 * @return score of the hand
 	 */
 	public int getScore(){
@@ -56,9 +56,11 @@ public class BJHand extends Hand {
 	}
 	public HashMap<BJAction, Boolean> getOptions(){
 		int score = getScore();
+		System.out.println("score: " + score);
 		for(BJAction action : availableActions.keySet()){
 			availableActions.replace(action, false);
 		}
+
 		if(score < 21) {
 			availableActions.replace(BJAction.STAND, true);
 			availableActions.replace(BJAction.HIT, true);

@@ -63,7 +63,7 @@ public class BJStage extends Stage {
 		if(update instanceof BJBetMessage){
 			startBetPhase();
 		}
-		else if(update instanceof BJInsuranceRequest){
+		else if(update instanceof BJInsuranceMessage){
 			startInsurePhase();
 		}
 		else if(update instanceof BJCardUpdate){
@@ -211,10 +211,10 @@ public class BJStage extends Stage {
 	 */
 	public void sendInsure() {
 		insuredChips = new ChipGroupBet(chips.getHolders());
-		BJBetMessage betRequest = new BJBetMessage(insuredChips.calculate());
+		BJInsuranceMessage insuranceBet = new BJInsuranceMessage(insuredChips.calculate());
 		addActor(insuredChips);
 		insuredChips.stowHolders();
-		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
+		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, insuranceBet);
 		try {
 			client.message(message);
 		} catch (IOException e) {
@@ -265,14 +265,36 @@ public class BJStage extends Stage {
 	 * @param actions describes the available and unavailable actions
 	 */
 	private void updateButtons(HashMap<BJAction, Boolean> actions){
-		if(actions.get(BJAction.HIT)) hitButton.enable();
+		boolean handOver = true;
+		if(actions.get(BJAction.HIT)) {
+			hitButton.enable();
+			handOver = false;
+		}
 		else hitButton.disable();
-		if(actions.get(BJAction.STAND)) standButton.enable();
+		if(actions.get(BJAction.STAND)) {
+			standButton.enable();
+			handOver = false;
+		}
 		else standButton.disable();
-		if(actions.get(BJAction.SPLIT)) splitButton.enable();
+		if(actions.get(BJAction.SPLIT)) {
+			splitButton.enable();
+			handOver = false;
+		}
 		else splitButton.disable();
-		if(actions.get(BJAction.DOUBLE_DOWN)) doubleDownButton.enable();
+		if(actions.get(BJAction.DOUBLE_DOWN)) {
+			doubleDownButton.enable();
+			handOver = false;
+		}
 		else doubleDownButton.disable();
+		if(handOver){
+			if(!splitHands.getCards().isEmpty()){
+				for(Card card : playerHand.getCards()){
+					resolvedHands.addCard(card);
+				}
+				playerHand.clearCards();
+				playerHand.addCard(splitHands.removeCard(0));
+			}
+		}
 	}
 
 	/**

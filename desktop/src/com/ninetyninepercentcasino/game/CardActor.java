@@ -105,10 +105,11 @@ public class CardActor extends Actor {
 	/**
 	 * enlarges the card, called when it is added to a currently active hand
 	 */
-	public void enlarge(){
+	public void makeActive(){
 		if(!isLocalCard) {
 			sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
 			isLocalCard = true;
+			setTouchable(Touchable.enabled);
 		}
 	}
 	/**

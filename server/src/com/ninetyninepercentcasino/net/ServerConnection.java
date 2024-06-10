@@ -82,6 +82,9 @@ public class ServerConnection extends Connection {
 									synchronized(bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
+								}
+								else if(content instanceof BJInsuranceMessage){
+									bjGame.setInsuranceBet(((BJInsuranceMessage) content).getInsureAmount());
 								} else if(content instanceof BJActionUpdate){
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());

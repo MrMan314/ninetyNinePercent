@@ -48,7 +48,7 @@ public class CardGroup extends Table {
 	 * post: adds the CardActor to the hand
 	 */
 	public void addCard(CardActor card){
-		if(isLocalHand) card.enlarge();
+		if(isLocalHand) card.makeActive();
 		hand.addCard(card.getCard());
 		add(card);
 	}

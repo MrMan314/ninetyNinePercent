@@ -1,8 +1,6 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.screens.BJScreen;
 
 import java.io.EOFException;
@@ -55,6 +53,12 @@ public class BJClient extends Connection {
 								break;
 							case INFO: //the message contains information about the game state
 								Object content = message.getContent();
+								if(content instanceof BJAvailActionUpdate){
+									BJAvailActionUpdate thing = (BJAvailActionUpdate)content;
+									for(BJAction action : thing.getActions().keySet()){
+										System.out.println(action + " " + thing.getActions().get(action));
+									}
+								}
 								screen.requestUpdate((DTO)content); //pass the update content to the BJScreen and request an update with it
 							default:
 						}
