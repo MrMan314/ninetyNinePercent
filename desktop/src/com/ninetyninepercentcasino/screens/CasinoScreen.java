@@ -20,7 +20,7 @@ public abstract class CasinoScreen implements Screen {
 	protected float screenWidth = Gdx.graphics.getWidth(); //width of client area in pixels
 	protected CasinoScreen previousScreen;
 	protected Table globalUI;
-	protected Label balanceDisplay;
+	protected Label balanceDisplay; //displays the user's current balance
 
 	/**
 	 * general constructor for a screen in the game
@@ -58,10 +58,16 @@ public abstract class CasinoScreen implements Screen {
 		screenWidth = Gdx.graphics.getWidth();
 	}
 
+	/**
+	 * @return this screen
+	 */
 	public CasinoScreen getThis() {
 		return this;
 	}
 
+	/**
+	 * @return the previous screen
+	 */
 	public CasinoScreen getPreviousScreen() {
 		return previousScreen;
 	}
@@ -76,8 +82,11 @@ public abstract class CasinoScreen implements Screen {
 		stage.addActor(text);
 	}
 
+	/**
+	 * updates any global UI modules
+	 */
 	public void updateGlobalUI(){
-		balanceDisplay.setText("$" + game.balance);
+		balanceDisplay.setText("$" + game.balance); //update the bet display to the player's balance
 	}
 	public Game getGame(){
 		return game;

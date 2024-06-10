@@ -25,11 +25,16 @@ public class ChipGroupBet extends Group {
 		}
 		holders.clear();
 	}
+
+	/**
+	 * makes all chips on this group's chip holders fly away into the sky
+	 */
 	public void floatAway(){
 		for(ChipHolder holder : holders){
 			holder.floatAway();
 		}
 	}
+
 	public void stowHolders(){
 		Table root = new Table();
 		for (ChipHolder holder : holders) {
@@ -49,5 +54,4 @@ public class ChipGroupBet extends Group {
 		}
 		return total;
 	}
-
 }

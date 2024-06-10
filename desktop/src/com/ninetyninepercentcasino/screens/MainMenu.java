@@ -9,17 +9,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 
 /**
- * Main menu of the game
+ * Main menu that leads to the blackjack game and settings menu
  * @author Grant Liang
  */
 public class MainMenu extends CasinoScreen {
-	private Texture background;
+	private Texture background; //the background texture
 	private CasinoScreen nextScreen;
+
+	/**
+	 * initializes a new main menu
+	 * @param game the game that this screen belongs to
+	 */
 	public MainMenu(MainCasino game) {
 		super(game);
 	}
@@ -44,7 +48,7 @@ public class MainMenu extends CasinoScreen {
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		VerticalGroup middleMenu = new VerticalGroup();
+		VerticalGroup middleMenu = new VerticalGroup(); //the group that will hold the buttons and banner in the center of the screen
 		middleMenu.addActor(playButton);
 		middleMenu.addActor(settingsButton);
 
@@ -58,12 +62,6 @@ public class MainMenu extends CasinoScreen {
 
 		background = new Texture("Menus/Background.jpg");
 
-		titleBanner.addListener(new DragListener(){
-			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-				titleBanner.moveBy(x - titleBanner.getWidth() / 2, y - titleBanner.getHeight() / 2); //moves the chip by the given x and y values
-			}
-
-		});
 		/*
 		 * adding change listeners to the buttons on the main menu
 		 * this gives them their functionality to switch the game over to another screen when clicked
@@ -117,20 +115,32 @@ public class MainMenu extends CasinoScreen {
 		stage.act(); //act all actors on stage
 	}
 
+	/**
+	 * called when the user focuses off the screen
+	 */
 	@Override
 	public void pause() {
 
 	}
 
+	/**
+	 * called when the user refocuses onto the screen
+	 */
 	@Override
 	public void resume() {
 
 	}
 
+	/**
+	 * called when the screen is hidden
+	 */
 	@Override
 	public void hide() {
 	}
 
+	/**
+	 * disposes of this screen
+	 */
 	@Override
 	public void dispose() {
 		stage.dispose();

@@ -9,10 +9,10 @@ public class DesktopLauncher {
 	public static void main (String[] args) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("99% Casino");
+		config.setTitle("99% Casino"); //set the title of the window
 		config.useVsync(true);
 		config.setWindowedMode(1920, 1080);
 		config.setWindowIcon("DesktopWindowIcon.png");
-		new Lwjgl3Application(new MainCasino(), config);
+		new Lwjgl3Application(new MainCasino(), config); //launch a new MainCasino for the window
 	}
 }

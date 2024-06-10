@@ -7,8 +7,7 @@ import java.util.HashMap;
  * @author Grant Liang
  */
 public class BJAvailActionUpdate extends DTO {
-	private double key;
-	private boolean[] actions;
+	private final boolean[] actions;
 	/**
 	 * initializes a new BJAvailActionUpdate with a given HashMap of actions
 	 * @param actions describes the available actions

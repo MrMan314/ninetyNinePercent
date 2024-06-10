@@ -28,7 +28,7 @@ public class BJScreen extends CasinoScreen {
 	private Texture background;
 	private BJClient client;
 	private BJStage stage;
-	private ArrayList<DTO> updates;
+	private ArrayList<DTO> updates; //stores all pending updates from the server
 	private boolean firstRender;
 
 	/**
@@ -143,7 +143,7 @@ public class BJScreen extends CasinoScreen {
 		}
 		client.start();
 		try {
-			client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame()));
+			client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame())); //begin the game once connected
 		} catch (IOException ignored) {
 		}
 		stage.setClient(client);
@@ -167,7 +167,7 @@ public class BJScreen extends CasinoScreen {
 		ScreenUtils.clear(0, 0, 0, 1f);
 		stage.updateBetDisplay(); //update the chip calculator number display
 		stage.getBatch().begin();
-		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
+		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2)); //draw the background
 		stage.getBatch().end();
 		updateGlobalUI();
 		stage.act(delta); //act all actors in the stage
@@ -213,7 +213,7 @@ public class BJScreen extends CasinoScreen {
 	}
 
 	/**
-	 * called by the client to request an update to the game state
+	 * called by the BJClient to request an update to the game state
 	 * since multithreading and scene2d don't go well together, this must be done to move the update onto the main Application thread
 	 * @param latestUpdate the DTO transferred by the server holding the information for the update
 	 */

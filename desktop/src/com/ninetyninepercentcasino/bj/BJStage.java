@@ -380,6 +380,10 @@ public class BJStage extends Stage {
 	public void setClient(BJClient client){
 		this.client = client;
 	}
+
+	/**
+	 * @param screen the screen that this stage is being drawn on
+	 */
 	public void setScreen(CasinoScreen screen){
 		this.screen = screen;
 	}

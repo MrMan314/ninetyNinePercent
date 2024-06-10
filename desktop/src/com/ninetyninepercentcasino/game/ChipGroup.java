@@ -87,8 +87,10 @@ public class ChipGroup extends Group {
 
 	public ChipGroup(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
 		holders = new ArrayList<>();
-		spawnX = 0;
-		spawnY = 0;
+		this.spawnX = spawnX - (calculateNumStacks(whiteChips, redChips, blueChips, greenChips, blackChips) * ChipActor.CHIP_WIDTH) / 2; //calculates the left bound of the x position of the leftmost chip stack
+		this.spawnY = spawnY;
+		this.holderSpawnX = holderSpawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2; //calculates the left bound of the x position of the leftmost holder
+		this.holderSpawnY = holderSpawnY;
 		spawnChips(1, whiteChips);
 		spawnChips(5, redChips);
 		spawnChips(10, blueChips);
