@@ -39,6 +39,9 @@ public abstract class Connection extends Thread {
 	 * post: new Connection object
 	 */
 	public Connection(Socket clientSocket) throws IOException {
+		// Log the connection to the console
+		System.out.printf("New connection to %s\n", clientSocket.getRemoteSocketAddress().toString());
+
 		// Copy clientSocket reference
 		this.clientSocket = clientSocket;
 		timerThreads = new ArrayList<Thread>();
@@ -59,9 +62,6 @@ public abstract class Connection extends Thread {
 
 		// Set alive flag
 		alive = true;
-
-		// Log the connection to the console
-		System.out.printf("New connection to %s\n", clientSocket.getRemoteSocketAddress().toString());
 	}
 
 	/**
@@ -70,6 +70,9 @@ public abstract class Connection extends Thread {
 	 * post: new Connection object
 	 */
 	public Connection(Socket clientSocket, List<Connection> clients) throws IOException {
+		// Log the connection to the console
+		System.out.printf("New connection from %s\n", clientSocket.getRemoteSocketAddress().toString());
+
 		// Copy clientSocket and clients List reference
 		this.clients = clients;
 		this.clientSocket = clientSocket;
@@ -92,9 +95,6 @@ public abstract class Connection extends Thread {
 
 		// Set alive flag
 		alive = true;
-
-		// Log the connection to the console
-		System.out.printf("New connection from %s\n", clientSocket.getRemoteSocketAddress().toString());
 	}
 
 	/**
