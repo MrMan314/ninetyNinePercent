@@ -52,7 +52,9 @@ public abstract class Connection extends Thread {
 			timer.scheduleAtFixedRate(keepAliveTimeout, 5000, 5000);
 		} catch (StreamCorruptedException e) {
 			// In case of a corrupt connection, exit
+			alive = false;
 			finish();
+			return;
 		}
 
 		// Set alive flag
@@ -83,7 +85,9 @@ public abstract class Connection extends Thread {
 			timer.scheduleAtFixedRate(keepAliveTimeout, 5000, 5000);
 		} catch (StreamCorruptedException e) {
 			// In case of a corrupt connection, exit
+			alive = false;
 			finish();
+			return;
 		}
 
 		// Set alive flag
