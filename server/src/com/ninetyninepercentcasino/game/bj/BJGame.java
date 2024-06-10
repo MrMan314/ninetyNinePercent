@@ -61,8 +61,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance();
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
-		drawCardUpdate(firstHand.drawCard(deck), true, true);
+		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		//drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
@@ -89,8 +89,9 @@ public class BJGame extends Thread {
 					case SPLIT:
 						BJHand hand1 = new BJHand(player, currentHand.getCard(0));
 						BJHand hand2 = new BJHand(player, currentHand.getCard(1));
-						hands.push(hand1);
+						hands.pop();
 						hands.push(hand2);
+						hands.push(hand1);
 						signalSplit(new Hand(hand1.getCard(0)), new Hand(hand2.getCard(0)));
 						break;
 					case DOUBLE_DOWN:
