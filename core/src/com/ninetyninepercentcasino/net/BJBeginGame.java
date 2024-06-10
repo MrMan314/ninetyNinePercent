@@ -1,5 +1,10 @@
 package com.ninetyninepercentcasino.net;
 
-public class BJBeginGame extends DTO {
 
+/**
+ * DTO that requests the BJGame to begin
+ * @author Grant Liang
+ */
+public class BJBeginGame extends DTO {
+	//uses default java object constructor
 }

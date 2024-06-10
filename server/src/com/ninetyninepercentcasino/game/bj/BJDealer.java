@@ -1,8 +1,8 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 
 public class BJDealer {
 	private Hand hand;

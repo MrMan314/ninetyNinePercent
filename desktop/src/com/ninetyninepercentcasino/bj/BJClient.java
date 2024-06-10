@@ -1,14 +1,6 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.ninetyninepercentcasino.net.Connection;
-import com.ninetyninepercentcasino.net.NetMessage;
-import com.ninetyninepercentcasino.net.BJBetRequest;
-import com.ninetyninepercentcasino.net.BJCardUpdate;
-import com.ninetyninepercentcasino.net.BJInsuranceRequest;
-import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
-import com.ninetyninepercentcasino.net.BJSplit;
-import com.ninetyninepercentcasino.net.BJHandEnd;
-import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.screens.BJScreen;
 
 import java.io.EOFException;
@@ -45,10 +37,9 @@ public class BJClient extends Connection {
 					finish();
 				}
 				try {
-					NetMessage message = (NetMessage) in.readObject();
+					NetMessage message = (NetMessage) in.readObject(); //read the object coming from server
 					message.setOrigin(clientSocket.getRemoteSocketAddress());
 					if (message.getContent() != null) {
-						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
 						switch(message.getType()) {
 							case ACK:
 								aliveMessage = (String) message.getContent();
@@ -60,8 +51,9 @@ public class BJClient extends Connection {
 								}
 								break;
 							case INFO: //the message contains information about the game state
+								System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
 								Object content = message.getContent();
-								screen.requestUpdate((DTO)content);
+								screen.requestUpdate((DTO)content); //pass the update content to the BJScreen and request an update with it
 							default:
 						}
 					}

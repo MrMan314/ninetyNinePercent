@@ -1,8 +1,8 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
 
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class BJHand extends Hand {
 	}
 
 	/**
-	 * calculates the highest possible bj score of a hand that doesn't bust
+	 * calculates the highest possible blackjack score of a hand that doesn't bust
 	 * @return score of the hand
 	 */
 	public int getScore(){
@@ -56,9 +56,11 @@ public class BJHand extends Hand {
 	}
 	public HashMap<BJAction, Boolean> getOptions(){
 		int score = getScore();
+		System.out.println("score: " + score);
 		for(BJAction action : availableActions.keySet()){
 			availableActions.replace(action, false);
 		}
+
 		if(score < 21) {
 			availableActions.replace(BJAction.STAND, true);
 			availableActions.replace(BJAction.HIT, true);
@@ -69,9 +71,10 @@ public class BJHand extends Hand {
 	}
 
 	private boolean canSplit(){
-		return getCards().get(0).getNum() == getCards().get(1).getNum() && getCards().size() == 2;
+		return getCards().size() == 2 && getCards().get(0).getNum() == getCards().get(1).getNum();
 	}
 	private boolean canDoubleDown(){
+		if(getCards().size() != 2) return false;
 		Card card1 = getCards().get(0);
 		Card card2 = getCards().get(1);
 		int score = getScore();

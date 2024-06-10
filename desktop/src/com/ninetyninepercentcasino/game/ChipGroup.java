@@ -1,7 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.ninetyninepercentcasino.game.gameparts.Chip;
 
 import java.util.ArrayList;
 
@@ -23,14 +22,20 @@ public class ChipGroup extends Group {
 	 * initializes and spawns a group of chips as evenly as possible
 	 * @param totalValue the total value of the chips to spawn
 	 * @param numHolders the number of chip holders
+	 * @param spawnX the center of the x location the chips will be spawned at
+	 * @param spawnY the bottom bound of the y location the chips will be spawned at
+	 * @param holderSpawnX the center of the x location the holders will be spawned at
+	 * @param holderSpawnY the bottom bound of the y location the holders will be spawned at
 	 */
 	public ChipGroup(int totalValue, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
 		holders = new ArrayList<>();
+		insuranceHolders = new ArrayList<>();
 		int whiteChips = 0;
 		int redChips = 0;
 		int blueChips = 0;
 		int greenChips = 0;
 		int blackChips = 0;
+		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
 		while(totalValue > 0){
 			if(totalValue >= 2500){
 				totalValue -= 100;
@@ -67,51 +72,53 @@ public class ChipGroup extends Group {
 				whiteChips++;
 			}
 		}
-		this.spawnX = spawnX - (calculateNumStacks(whiteChips, redChips, blueChips, greenChips, blackChips) * ChipActor.CHIP_WIDTH) / 2;
+		this.spawnX = spawnX - (calculateNumStacks(whiteChips, redChips, blueChips, greenChips, blackChips) * ChipActor.CHIP_WIDTH) / 2; //calculates the left bound of the x position of the leftmost chip stack
 		this.spawnY = spawnY;
 		this.holderSpawnX = holderSpawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2; //calculates the left bound of the x position of the leftmost holder
 		this.holderSpawnY = holderSpawnY;
-		addChips(1, whiteChips);
-		addChips(5, redChips);
-		addChips(10, blueChips);
-		addChips(25, greenChips);
-		addChips(100, blackChips);
-		setupHolders(numHolders);
+		//add chips to the chip groups
+		spawnChips(1, whiteChips);
+		spawnChips(5, redChips);
+		spawnChips(10, blueChips);
+		spawnChips(25, greenChips);
+		spawnChips(100, blackChips);
+		setupHolders(numHolders, true);
 	}
 
 	public ChipGroup(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips, int numHolders, float spawnX, float spawnY, float holderSpawnX, float holderSpawnY){
 		holders = new ArrayList<>();
 		spawnX = 0;
 		spawnY = 0;
-		addChips(1, whiteChips);
-		addChips(5, redChips);
-		addChips(10, blueChips);
-		addChips(25, greenChips);
-		addChips(100, blackChips);
-		setupHolders(numHolders);
+		spawnChips(1, whiteChips);
+		spawnChips(5, redChips);
+		spawnChips(10, blueChips);
+		spawnChips(25, greenChips);
+		spawnChips(100, blackChips);
+		setupHolders(numHolders, true);
 	}
 
 	/**
 	 * sets up the holders, spawning them from left to right with no overlap
 	 * @param numHolders the number of holders to spawn
 	 */
-	private void setupHolders(int numHolders){
+	private void setupHolders(int numHolders, boolean isNormalHolder){
 		for(int i = 0; i < numHolders; i++){
 			ChipHolder chipHolder = new ChipHolder();
 			chipHolder.setPosition(holderSpawnX, holderSpawnY);
 			addActor(chipHolder);
-			holders.add(chipHolder);
+			if(isNormalHolder) holders.add(chipHolder);
+			else insuranceHolders.add(chipHolder);
 			holderSpawnX += chipHolder.getWidth(); //move the spawn location over by the width of the chip so the next holder spawns to the right of this one
 		}
 	}
 
 	/**
-	 * adds chips do this group
-	 * chips from the same addChips method are stacked on top of one another initially, but do not share any relation otherwise
+	 * spawns chips in this group
+	 * chips from the same spawnChips method are stacked on top of one another initially, but do not share any relation otherwise
 	 * @param value the value of each chip in the stack
 	 * @param numChips the number of chips to spawn
 	 */
-	public void addChips(int value, int numChips){
+	public void spawnChips(int value, int numChips){
 		int leftInStack = STACK_SIZE;
 		while(numChips > 0){
 			ChipActor chipBelow = new ChipActor(new Chip(value));
@@ -122,26 +129,20 @@ public class ChipGroup extends Group {
 			while(leftInStack > 0 && numChips > 0){
 				ChipActor chipAbove = new ChipActor(new Chip(value));
 				addActor(chipAbove);
-				chipAbove.attachToChip(chipBelow);
+				chipAbove.attachToChip(chipBelow); //attach the newly spawned chip to the chip previously spawned to make a stack
 				chipBelow = chipAbove;
 				leftInStack--;
 				numChips--;
 			}
-			spawnX += chipBelow.getWidth();
+			spawnX += chipBelow.getWidth(); //increment spawnX to spawn the next stack to the right of this stack
 			leftInStack = STACK_SIZE;
 		}
 	}
 
 	/**
-	 * @return the value of all the chips on the chipHolders
+	 * calculates the number of stacks that will be spawned given a certain number of each chip
+	 * @return the number of stacks that will be spawned
 	 */
-	public int calculate(){
-		int total = 0;
-		for(ChipHolder holder : holders){
-			total += holder.calculate();
-		}
-		return total;
-	}
 	private int calculateNumStacks(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips){
 		int numStacks = 0;
 		while(whiteChips > 0){
@@ -166,28 +167,27 @@ public class ChipGroup extends Group {
 		}
 		return numStacks;
 	}
-
 	/**
-	 * disables all the chips on the chipHolders of this group so the client can no longer interact with them
+	 * @return the value of all the chips on the chipHolders
 	 */
-	public void disableChipsHeld(){
+	public int calculate(){
+		int total = 0;
 		for(ChipHolder holder : holders){
-			holder.disable();
+			total += holder.calculate();
 		}
+		return total;
 	}
-	/**
-	 * enables all the chips on the chipHolders of this group so the client can interact with them
-	 */
-	public void enableChipsHeld(){
-		for(ChipHolder holder : holders){
-			holder.enable();
-		}
-	}
-	public void floatAway(){
-		for(ChipHolder holder : holders){
+	public void floatInsuranceAway(){
+		for(ChipHolder holder : insuranceHolders){
 			holder.floatAway();
 		}
 	}
-	public void stowHolders(){
+	public ArrayList<ChipHolder> getHolders(){
+		return holders;
+	}
+	public void addInsuranceHolders(int numHolders, float spawnX, float spawnY){
+		this.holderSpawnX = spawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2;
+		this.holderSpawnY = spawnY;
+		setupHolders(numHolders, false);
 	}
 }

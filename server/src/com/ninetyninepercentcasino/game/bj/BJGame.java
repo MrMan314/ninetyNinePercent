@@ -1,8 +1,8 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.net.BJAvailActionUpdate;
 
@@ -61,7 +61,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance();
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		drawCardUpdate(firstHand.drawCard(deck), true, true);
+		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		//drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
@@ -73,12 +74,11 @@ public class BJGame extends Thread {
 					break;
 				}
 			}
+			sendOptions(availableActions, handOver);
 			if(handOver) {
 				resolved.push(hands.pop());
-				System.out.println("HAND OVER.");
 			}
 			else {
-				sendOptions(availableActions);
 				switch(action){
 					case HIT:
 						drawCardUpdate(currentHand.drawCard(deck), true, true);
@@ -89,9 +89,10 @@ public class BJGame extends Thread {
 					case SPLIT:
 						BJHand hand1 = new BJHand(player, currentHand.getCard(0));
 						BJHand hand2 = new BJHand(player, currentHand.getCard(1));
-						hands.push(hand1);
+						hands.pop();
 						hands.push(hand2);
-						signalSplit(hand1, hand2);
+						hands.push(hand1);
+						signalSplit(new Hand(hand1.getCard(0)), new Hand(hand2.getCard(0)));
 						break;
 					case DOUBLE_DOWN:
 						drawCardUpdate(currentHand.drawCard(deck), true, true);
@@ -141,7 +142,7 @@ public class BJGame extends Thread {
 	}
 
 	private void getInitialBet(){
-		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetRequest());
+		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetMessage());
 		try {
 			player.getConnection().message(getBet);
 		} catch (SocketException e) {
@@ -160,7 +161,7 @@ public class BJGame extends Thread {
 		}
 	}
 	private void getInsurance(){
-		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceRequest());
+		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceMessage());
 		try {
 			player.getConnection().message(insuranceMessage);
 		} catch (SocketException e) {
@@ -224,12 +225,15 @@ public class BJGame extends Thread {
 	 * it is guaranteed that after this method is called setAction() will be called to resume the thread
 	 * @param availableActions the
 	 */
-	private void sendOptions(HashMap<BJAction, Boolean> availableActions){
-		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJAvailActionUpdate(availableActions));
+	private void sendOptions(HashMap<BJAction, Boolean> availableActions, boolean handOver){
+		BJAvailActionUpdate update = new BJAvailActionUpdate(availableActions);
+		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, update);
 		try {
 			player.getConnection().message(actionUpdate);
-			synchronized(bjSynchronizer) {
-				bjSynchronizer.wait(); //waits until the client returns the action
+			if(!handOver){
+				synchronized(bjSynchronizer) {
+					bjSynchronizer.wait(); //waits until the client returns the action
+				}
 			}
 		} catch (SocketException e) {
 			try {
@@ -241,41 +245,52 @@ public class BJGame extends Thread {
 			throw new RuntimeException(e);
 		}
 	}
+
+	/**
+	 * called when the server initiates a split
+	 * @param hand1 the hand that will be played out first
+	 * @param hand2 the hand that will be played out second
+	 */
 	private void signalSplit(Hand hand1, Hand hand2){
 		NetMessage splitUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJSplit(hand1, hand2));
 		try {
-			player.getConnection().message(splitUpdate);
-			synchronized(bjSynchronizer) {
-				bjSynchronizer.wait(); //waits until the client returns the action
-			}
+			player.getConnection().message(splitUpdate); //message the player about the split information
 		} catch (SocketException e) {
 			try {
 				player.getConnection().finish();
 			} catch (IOException f) {
 			}
-		} catch (InterruptedException e) {
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 	}
-	private void sendHandEnd(int winner, int winnings){
-		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(winner, winnings));
-		try {
-			player.getConnection().message(handEndUpdate);
-			synchronized(bjSynchronizer) {
-				bjSynchronizer.wait(); //waits until the client returns the action
-			}
-		} catch (SocketException e) {
-			try {
-				player.getConnection().finish();
-			} catch (IOException f) {
-			}
-		} catch (InterruptedException e) {
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
 
+	/**
+	 * called when a hand is resolved
+	 * @param outcome the outcome of the hand
+	 * @param winnings
+	 */
+	private void sendHandEnd(int outcome, int winnings){
+		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(outcome, winnings));
+		try {
+			player.getConnection().message(handEndUpdate); //message the player about the hand end
+			synchronized(bjSynchronizer) {
+				bjSynchronizer.wait(); //waits until the client returns the action
+			}
+		} catch (SocketException e) {
+			try {
+				player.getConnection().finish();
+			} catch (IOException f) {
+			}
+		} catch (InterruptedException e) {
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
+
+	/**
+	 * @return the synchronizer for this game
+	 */
 	public BJSynchronizer getBjSynchronizer() {
 		return bjSynchronizer;
 	}
@@ -286,6 +301,9 @@ public class BJGame extends Thread {
 	public void setFirstBet(int firstBet){
 		this.firstBet = firstBet;
 	}
+	public void setInsuranceBet(int insuranceBet){
+		this.insuranceBet = insuranceBet;
+	}
 	/**
 	 * called by the ServerConnection managing the game when it receives the client's action
 	 * @param action the action the client has chosen to perform
@@ -294,7 +312,7 @@ public class BJGame extends Thread {
 		this.action = action;
 	}
 	/**
-	 * sleeps the thread to prevent multiple DTOs being sent to client at the same time
+	 * sleeps the thread to animate a pause between information sends, usually done in between card draws
 	 */
 	private void pause(){
 		try {

@@ -1,10 +1,12 @@
 package com.ninetyninepercentcasino.net;
 
+import java.io.Serializable;
+
 /**
- * enum for the available actions in bj
+ * Available actions in a blackjack game
  * @author Grant Liang
  */
-public enum BJAction {
+public enum BJAction implements Serializable {
 	HIT,
 	STAND,
 	SPLIT,

@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class Card implements Serializable {
 	private final int suit; //0 spades, 1 diamonds, 2 clubs, 3 hearts
-	private final int cardNum; //1
+	private final int cardNum;
 	private final static String[] suitNames = {"SPADES", "DIAMONDS", "CLUBS", "HEARTS"};
 	private final static String[] numberNames = {"ZERO_ERROR", "ACE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "JACK", "QUEEN", "KING"};
 	/**
@@ -37,6 +37,10 @@ public class Card implements Serializable {
 	public int getSuit(){
 		return suit;
 	}
+
+	/**
+	 * @return the string of the suit name
+	 */
 	public String getSuitName(){
 		return suitNames[suit];
 	}

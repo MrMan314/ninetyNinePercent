@@ -10,7 +10,15 @@ import com.ninetyninepercentcasino.bj.BJStage;
 
 import java.io.IOException;
 
+/**
+ * Double down button for a blackjack game
+ * Updates the stage when it is clicked
+ * @author Grant Liang
+ */
 public class DDButton extends CasinoButton {
+	/**
+	 * initializes a new double down button
+	 */
 	public DDButton(){
 		super();
 		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 64, 0, BUTTON_ASSET_WIDTH, BUTTON_ASSET_HEIGHT));
@@ -18,6 +26,9 @@ public class DDButton extends CasinoButton {
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){
+			/**
+			 * called when the button is clicked, will signal a double down
+			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if(isAvailable) {

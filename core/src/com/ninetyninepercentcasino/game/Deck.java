@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -7,16 +7,17 @@ import java.util.Collections;
  * @author Grant Liang
  */
 public class Deck {
-	private ArrayList<Card> deck;
+	private ArrayList<Card> deck; //holds the cards in the deck
 
 	/**
 	 * initializes a new, unshuffled deck
 	 */
 	public Deck(){
 		deck = new ArrayList<>();
-		for(int i = 0; i < 4; i++) {
-			for (int j = 13; j >= 1; j--) {
-				deck.add(new Card(j, i));
+		//creating all the cards in the deck
+		for(int i = 0; i < 4; i++) { //loop through each available suit
+			for (int j = 13; j >= 1; j--) { //loop through each available number
+				deck.add(new Card(j, i)); //add a card with j number and i suit
 			}
 		}
 	}
@@ -36,6 +37,10 @@ public class Deck {
 		return deck.remove(0);
 	}
 
+	/**
+	 * deals a Card to the given Hand
+	 * @param hand the Hand that will receive the Card
+	 */
 	public void deal(Hand hand){
 		hand.addCard(deck.remove(0));
 	}
