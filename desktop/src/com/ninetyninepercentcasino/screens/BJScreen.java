@@ -27,7 +27,7 @@ public class BJScreen extends CasinoScreen {
 	private Texture background;
 	private BJClient client;
 	private BJStage stage;
-	private PriorityQueue<DTO> updates;
+	private ArrayList<DTO> updates;
 	private boolean firstRender;
 
 	/**
@@ -68,7 +68,7 @@ public class BJScreen extends CasinoScreen {
 		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
 
-		updates = new PriorityQueue<>();
+		updates = new ArrayList<>();
 
 		background = new Texture("GameAssets/PokerTable.png");
 
@@ -158,7 +158,7 @@ public class BJScreen extends CasinoScreen {
 			firstRender = false;
 		}
 		if(!updates.isEmpty()){
-			stage.handleDTO(updates.poll()); //update the stage with a DTO if there are still DTOs in the queue
+			stage.handleDTO(updates.remove(0)); //update the stage with a DTO if there are still DTOs in the queue
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
 		stage.updateBetDisplay(); //update the chip calculator number display

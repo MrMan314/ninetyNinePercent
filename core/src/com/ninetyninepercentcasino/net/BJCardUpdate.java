@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
+import com.ninetyninepercentcasino.game.Card;
 
 /**
  * DTO for whenever a new card is introduced to the BJ game

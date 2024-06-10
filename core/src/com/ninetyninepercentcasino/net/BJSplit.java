@@ -1,6 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Hand;
 
 /**
  * DTO to signal a split in a blackjack game

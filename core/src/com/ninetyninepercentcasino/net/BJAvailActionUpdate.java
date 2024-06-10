@@ -1,7 +1,6 @@
 package com.ninetyninepercentcasino.net;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * DTO that the server sends to client to inform them of the actions and their availability

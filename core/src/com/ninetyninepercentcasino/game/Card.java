@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 
 import java.io.Serializable;
 

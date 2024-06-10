@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.ninetyninepercentcasino.game.ChipGroupBet;
 import com.ninetyninepercentcasino.game.buttons.*;
 import com.ninetyninepercentcasino.game.CardGroup;
 import com.ninetyninepercentcasino.game.ChipGroup;
 import com.ninetyninepercentcasino.game.DeckActor;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 import com.ninetyninepercentcasino.audio.SFXManager;
-import com.ninetyninepercentcasino.game.gameparts.Card;
+import com.ninetyninepercentcasino.game.Card;
 import com.ninetyninepercentcasino.net.*;
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ public class BJStage extends Stage {
 	private CardGroup splits;
 	private DeckActor deckActor;
 	private ChipGroup chips; //the chips displayed on screen
+	private ChipGroupBet betChips;
+	private ChipGroupBet insuredChips;
 	private Table betDisplays;
 
 	private BetButton betButton;
@@ -122,14 +125,16 @@ public class BJStage extends Stage {
 	 * sends a bet to the server
 	 */
 	public void sendBet(){
-		BJBetMessage betRequest = new BJBetMessage(chips.calculate());
+		betChips = new ChipGroupBet(chips.getHolders());
+		BJBetMessage betRequest = new BJBetMessage(betChips.calculate());
+		addActor(betChips);
+		betChips.stowHolders();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
 		try {
 			client.message(message);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		chips.disableChipsHeld();
 		setupGame();
 	}
 
@@ -183,7 +188,7 @@ public class BJStage extends Stage {
 
 		bjButtons.setVisible(false);
 		InsureButton insureButton = new InsureButton();
-		chips.enableChipsHeld();
+		chips.addInsuranceHolders(5, WORLD_WIDTH/2, WORLD_HEIGHT/2);
 		insureButton.enable();
 		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
 
@@ -201,14 +206,16 @@ public class BJStage extends Stage {
 	 * sends an insurance bet to the server
 	 */
 	public void sendInsure() {
-		BJBetMessage betRequest = new BJBetMessage(chips.calculate());
+		insuredChips = new ChipGroupBet(chips.getHolders());
+		BJBetMessage betRequest = new BJBetMessage(insuredChips.calculate());
+		addActor(insuredChips);
+		insuredChips.stowHolders();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
 		try {
 			client.message(message);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		chips.disableChipsHeld();
 		betDisplays.setVisible(false);
 		bjButtons.setVisible(true);
 	}
@@ -339,7 +346,7 @@ public class BJStage extends Stage {
 
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
-		if(handEnd.getOutcome() != BJHandEnd.PLAYER_WON) chips.floatAway();
+		if(handEnd.getOutcome() != BJHandEnd.PLAYER_WON) betChips.floatAway();
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server

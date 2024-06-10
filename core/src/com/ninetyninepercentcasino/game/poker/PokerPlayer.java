@@ -1,7 +1,7 @@
 package com.ninetyninepercentcasino.game.poker;
 
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 
 /**
  * Models a poker player

@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 
 /**
  * Models a chip, an item commonly used in place of cash at a casino

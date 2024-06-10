@@ -1,8 +1,8 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
 
 import java.util.HashMap;
@@ -69,9 +69,10 @@ public class BJHand extends Hand {
 	}
 
 	private boolean canSplit(){
-		return getCards().get(0).getNum() == getCards().get(1).getNum() && getCards().size() == 2;
+		return getCards().size() == 2 && getCards().get(0).getNum() == getCards().get(1).getNum();
 	}
 	private boolean canDoubleDown(){
+		if(getCards().size() != 2) return false;
 		Card card1 = getCards().get(0);
 		Card card2 = getCards().get(1);
 		int score = getScore();

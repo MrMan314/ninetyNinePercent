@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +16,15 @@ public class Hand implements Serializable {
 	 */
 	public Hand(){
 		hand = new ArrayList<>();
+	}
+	/**
+	 * Constructor that initializes a new player hand with a given card
+	 * pre: none
+	 * post: initializes a hand with a given card
+	 */
+	public Hand(Card card){
+		hand = new ArrayList<>();
+		hand.add(card);
 	}
 	/**
 	 * Method that adds a Card to the hand and returns the card added

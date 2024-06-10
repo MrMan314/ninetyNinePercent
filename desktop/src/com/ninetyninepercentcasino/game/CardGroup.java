@@ -3,8 +3,6 @@ package com.ninetyninepercentcasino.game;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 

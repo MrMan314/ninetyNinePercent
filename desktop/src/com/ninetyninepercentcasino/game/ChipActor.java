@@ -1,6 +1,5 @@
 package com.ninetyninepercentcasino.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.VisibleAction;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.ninetyninepercentcasino.audio.SFXManager;
-import com.ninetyninepercentcasino.game.gameparts.Chip;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
@@ -32,7 +30,7 @@ public class ChipActor extends Actor {
 
 	protected static final float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
 	private static final float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
-	protected static final float CHIP_DISTANCE = 22 * SCALE_FACTOR; //distance between each chip in a stack
+	protected static final float CHIP_DISTANCE = 20 * SCALE_FACTOR; //distance between each chip in a stack
 	protected static final float DETACH_DISTANCE = 50; //distance between chips where they will detach
 	protected static final float ATTACH_DISTANCE = 40; //distance between chips where they will attach
 
@@ -49,6 +47,7 @@ public class ChipActor extends Actor {
 	 * @param chip the Chip this will wrap
 	 */
 	public ChipActor(Chip chip){
+		debug();
 		this.chip = chip;
 		chipBelow = null; //in the beginning there will be no chip above or below this chip
 		chipAbove = null;
@@ -61,17 +60,17 @@ public class ChipActor extends Actor {
 			/**
 			 * pops this ChipActor and the stack above it because the cursor has entered it
 			 */
-//			@Override
-//			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-//				if(pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
-//			}
-//			/**
-//			 * unpops this ChipActor and the stack above it because the cursor has exited it
-//			 */
-//			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-//				if(pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
-//				SFXManager.playChipLaySound();
-//			}
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+				if(pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
+			}
+			/**
+			 * unpops this ChipActor and the stack above it because the cursor has exited it
+			 */
+			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+				if(pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
+				SFXManager.playChipLaySound();
+			}
 		});
 		addListener(new DragListener(){ //add a drag listener that will enable the chips to be dragged around by the mouse
 			public void dragStart (InputEvent event, float x, float y, int pointer) {
@@ -184,6 +183,7 @@ public class ChipActor extends Actor {
 	 */
 	public void draw(Batch batch, float parentAlpha){
 		if(chipBelow != null) {
+			if(chipBelow instanceof ChipHolder) System.out.println("location set.");
 			sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE);
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		}
@@ -297,7 +297,11 @@ public class ChipActor extends Actor {
 			chipAbove.focusStack(z+1);
 		}
 	}
-
+	public void transferStackToGroup(ChipGroupBet chipGroupBet){
+		if(this instanceof ChipHolder) System.out.println("holder added.");
+		chipGroupBet.addActor(this);
+		if(!isTopChip()) chipAbove.transferStackToGroup(chipGroupBet);
+	}
 	/**
 	 * calculates the currency value of this chip and all chips above it
 	 * @return the value of this chip and all chips above it
@@ -318,20 +322,19 @@ public class ChipActor extends Actor {
 	 * makes the entire stack this chip belongs to float up and out of the top of the screen
 	 * chips at the top will float away first, followed by chips underneath
 	 */
-	public void floatAway(){
-		if(isTopChip()){
-			if(chipBelow != null) {
+	public void floatAway() {
+		if (isTopChip()) {
+			if (chipBelow != null) {
 				chipBelowBeforeRise = chipBelow;
 				detach();
 			}
 			rising = true;
 			MoveByAction floatAction = new MoveByAction();
-			floatAction.setAmountY(getStage().getHeight()*2f);
+			floatAction.setAmountY(getStage().getHeight() * 2f);
 			floatAction.setDuration(3f);
 			VisibleAction disappear = new VisibleAction();
 			disappear.setVisible(false);
 			addAction(sequence(floatAction, disappear)); //chain the disappear action to be after the floating action
-		}
-		else chipAbove.floatAway();
+		} else chipAbove.floatAway();
 	}
 }
