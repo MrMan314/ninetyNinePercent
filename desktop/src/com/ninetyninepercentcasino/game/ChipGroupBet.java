@@ -12,12 +12,18 @@ import java.util.ArrayList;
  */
 public class ChipGroupBet extends Group {
 	ArrayList<ChipHolder> holders;
+
+	/**
+	 * initializes a new group of chips that have been bet
+	 * @param holders the holders that held the chips that were bet
+	 */
 	public ChipGroupBet(ArrayList<ChipHolder> holders){
-		this.holders = holders;
+		this.holders = new ArrayList<>(holders);
 		for(ChipHolder holder : holders){
-			holder.transferStackToGroup(this);
-			//holder.disable();
+			holder.transferStackToGroup(this); //transfer all chips on the holders to this group
+			holder.disable(); //disable all bet chips
 		}
+		holders.clear();
 	}
 	public void floatAway(){
 		for(ChipHolder holder : holders){

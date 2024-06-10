@@ -175,15 +175,24 @@ public class ChipGroup extends Group {
 		for(ChipHolder holder : holders){
 			total += holder.calculate();
 		}
+		for(ChipHolder holder : insuranceHolders){
+			total += holder.calculate();
+		}
 		return total;
 	}
-	public void floatInsuranceAway(){
-		for(ChipHolder holder : insuranceHolders){
-			holder.floatAway();
-		}
-	}
+
+	/**
+	 * @return the initial bet holders in the chip group
+	 */
 	public ArrayList<ChipHolder> getHolders(){
 		return holders;
+	}
+
+	/**
+	 * @return the insurance holders in the chip group
+	 */
+	public ArrayList<ChipHolder> getInsuranceHolders(){
+		return insuranceHolders;
 	}
 	public void addInsuranceHolders(int numHolders, float spawnX, float spawnY){
 		this.holderSpawnX = spawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2;

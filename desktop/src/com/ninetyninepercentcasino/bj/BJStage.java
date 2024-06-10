@@ -168,7 +168,6 @@ public class BJStage extends Stage {
 		lowerTable.add(playerHand).bottom();
 		lowerTable.add(splitHands).top().padLeft(WORLD_WIDTH/16);
 
-
 		addActor(upperTable);
 		addActor(bjButtons);
 		addActor(lowerTable);
@@ -183,15 +182,13 @@ public class BJStage extends Stage {
 
 		bjButtons.setVisible(false);
 		InsureButton insureButton = new InsureButton();
-		chips.addInsuranceHolders(5, WORLD_WIDTH/2, WORLD_HEIGHT/2);
+		chips.addInsuranceHolders(5, WORLD_WIDTH/2, WORLD_HEIGHT/5f);
 		insureButton.enable();
-		insureButton.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.3f);
 
 		betDisplays = new Table();
-		betDisplays.add(insureButton);
-		betDisplays.add(insureButton).spaceRight(WORLD_WIDTH/4);
-		betDisplays.add(betDisplay).spaceLeft(WORLD_WIDTH/4);
-		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/1.5f);
+		betDisplays.add(insureButton).padRight(WORLD_WIDTH/80);
+		betDisplays.add(betDisplay).width(WORLD_WIDTH/4);
+		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/2.3f);
 		betDisplays.setVisible(true);
 
 		addActor(betDisplays);
@@ -201,7 +198,7 @@ public class BJStage extends Stage {
 	 * sends an insurance bet to the server
 	 */
 	public void sendInsure() {
-		insuredChips = new ChipGroupBet(chips.getHolders());
+		insuredChips = new ChipGroupBet(chips.getInsuranceHolders());
 		BJInsuranceMessage insuranceBet = new BJInsuranceMessage(insuredChips.calculate());
 		addActor(insuredChips);
 		insuredChips.stowHolders();
@@ -356,7 +353,7 @@ public class BJStage extends Stage {
 	 */
 	private void handleSplit(BJSplit bjSplit){
 		splitHands.addCard(bjSplit.getHand2().getCard(0));
-		playerHand.removeCard(bjSplit.getHand1().getCard(0));
+		playerHand.removeCard(bjSplit.getHand2().getCard(0));
 	}
 	/**
 	 * disables each button
