@@ -7,20 +7,34 @@ import java.util.HashMap;
  * @author Grant Liang
  */
 public class BJAvailActionUpdate extends DTO {
-	private final HashMap<BJAction, Boolean> actions; //stores the available actions in key value pairs. key is the action, value is its availability
-
+	private double key;
+	private boolean[] actions;
 	/**
 	 * initializes a new BJAvailActionUpdate with a given HashMap of actions
 	 * @param actions describes the available actions
 	 */
 	public BJAvailActionUpdate(HashMap<BJAction, Boolean> actions){
-		this.actions = actions;
+		this.actions = new boolean[4];
+		this.actions[0] = actions.get(BJAction.HIT);
+		this.actions[1] = actions.get(BJAction.STAND);
+		this.actions[2] = actions.get(BJAction.SPLIT);
+		this.actions[3] = actions.get(BJAction.DOUBLE_DOWN);
+		key = Math.random();
+		System.out.println(key);
+		for(BJAction action : actions.keySet()){
+			System.out.println(action + " " + actions.get(action));
+		}
 	}
 
 	/**
 	 * @return HashMap of actions and their availability
 	 */
 	public HashMap<BJAction, Boolean> getActions(){
-		return actions;
+		HashMap<BJAction, Boolean> availActions = new HashMap<>();
+		availActions.put(BJAction.HIT, actions[0]);
+		availActions.put(BJAction.STAND, actions[1]);
+		availActions.put(BJAction.SPLIT, actions[2]);
+		availActions.put(BJAction.DOUBLE_DOWN, actions[3]);
+		return availActions;
 	}
 }

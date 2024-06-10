@@ -56,7 +56,6 @@ public class ServerConnection extends Connection {
 					// Run if the message is not bogus
 					if (message.getContent() != null) {
 						// Log the message to the console
-						System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
 						switch(message.getType()) {
 							case ACK:
 								// Set the aliveMessage to the content of the message
@@ -70,13 +69,14 @@ public class ServerConnection extends Connection {
 								}
 								break;
 							case INFO:
+								System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
 								// Read content of message
 								Object content = message.getContent();
 								if(content instanceof BJBeginGame){
 									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
 									bjGame.start();
 								}
-								if(content instanceof BJBetMessage) {
+								else if(content instanceof BJBetMessage) {
 									// Process BJBetMessage if it is a BJBetMessage
 									bjGame.setFirstBet(((BJBetMessage)content).getAmountBet());
 									synchronized(bjGame.getBjSynchronizer()) {
@@ -85,6 +85,9 @@ public class ServerConnection extends Connection {
 								}
 								else if(content instanceof BJInsuranceMessage){
 									bjGame.setInsuranceBet(((BJInsuranceMessage) content).getInsureAmount());
+									synchronized(bjGame.getBjSynchronizer()) {
+										bjGame.getBjSynchronizer().notify();
+									}
 								} else if(content instanceof BJActionUpdate){
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());

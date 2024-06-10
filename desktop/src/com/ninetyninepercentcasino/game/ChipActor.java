@@ -47,7 +47,6 @@ public class ChipActor extends Actor {
 	 * @param chip the Chip this will wrap
 	 */
 	public ChipActor(Chip chip){
-		debug();
 		this.chip = chip;
 		chipBelow = null; //in the beginning there will be no chip above or below this chip
 		chipAbove = null;
@@ -92,8 +91,8 @@ public class ChipActor extends Actor {
 				}
 				moveBy(x - getWidth() / 2, y - getHeight() / 2 ); //moves the chip by the given x and y values
 				sprite.translate(x - getWidth() / 2, y - getHeight() / 2); //translates the visual of the chip as well
-				System.out.println(x - getWidth() / 2 + " , " + (y - getHeight() / 2));
-				System.out.println("X: " + x + " Y: " + y);
+				//System.out.println(x - getWidth() / 2 + " , " + (y - getHeight() / 2));
+				//System.out.println("X: " + x + " Y: " + y);
 				if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE){
 					//this chip is more than DETACH_DISTANCE away from the chip below, so detach
 					detach();

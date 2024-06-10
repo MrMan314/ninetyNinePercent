@@ -74,7 +74,7 @@ public class BJGame extends Thread {
 					break;
 				}
 			}
-			sendOptions(availableActions);
+			sendOptions(availableActions, handOver);
 			if(handOver) {
 				resolved.push(hands.pop());
 			}
@@ -224,13 +224,15 @@ public class BJGame extends Thread {
 	 * it is guaranteed that after this method is called setAction() will be called to resume the thread
 	 * @param availableActions the
 	 */
-	private void sendOptions(HashMap<BJAction, Boolean> availableActions){
+	private void sendOptions(HashMap<BJAction, Boolean> availableActions, boolean handOver){
 		BJAvailActionUpdate update = new BJAvailActionUpdate(availableActions);
 		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, update);
 		try {
 			player.getConnection().message(actionUpdate);
-			synchronized(bjSynchronizer) {
-				bjSynchronizer.wait(); //waits until the client returns the action
+			if(!handOver){
+				synchronized(bjSynchronizer) {
+					bjSynchronizer.wait(); //waits until the client returns the action
+				}
 			}
 		} catch (SocketException e) {
 			try {
