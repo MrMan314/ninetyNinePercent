@@ -29,7 +29,8 @@ import java.util.HashMap;
 public class BJStage extends Stage {
 	private CardGroup playerHand;
 	private CardGroup dealerHand;
-	private CardGroup splits;
+	private CardGroup splitHands;
+	private CardGroup resolvedHands;
 	private DeckActor deckActor;
 	private ChipGroup chips; //the chips displayed on screen
 	private ChipGroupBet betChips;
@@ -149,7 +150,8 @@ public class BJStage extends Stage {
 
 		playerHand = new CardGroup(true, true);
 		dealerHand = new CardGroup(false, false);
-		splits = new CardGroup(true, false);
+		splitHands = new CardGroup(true, false);
+		resolvedHands = new CardGroup(true, false);
 		deckActor = new DeckActor();
 
 		bjButtons = new Table();
@@ -171,8 +173,10 @@ public class BJStage extends Stage {
 
 		Table lowerTable = new Table();
 		lowerTable.setPosition(WORLD_WIDTH / 2, 0);
+		lowerTable.add(resolvedHands).top().padRight(WORLD_WIDTH/16);
 		lowerTable.add(playerHand).bottom();
-		lowerTable.add(splits).bottom().padLeft(WORLD_WIDTH/16);
+		lowerTable.add(splitHands).top().padLeft(WORLD_WIDTH/16);
+
 
 		addActor(upperTable);
 		addActor(bjButtons);
@@ -235,7 +239,7 @@ public class BJStage extends Stage {
 	 * @param card the card to be added
 	 */
 	private void addDealerCard(Card card){
-		if(dealerHand.getHand().getCards().size() == 2) dealerHand.reveal();
+		if(dealerHand.getCards().size() == 2) dealerHand.reveal();
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
 	}
@@ -297,6 +301,13 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		if(!splitHands.getCards().isEmpty()){
+			for(Card card : playerHand.getCards()){
+				resolvedHands.addCard(card);
+			}
+			playerHand.clearCards();
+			playerHand.addCard(splitHands.removeCard(0));
+		}
 		disableAllButtons();
 	}
 	/**
@@ -331,7 +342,7 @@ public class BJStage extends Stage {
 	 * handles the server sending over a successful split
 	 */
 	private void handleSplit(BJSplit bjSplit){
-		splits.addCard(bjSplit.getHand2().getCard(0));
+		splitHands.addCard(bjSplit.getHand2().getCard(0));
 		playerHand.removeCard(bjSplit.getHand1().getCard(0));
 	}
 	/**

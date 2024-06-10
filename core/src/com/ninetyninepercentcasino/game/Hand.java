@@ -47,9 +47,10 @@ public class Hand implements Serializable {
 	/**
 	 * removes the card at a specified index of the hand
 	 * @param index the index of the card to be removed
+	 * @return the removed card
 	 */
-	public void removeCard(int index){
-		hand.remove(index);
+	public Card removeCard(int index){
+		return hand.remove(index);
 	}
 
 	/**

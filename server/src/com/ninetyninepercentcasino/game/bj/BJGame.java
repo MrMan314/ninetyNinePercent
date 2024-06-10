@@ -76,7 +76,6 @@ public class BJGame extends Thread {
 			}
 			if(handOver) {
 				resolved.push(hands.pop());
-				System.out.println("HAND OVER.");
 			}
 			else {
 				sendOptions(availableActions);

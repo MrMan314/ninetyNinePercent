@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class CardActor extends Actor {
 	private Card card; //the Card instance that this Actor wraps
 	private boolean faceUp; //stores the current state of the card
+	private boolean isLocalCard;
 
 	boolean popped; //card is popped when the cursor is touching it
 	final static float POP_DISTANCE = 20; //the distance the card will pop up when hovered over
@@ -39,6 +40,7 @@ public class CardActor extends Actor {
 			sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
 		}
 		else setTouchable(Touchable.disabled); //the card is not local, so make it not interactable
+		this.isLocalCard = isLocalCard;
 		popped = false;
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight()); //set the hit bounds of the actor to match the sprite's width and height, but the actor's x and y coordinates.
 		addListener(new ClickListener(){ //listens for enter and exit events
@@ -100,6 +102,15 @@ public class CardActor extends Actor {
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 
+	/**
+	 * enlarges the card, called when it is added to a currently active hand
+	 */
+	public void enlarge(){
+		if(!isLocalCard) {
+			sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
+			isLocalCard = true;
+		}
+	}
 	/**
 	 * @return the Card that this CardActor wraps
 	 */
