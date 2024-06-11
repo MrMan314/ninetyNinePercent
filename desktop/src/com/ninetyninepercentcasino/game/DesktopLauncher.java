@@ -36,7 +36,6 @@ public class DesktopLauncher {
 					throw new RuntimeException(String.format("Invalid port number: %s.", props.getProperty("port")));
 				}
 				ready = true;
-				System.out.println("asdfasdfs");
 			} catch (FileNotFoundException e) {
 				File configFile = new File("client.properties");
 				configFile.createNewFile();

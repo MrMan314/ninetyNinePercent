@@ -139,6 +139,9 @@ public class ServerConnection extends Connection {
 	}
 
 	public void dispose() {
-		bjGame.interrupt();
+		try {
+			bjGame.interrupt();
+		} catch (NullPointerException e) {
+		}
 	}
 }
