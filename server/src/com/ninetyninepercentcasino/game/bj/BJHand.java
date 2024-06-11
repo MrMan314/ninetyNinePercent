@@ -4,7 +4,10 @@ import com.ninetyninepercentcasino.game.Card;
 import com.ninetyninepercentcasino.game.Deck;
 import com.ninetyninepercentcasino.game.Hand;
 import com.ninetyninepercentcasino.net.BJAction;
-
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransaction;
+import ninetyNinePercentChain.NetworkTransaction.WaitForTransactionManager;
+import ninetyNinePercentChain.Keys.KeyPairManager;
+import java.io.IOException;
 import java.util.HashMap;
 import ninetyNinePercentChain.NetworkTransaction.WaitForTransactionManager;
 import ninetyNinePercentChain.NetworkTransaction.WaitForTransaction;
@@ -111,12 +114,20 @@ public class BJHand extends Hand {
 	 * @param amountBet the amount bet on this hand
 	 */
 	public void setBet(int amountBet){
+<<<<<<< Updated upstream
 		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
 		this.amountBet = amountBet;
 	}
 
 	public void doubleBet(){
 		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
+=======
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
+		this.amountBet = amountBet;
+	}
+	public void doubleBet(){
+		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
+>>>>>>> Stashed changes
 		amountBet *= 2;
 	}
 

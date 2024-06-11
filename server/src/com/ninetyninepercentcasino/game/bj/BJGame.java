@@ -111,8 +111,12 @@ public class BJGame extends Thread {
 			int winnings = 0; //net earnings for the player
 			switch(outcome){
 				case PLAYER_BLACKJACK:
+<<<<<<< Updated upstream
 					TransactionComposer.createTransaction((int) (currentHand.getAmountBet()*2.5), "ServerKey", player.getPublicKey());
 					player.addBalance((int) (currentHand.getAmountBet()*2.5));
+=======
+					NetworkInterface.createTransaction((int) (currentHand.getAmountBet()*2.5), "ServerKey", player.getPublicKey());
+>>>>>>> Stashed changes
 					winnings = (int) (currentHand.getAmountBet()*1.5);
 					break;
 				case PLAYER_WON:
@@ -124,11 +128,15 @@ public class BJGame extends Thread {
 					winnings = 0;
 					break;
 				case DEALER_WON:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 					if(dealer.getNumCards() == 2) TransactionComposer.createTransaction(dealer.getInsuranceBet()*3, "ServerKey", player.getPublicKey());
 =======
 					if(dealer.getNumCards() == 2) player.addBalance(insuranceBet*3);
 >>>>>>> 8d2fb038415ab223f79a255729574204a65ca21d
+=======
+					if(dealer.getNumCards() == 2) NetworkInterface.createTransaction(dealer.getInsuranceBet()*3, "ServerKey", player.getPublicKey());
+>>>>>>> Stashed changes
 					winnings = dealer.getInsuranceBet()*2;
 					break;
 			}
