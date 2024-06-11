@@ -106,7 +106,7 @@ public class HolePunchConnection extends Connection {
 					e.printStackTrace();
 				}
 			}
-		}.start();	
+		}.start();
 	}
 
 	public static void main(String[] args) throws IOException {
