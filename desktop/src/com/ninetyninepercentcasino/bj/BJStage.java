@@ -90,7 +90,7 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
-		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/3f);
+		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/2.8f);
 		addActor(chips);
 
 		chipSpawners = new Table();
@@ -120,6 +120,7 @@ public class BJStage extends Stage {
 		betDisplays.add(betDisplay).width(WORLD_HEIGHT/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/5.8f);
 		addActor(betDisplays);
+		betDisplays.toBack();
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class BJStage extends Stage {
 		Table upperTable = new Table();
 		upperTable.add(deckActor).spaceRight(100);
 		upperTable.add(dealerHand);
-		upperTable.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 1.55f);
+		upperTable.setPosition(WORLD_WIDTH / 2.4f, WORLD_HEIGHT / 1.55f);
 
 		Table lowerTable = new Table();
 		lowerTable.setPosition(WORLD_WIDTH / 2, 0);

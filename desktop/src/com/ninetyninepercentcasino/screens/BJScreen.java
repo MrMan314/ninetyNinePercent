@@ -2,7 +2,6 @@ package com.ninetyninepercentcasino.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -101,31 +100,6 @@ public class BJScreen extends CasinoScreen {
 						e.printStackTrace();
 					}
 					getThis().dispose();
-					return true;
-				}
-				float distance = 100f;
-				if(keycode == Input.Keys.W){
-					stage.getCamera().translate(0, distance, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.A){
-					stage.getCamera().translate(-distance, 0, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.S){
-					stage.getCamera().translate(0, -distance, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.D){
-					stage.getCamera().translate(distance, 0, 0);
-					return true;
-				}
-				if(keycode == Input.Keys.E){
-					((OrthographicCamera)stage.getCamera()).zoom += .5f;
-					return true;
-				}
-				if(keycode == Input.Keys.F){
-					((OrthographicCamera)stage.getCamera()).zoom -= 0.5f;
 					return true;
 				}
 				return false;
