@@ -16,18 +16,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * this class contains all the actors in a BJGame stage
- * also includes methods for changing the game state and handles DTOs coming in from the server
+ * This class contains all the actors required for a blackjack game
+ * Also includes methods for changing the game state and handles DTOs coming in from the server
  * @author Grant Liang
  */
 public class BJStage extends Stage {
 	private CasinoScreen screen; //the screen that displays this stage
 	private MainCasino game;
-	private CardGroup playerHand;
+	private CardGroup playerHand; //holds the current hand the player is managing
 	private CardGroup dealerHand;
-	private CardGroup splitHands;
-	private CardGroup resolvedHands;
-	private DeckActor deckActor;
+	private CardGroup splitHands; //holds the hands that have been split and are waiting to be resolved
+	private CardGroup resolvedHands; //holds all resolved hands
 	private ChipGroup chips; //the chips displayed on screen
 	private ChipGroupBet betChips;
 	private ChipGroupBet insuredChips;
@@ -38,8 +37,9 @@ public class BJStage extends Stage {
 	private StandButton standButton;
 	private DDButton doubleDownButton;
 	private Table bjButtons;
+
 	private Table betDisplays;
-	private Label betDisplay;
+	private Label betDisplay; //will display to the user the value of all chips on the chip holders
 
 	private Table chipSpawners;
 
@@ -58,6 +58,7 @@ public class BJStage extends Stage {
 	 * @param update the DTO containing information about the game update
 	 */
 	public void handleDTO(DTO update){
+		//check the type of message and call the appropriate method
 		if(update instanceof BJBetMessage){
 			startBetPhase();
 		}
@@ -81,6 +82,9 @@ public class BJStage extends Stage {
 			revealDealerHand();
 			endHand((BJHandEnd)update);
 		}
+		else if(update instanceof BJPayout){
+			game.balance += ((BJPayout)(update)).getWinnings();
+		}
 	}
 
 	/**
@@ -90,6 +94,7 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		//spawn the chips in
 		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/2.8f);
 		addActor(chips);
 
@@ -120,7 +125,7 @@ public class BJStage extends Stage {
 		betDisplays.add(betDisplay).width(WORLD_HEIGHT/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/5.8f);
 		addActor(betDisplays);
-		betDisplays.toBack();
+		betDisplays.toBack(); //send bet displays to the back, so they don't cover chips and make them irretrievable
 	}
 
 	/**
@@ -150,7 +155,7 @@ public class BJStage extends Stage {
 	}
 
 	/**
-	 * sets up the player hand, dealer hand, buttons, and everything else needed for the BJ gaem
+	 * sets up the player hand, dealer hand, buttons, and everything else needed for the BJ game
 	 */
 	private void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
@@ -162,9 +167,9 @@ public class BJStage extends Stage {
 		dealerHand = new CardGroup(false, false);
 		splitHands = new CardGroup(true, false);
 		resolvedHands = new CardGroup(true, false);
-		deckActor = new DeckActor();
+		DeckActor deckActor = new DeckActor();
 
-		bjButtons = new Table();
+		bjButtons = new Table(); //will hold all the buttons
 		hitButton = new HitButton();
 		splitButton = new SplitButton();
 		standButton = new StandButton();
@@ -176,12 +181,12 @@ public class BJStage extends Stage {
 
 		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.5f);
 
-		Table upperTable = new Table();
+		Table upperTable = new Table(); //will hold the deck and dealer hand
 		upperTable.add(deckActor).spaceRight(100);
 		upperTable.add(dealerHand);
 		upperTable.setPosition(WORLD_WIDTH / 2.4f, WORLD_HEIGHT / 1.55f);
 
-		Table lowerTable = new Table();
+		Table lowerTable = new Table(); //will hold all the player's cards
 		lowerTable.setPosition(WORLD_WIDTH / 2, 0);
 		lowerTable.add(resolvedHands).top().padRight(WORLD_WIDTH/16);
 		lowerTable.add(playerHand).bottom();
@@ -204,8 +209,8 @@ public class BJStage extends Stage {
 		chips.addInsuranceHolders(5, WORLD_WIDTH/2, WORLD_HEIGHT/5f);
 		insureButton.enable();
 
-		betDisplays = new Table();
-		betDisplays.add(insureButton).padRight(WORLD_WIDTH/80);
+		betDisplays = new Table(); //reset the bet display
+		betDisplays.add(insureButton).padRight(WORLD_WIDTH/80); //add on the insurance button
 		betDisplays.add(betDisplay).width(WORLD_WIDTH/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/2.3f);
 		betDisplays.setVisible(true);
@@ -332,7 +337,7 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if(!splitHands.getCards().isEmpty()){
+		if(!splitHands.getCards().isEmpty()){ //there are still hands waiting to be resolved
 			for(Card card : playerHand.getCards()){
 				resolvedHands.addCard(card);
 			}
@@ -391,7 +396,7 @@ public class BJStage extends Stage {
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
 		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
-			betChips.floatAway();
+			betChips.floatAway(); //floats away all the chips that have been bet
 		}
 		else if(handEnd.getWinnings() > 0) {
 			game.balance += handEnd.getWinnings();

@@ -132,6 +132,7 @@ public class BJGame extends Thread {
 		}
 		if(dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
 			player.addBalance(insuranceBet*3);
+			payoutPlayer(insuranceBet*3);
 		}
 	}
 	/**
@@ -292,6 +293,19 @@ public class BJGame extends Thread {
 			} catch (IOException f) {
 			}
 		} catch (InterruptedException e) {
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * called to notify the player about any money they have won
+	 * @param winnings the amount won
+	 */
+	private void payoutPlayer(int winnings){
+		NetMessage payoutMessage = new NetMessage(NetMessage.MessageType.INFO, new BJPayout(winnings));
+		try {
+			player.getConnection().message(payoutMessage); //message the player about the hand end
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -89,22 +89,6 @@ public class BJScreen extends CasinoScreen {
 				return false;
 			}
 		});
-		stage.addCaptureListener(new InputListener(){
-			@Override
-			public boolean keyDown(InputEvent event, int keycode) {
-				if(keycode == Input.Keys.ESCAPE) {
-					game.setScreen(previousScreen);
-					try {
-						client.finish();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					getThis().dispose();
-					return true;
-				}
-				return false;
-			}
-		});
 
 		try {
 			client = new BJClient(new Socket("127.0.0.1", 9925), this);
