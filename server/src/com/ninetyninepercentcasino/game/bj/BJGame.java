@@ -50,9 +50,9 @@ public class BJGame extends Thread {
 		deck.shuffle();
 
 		dealer = new BJDealer(deck);
-		//drawCardUpdate(new Card(1, 1), true, false);
-		//dealer.addCard(new Card(1, 1)); //TODO remove
-		drawCardUpdate(dealer.drawCard(), true, false);
+		drawCardUpdate(new Card(1, 1), true, false);
+		dealer.addCard(new Card(1, 1)); //TODO remove
+		//drawCardUpdate(dealer.drawCard(), true, false);
 		drawCardUpdate(dealer.drawCard(), false, false);
 
 		BJHand firstHand = new BJHand(player);
@@ -62,8 +62,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance(); //get insurance bet if the dealer has a visible ace
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
-		drawCardUpdate(firstHand.drawCard(deck), true, true);
+		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		//drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
@@ -91,6 +91,8 @@ public class BJGame extends Thread {
 						//split the hand into two hands
 						BJHand hand1 = new BJHand(player, currentHand.getCard(0));
 						BJHand hand2 = new BJHand(player, currentHand.getCard(1));
+						hand1.setBet(currentHand.getAmountBet());
+						hand2.setBet(currentHand.getAmountBet());
 						//remove the current hand from the stack and add the two new ones generated from the split
 						hands.pop();
 						hands.push(hand2);
@@ -109,18 +111,19 @@ public class BJGame extends Thread {
 		while (!resolved.isEmpty()) { //go through each finished hand
 			BJHand currentHand = resolved.pop();
 			int outcome = findWinner(currentHand, dealer); //calculate the outcome of the hand
-			int winnings = 0; //net earnings for the player
+			int winnings = 0; //total amount the player wins + the amount initially bet
 			switch(outcome){
 				case PLAYER_BLACKJACK:
 					player.addBalance((int) (currentHand.getAmountBet()*2.5));
-					winnings = (int) (currentHand.getAmountBet()*1.5);
+					winnings = (int) (currentHand.getAmountBet()*2.5);
 					break;
 				case PLAYER_WON:
 					player.addBalance(currentHand.getAmountBet()*2);
-					winnings = currentHand.getAmountBet();
+					winnings = currentHand.getAmountBet()*2;
 					break;
 				case TIE:
 					player.addBalance(currentHand.getAmountBet());
+					winnings = currentHand.getAmountBet();
 					break;
 				case DEALER_WON:
 					break;

@@ -135,6 +135,7 @@ public class BJStage extends Stage {
 	 */
 	public void sendBet(){
 		betChips = new ChipGroupBet(chips.getHolders());
+		game.balance -= betChips.calculate();
 		BJBetMessage betRequest = new BJBetMessage(betChips.calculate());
 		addActor(betChips);
 		betChips.stowHolders();
@@ -207,8 +208,9 @@ public class BJStage extends Stage {
 		betDisplays.add(betDisplay).width(WORLD_WIDTH/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/2.3f);
 		betDisplays.setVisible(true);
-
 		addActor(betDisplays);
+		chips.toFront();
+
 	}
 
 	/**
@@ -216,6 +218,7 @@ public class BJStage extends Stage {
 	 */
 	public void sendInsure() {
 		insuredChips = new ChipGroupBet(chips.getInsuranceHolders());
+		game.balance -= insuredChips.calculate();
 		BJInsuranceMessage insuranceBet = new BJInsuranceMessage(insuredChips.calculate());
 		addActor(insuredChips);
 		insuredChips.stowHolders();
@@ -281,12 +284,12 @@ public class BJStage extends Stage {
 			handOver = false;
 		}
 		else standButton.disable();
-		if(actions.get(BJAction.SPLIT)) {
+		if(actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) {
 			splitButton.enable();
 			handOver = false;
 		}
 		else splitButton.disable();
-		if(actions.get(BJAction.DOUBLE_DOWN)) {
+		if(actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) {
 			doubleDownButton.enable();
 			handOver = false;
 		}
@@ -343,6 +346,7 @@ public class BJStage extends Stage {
 	 */
 	public void doubleDown(){
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
+		game.balance -= betChips.calculate();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
 		try {
 			client.message(message);
@@ -357,6 +361,7 @@ public class BJStage extends Stage {
 	 */
 	public void split(){
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
+		game.balance -= betChips.calculate();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
 		try {
 			client.message(message);
@@ -385,10 +390,11 @@ public class BJStage extends Stage {
 	private void endHand(BJHandEnd handEnd){
 		playerHand.hide();
 		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
-			game.balance -= betChips.calculate();
 			betChips.floatAway();
 		}
-		else if(handEnd.getWinnings() > 0) game.balance += handEnd.getWinnings();
+		else if(handEnd.getWinnings() > 0) {
+			game.balance += handEnd.getWinnings();
+		}
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server

@@ -1,7 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
 
@@ -36,13 +35,12 @@ public class ChipGroupBet extends Group {
 	}
 
 	public void stowHolders(){
-		Table root = new Table();
+		float x = getStage().getWidth()/1.5f;
+		float y = getStage().getHeight()/1.5f;
 		for (ChipHolder holder : holders) {
-			root.add(holder);
+			holder.setPosition(x, y);
+			x += holder.getWidth();
 		}
-		root.setPosition(getStage().getWidth()/1.2f , getStage().getHeight()/59f);
-		root.debug();
-		getStage().addActor(root);
 	}
 	/**
 	 * @return the value of all the chips on the chipHolders

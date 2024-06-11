@@ -151,7 +151,50 @@ public class ChipGroup extends Group {
 		chipActor.setPosition(x, y);
 		chipActor.setZIndex(Integer.MAX_VALUE);
 		addActor(chipActor);
-
+	}
+	public void rainChips(int totalValue){
+		int whiteChips = 0;
+		int redChips = 0;
+		int blueChips = 0;
+		int greenChips = 0;
+		int blackChips = 0;
+		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
+		while(totalValue > 0){
+			if(totalValue >= 2500){
+				totalValue -= 100;
+				blackChips++;
+			}
+			else if(totalValue >= 141){
+				totalValue -= 141;
+				whiteChips++;
+				redChips++;
+				blueChips++;
+				greenChips++;
+				blackChips++;
+			}
+			else if(totalValue >= 41){
+				totalValue -= 41;
+				whiteChips++;
+				redChips++;
+				blueChips++;
+				greenChips++;
+			}
+			else if(totalValue >= 16){
+				totalValue -= 16;
+				whiteChips++;
+				redChips++;
+				blueChips++;
+			}
+			else if(totalValue >= 6){
+				totalValue -= 6;
+				whiteChips++;
+				redChips++;
+			}
+			else {
+				totalValue--;
+				whiteChips++;
+			}
+		}
 	}
 
 	/**

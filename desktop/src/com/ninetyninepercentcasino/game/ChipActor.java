@@ -30,11 +30,11 @@ public class ChipActor extends Actor {
 
 	protected static final float SCALE_FACTOR = 0.8f; //the chip texture is reduced by a factor of this
 	private static final float POP_DISTANCE = 15; //the distance the chip will travel upwards when hovered over
-	protected static final float CHIP_DISTANCE = 16 * SCALE_FACTOR; //distance between each chip in a stack
+	protected static final float CHIP_DISTANCE = 12 * SCALE_FACTOR; //distance between each chip in a stack
 	protected static final float DETACH_DISTANCE = 50; //distance between chips where they will detach
 	protected static final float ATTACH_DISTANCE = 40; //distance between chips where they will attach
 
-	public static final float CHIP_WIDTH = 150 * SCALE_FACTOR;
+	public static final float CHIP_WIDTH = 120 * SCALE_FACTOR;
 	public static final float CHIP_HEIGHT = CHIP_WIDTH * (72f/128);
 
 	private Vector2 cursorToOrigin;
