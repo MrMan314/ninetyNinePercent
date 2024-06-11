@@ -1,4 +1,4 @@
-package com.ninetyninepercentcasino.game.gameparts;
+package com.ninetyninepercentcasino.game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,8 +17,14 @@ public class Hand implements Serializable {
 	public Hand(){
 		hand = new ArrayList<>();
 	}
-	public Hand(ArrayList<Card> hand){
-		this.hand = hand;
+	/**
+	 * Constructor that initializes a new player hand with a given card
+	 * pre: none
+	 * post: initializes a hand with a given card
+	 */
+	public Hand(Card card){
+		hand = new ArrayList<>();
+		hand.add(card);
 	}
 	/**
 	 * Method that adds a Card to the hand and returns the card added
@@ -41,15 +47,25 @@ public class Hand implements Serializable {
 	/**
 	 * removes the card at a specified index of the hand
 	 * @param index the index of the card to be removed
+	 * @return the removed card
 	 */
-	public void removeCard(int index){
-		hand.remove(index);
+	public Card removeCard(int index){
+		return hand.remove(index);
 	}
+
+	/**
+	 * draws a card from a given deck
+	 * @param deck the deck that the card is to be drawn from
+	 * @return the card drawn
+	 */
 	public Card drawCard(Deck deck){
 		Card card = deck.drawCard();
 		hand.add(card);
 		return card;
 	}
+	/**
+	 * @return all cards in the hand
+	 */
 	public ArrayList<Card> getCards(){
 		return hand;
 	}

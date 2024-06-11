@@ -3,13 +3,13 @@ package com.ninetyninepercentcasino.game;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
- * Models a hand's visuals that manages CardActors and a Hand
+ * Models a group of CardActors and formats them like a hand of cards
  * @author Grant Liang
  */
 public class CardGroup extends Table {
@@ -33,7 +33,7 @@ public class CardGroup extends Table {
 	 * Constructor that initializes a new player hand with a given Hand
 	 * @param hand the hand to create the CardGroup with
 	 * @param faceUp the orientation that new cards will automatically have
-	 * @param isLocalHand
+	 * @param isLocalHand whether this CardGroup should be drawn bigger
 	 */
 	public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand){
 		this(faceUp, isLocalHand);
@@ -48,6 +48,7 @@ public class CardGroup extends Table {
 	 * post: adds the CardActor to the hand
 	 */
 	public void addCard(CardActor card){
+		if(isLocalHand) card.makeActive();
 		hand.addCard(card.getCard());
 		add(card);
 	}
@@ -70,16 +71,23 @@ public class CardGroup extends Table {
 		hand.removeCard(card.getCard());
 		removeActor(card);
 	}
-	public void removeCard(Card card){
+	public CardActor removeCard(Card card){
 		int index = 0;
-		for(int i = 0; i < hand.getCards().size(); i++){
+		for(int i = 0; i < hand.getCards().size(); i++){ //loop through each card
 			Card cardInHand = hand.getCard(i);
-			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){
+			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){ //card matches the target card
 				index = i;
 				hand.removeCard(i);
 			}
 		}
-		removeActorAt(index, true);
+		return (CardActor) removeActorAt(index, true);
+	}
+	public CardActor removeCard(int index){
+		return removeCard(hand.removeCard(index));
+	}
+	public void clearCards(){
+		hand.getCards().clear();
+		clearChildren();
 	}
 	/**
 	 * Hides the hand by hiding all CardActors
@@ -97,11 +105,11 @@ public class CardGroup extends Table {
 			((CardActor)cardActor).reveal(); //reveal each CardActor this manages
 		}
 	}
-
-	/**
-	 * @return the Hand this CardGroup wraps
-	 */
-	public Hand getHand(){
-		return hand;
+	public ArrayList<Card> getCards(){
+		return hand.getCards();
 	}
+	public Card getCard(int index){
+		return hand.getCard(index);
+	}
+
 }

@@ -47,7 +47,7 @@ public class DesktopLauncher {
 		}
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("99% Casino");
+		config.setTitle("99% Casino"); //set the title of the window
 		config.useVsync(true);
 		config.setWindowedMode(1920, 1080);
 		config.setWindowIcon("DesktopWindowIcon.png");

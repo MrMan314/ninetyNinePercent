@@ -1,19 +1,26 @@
 package com.ninetyninepercentcasino.game.bj;
 
-import com.ninetyninepercentcasino.game.gameparts.Card;
-import com.ninetyninepercentcasino.game.gameparts.Deck;
-import com.ninetyninepercentcasino.game.gameparts.Hand;
+import com.ninetyninepercentcasino.game.Card;
+import com.ninetyninepercentcasino.game.Deck;
+import com.ninetyninepercentcasino.game.Hand;
 
 public class BJDealer {
 	private Hand hand;
 	private Deck deck;
-	private int insuranceBet;
 
+	/**
+	 * initializes a new blackjack dealer
+	 * @param deck the deck this dealer will draw from
+	 */
 	public BJDealer(Deck deck){
 		this.deck = deck;
 		hand = new Hand();
-		insuranceBet = 0;
 	}
+
+	/**
+	 * draws a card from the deck connected to this dealer
+	 * @return the card drawn
+	 */
 	public Card drawCard(){
 		return hand.drawCard(deck);
 	}
@@ -36,16 +43,22 @@ public class BJDealer {
 		}
 		return score;
 	}
+
+	/**
+	 * @return whether the dealer has a visible ace or not
+	 */
 	public boolean hasVisibleAce(){
 		return hand.getCard(0).getNum() == 1;
 	}
+
+	/**
+	 * @return the number of cards in the dealer's hand
+	 */
 	public int getNumCards(){
 		return hand.getCards().size();
 	}
-	public void setInsuranceBet(int insuranceBet){
-		this.insuranceBet = insuranceBet;
-	}
-	public int getInsuranceBet(){
-		return insuranceBet;
+	//TODO remove
+	public void addCard(Card card){
+		hand.addCard(card);
 	}
 }

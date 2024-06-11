@@ -11,17 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.game.ChipGroup;
 
 /**
- * Main menu of the game
+ * Main menu that leads to the blackjack game and settings menu
  * @author Grant Liang
  */
 public class MainMenu extends CasinoScreen {
-	private Texture background;
-	private ChipGroup chipGroup;
-	private Label totalBet;
+	private Texture background; //the background texture
 	private CasinoScreen nextScreen;
+
+	/**
+	 * initializes a new main menu
+	 * @param game the game that this screen belongs to
+	 */
 	public MainMenu(MainCasino game) {
 		super(game);
 	}
@@ -35,6 +37,8 @@ public class MainMenu extends CasinoScreen {
 		stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
 		Gdx.input.setInputProcessor(stage); //set the input processor to be the stage of the current screen so inputs are handled by the visible screen first
 
+		stage.addActor(globalUI);
+
 		Skin skins = new Skin();
 		skins.add("titleBanner", new Texture("Menus/TitleBanner.png"));
 		skins.add("playButton", new Texture("Menus/PlayButton.png"));
@@ -44,7 +48,7 @@ public class MainMenu extends CasinoScreen {
 		Button playButton = new Button(skins.getDrawable("playButton"));
 		Button settingsButton = new Button(skins.getDrawable("settingsButton"));
 
-		VerticalGroup middleMenu = new VerticalGroup();
+		VerticalGroup middleMenu = new VerticalGroup(); //the group that will hold the buttons and banner in the center of the screen
 		middleMenu.addActor(playButton);
 		middleMenu.addActor(settingsButton);
 
@@ -93,8 +97,6 @@ public class MainMenu extends CasinoScreen {
 			}
 		});
 
-		this.displayDialogBox("test");
-
 	}
 
 	/**
@@ -108,24 +110,37 @@ public class MainMenu extends CasinoScreen {
 		stage.getBatch().setColor(1, 1,1 ,1f);
 		stage.getBatch().draw(background, 0, 0, 2000, 2000*((float) 2/3));
 		stage.getBatch().end();
+		updateGlobalUI();
 		stage.draw(); //draw all actors on stage
 		stage.act(); //act all actors on stage
 	}
 
+	/**
+	 * called when the user focuses off the screen
+	 */
 	@Override
 	public void pause() {
 
 	}
 
+	/**
+	 * called when the user refocuses onto the screen
+	 */
 	@Override
 	public void resume() {
 
 	}
 
+	/**
+	 * called when the screen is hidden
+	 */
 	@Override
 	public void hide() {
 	}
 
+	/**
+	 * disposes of this screen
+	 */
 	@Override
 	public void dispose() {
 		stage.dispose();

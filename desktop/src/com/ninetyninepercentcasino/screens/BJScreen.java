@@ -9,13 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
-import com.ninetyninepercentcasino.bj.BJStage;
 import com.ninetyninepercentcasino.bj.BJClient;
-import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.bj.BJStage;
+import com.ninetyninepercentcasino.net.BJBeginGame;
+import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.NetMessage;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.ConnectException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -24,15 +26,24 @@ import java.util.ArrayList;
  */
 public class BJScreen extends CasinoScreen {
 	private Texture background;
-	private boolean firstRender;
 	private BJClient client;
 	private BJStage stage;
-	private ArrayList<DTO> updates = new ArrayList<>();
+	private ArrayList<DTO> updates; //stores all pending updates from the server
+	private boolean firstRender;
 
+	/**
+	 * initializes a new BJScreen
+	 * @param game the game this screen belongs to
+	 * @param previousScreen the screen previously displayed
+	 */
 	public BJScreen(MainCasino game, CasinoScreen previousScreen) {
 		super(game, previousScreen);
 	}
 
+	/**
+	 * initializes a new BJScreen
+	 * @param game the game this screen belongs to
+	 */
 	public BJScreen(MainCasino game) {
 		super(game);
 	}
@@ -49,11 +60,18 @@ public class BJScreen extends CasinoScreen {
 		screenWidth = Gdx.graphics.getWidth();
 	}
 
+	/**
+	 * called when the screen is shown
+	 */
 	@Override
 	public void show() {
 		firstRender = true;
 		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
+
+		stage.addActor(globalUI);
+
+		updates = new ArrayList<>();
 
 		background = new Texture("GameAssets/PokerTable.png");
 
@@ -84,13 +102,18 @@ public class BJScreen extends CasinoScreen {
 		}
 		client.start();
 		try {
-			client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame()));
+			client.message(new NetMessage(NetMessage.MessageType.INFO, new BJBeginGame())); //begin the game once connected
 		} catch (IOException ignored) {
 		}
 		stage.setClient(client);
+		stage.setScreen(this);
 
 	}
 
+	/**
+	 * called when the screen should render itself
+	 * @param delta The time in seconds since the last render.
+	 */
 	@Override
 	public void render(float delta) {
 		if(firstRender) {
@@ -98,33 +121,43 @@ public class BJScreen extends CasinoScreen {
 			firstRender = false;
 		}
 		if(!updates.isEmpty()){
-			stage.handleDTO(updates.remove(0));
+			stage.handleDTO(updates.remove(0)); //update the stage with a DTO if there are still DTOs in the queue
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
-		stage.updateBetDisplay();
+		stage.updateBetDisplay(); //update the chip calculator number display
 		stage.getBatch().begin();
-		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2));
+		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2)); //draw the background
 		stage.getBatch().end();
-		stage.act(delta);
-		stage.draw();
-
+		updateGlobalUI();
+		stage.act(delta); //act all actors in the stage
+		stage.draw(); //draw all actors in the stage
 	}
 
+	/**
+	 * called when the screen is hidden from view
+	 */
 	@Override
 	public void hide() {
 
 	}
 
+	/**
+	 * called when the application is paused from the user unfocusing the window
+	 */
 	@Override
 	public void pause() {
 
 	}
-
+	/**
+	 * called when the user focuses back onto the window
+	 */
 	@Override
 	public void resume() {
 
 	}
-
+	/**
+	 * called when the screen is disposed
+	 */
 	@Override
 	public void dispose() {
 		try {
@@ -139,7 +172,7 @@ public class BJScreen extends CasinoScreen {
 	}
 
 	/**
-	 * called by the client to request an update to the game state
+	 * called by the BJClient to request an update to the game state
 	 * since multithreading and scene2d don't go well together, this must be done to move the update onto the main Application thread
 	 * @param latestUpdate the DTO transferred by the server holding the information for the update
 	 */

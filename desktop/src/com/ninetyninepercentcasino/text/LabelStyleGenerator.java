@@ -13,6 +13,10 @@ public class LabelStyleGenerator {
 	public BitmapFont leagueGothicFont;
 	private FreeTypeFontGenerator generator;
 	private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+
+	/**
+	 * initializes a new label style generator
+	 */
 	public LabelStyleGenerator() {
 		leagueGothicFont = new BitmapFont();
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("League-Gothic/LeagueGothic-Regular.ttf"));
@@ -24,10 +28,10 @@ public class LabelStyleGenerator {
 	 */
 	public Label.LabelStyle getLeagueGothicLabelStyle(int size){
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		parameter.size = size;
+		parameter.size = size; //set the font size to the requested size
 		leagueGothicFont = generator.generateFont(parameter);
 		labelStyle.font = leagueGothicFont;
-		generator.dispose();
+		generator.dispose(); //dispose of the generator to avoid memory leaks
 		return labelStyle;
 	}
 }

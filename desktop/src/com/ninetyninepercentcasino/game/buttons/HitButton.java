@@ -8,10 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.bj.BJStage;
 
 /**
- * Models a calling button in a poker game
+ * hit button for a blackjack game
+ * Updates the stage when it is clicked
  * @author Grant Liang
  */
 public class HitButton extends CasinoButton {
+	/**
+	 * initializes a new hit button
+	 */
 	public HitButton(){
 		super();
 		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 192, 0, BUTTON_ASSET_WIDTH, BUTTON_ASSET_HEIGHT));
@@ -19,6 +23,9 @@ public class HitButton extends CasinoButton {
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
 		addListener(new ClickListener(){
+			/**
+			 * called when the button is clicked, will signal a hit
+			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if(isAvailable) {
