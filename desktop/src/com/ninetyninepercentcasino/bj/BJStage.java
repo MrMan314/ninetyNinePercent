@@ -1,14 +1,22 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.game.*;
 import com.ninetyninepercentcasino.game.buttons.*;
 import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.screens.BJScreen;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 
@@ -84,6 +92,25 @@ public class BJStage extends Stage {
 		}
 		else if(update instanceof BJPayout){
 			game.balance += ((BJPayout)(update)).getWinnings();
+			Button playAgainButton = new Button(new TextureRegionDrawable(new Texture("GameAssets/PlayAgainButton.png")));
+			playAgainButton.setPosition(getViewport().getWorldWidth()/2, getViewport().getWorldHeight()/2);
+			playAgainButton.addListener(new ChangeListener(){
+				public void changed (ChangeEvent event, Actor actor) {
+					game.setScreen(new BJScreen(game));
+					screen.dispose();
+				}
+			});
+			playAgainButton.addListener(new ClickListener() {
+				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+					playAgainButton.setColor(65, 65, 65, 0.7f);; //fades the button slightly when the cursor enters
+				}
+				@Override
+				public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+					playAgainButton.setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
+				}
+			});
+			playAgainButton.toBack();
+			addActor(playAgainButton);
 		}
 	}
 

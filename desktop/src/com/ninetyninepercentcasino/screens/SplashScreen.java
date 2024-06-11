@@ -6,11 +6,19 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 
+/**
+ * Class for a splash screen displayed for 2 seconds before the main menu is displayed
+ */
 public class SplashScreen implements Screen {
 	private float time;
-	private MainCasino game;
+	private final MainCasino game;
 	private Stage stage;
 	private Texture splashScreen;
+
+	/**
+	 * initializes a new splash screen
+	 * @param game the game that this screen belongs to
+	 */
 	public SplashScreen(MainCasino game){
 		this.game = game;
 	}

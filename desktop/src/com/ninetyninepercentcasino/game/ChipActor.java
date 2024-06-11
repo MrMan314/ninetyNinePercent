@@ -112,7 +112,7 @@ public class ChipActor extends Actor {
 						}
 						else if(actor instanceof ChipActor && !(actor instanceof ChipSpawner)){
 							ChipActor chipAttachCandidate = (ChipActor)actor;
-							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY());
+							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY()); //vector for the distance between
 							if(chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE){
 								if(!isInStack(chipAttachCandidate)){
 									//attach to the chip if the distance between the chips is small enough and if the chip isn't already in the same stack as this chip
