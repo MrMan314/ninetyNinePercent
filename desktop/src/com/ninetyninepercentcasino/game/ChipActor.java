@@ -62,13 +62,13 @@ public class ChipActor extends Actor {
 			 */
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
+				if (pointer == -1) pop(); //only pops if the cursor is -1, meaning tha the mouse isn't down
 			}
 			/**
 			 * unpops this ChipActor and the stack above it because the cursor has exited it
 			 */
 			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
+				if (pointer == -1) unpop(); //only unpops if the cursor is -1, meaning that the mouse isn't down
 				SFXManager.playChipLaySound();
 			}
 		});
@@ -84,7 +84,7 @@ public class ChipActor extends Actor {
 			 */
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
-				if(chipBelow != null) { //focuses the chip being dragged, so it appears above other chips
+				if (chipBelow != null) { //focuses the chip being dragged, so it appears above other chips
 					focusStack(chipBelow.getZIndex()+1);
 				}
 				else { //there no chip below this chip, so just focus the stack based on how many chips the ChipGroup has
@@ -94,27 +94,27 @@ public class ChipActor extends Actor {
 				sprite.translate(x - getWidth() / 2, y - getHeight() / 2); //translates the visual of the chip as well
 				//System.out.println(x - getWidth() / 2 + " , " + (y - getHeight() / 2));
 				//System.out.println("X: " + x + " Y: " + y);
-				if(chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE) {
+				if (chipBelow != null && Math.sqrt(Math.pow(chipBelow.getX()-getX(), 2) + Math.pow(chipBelow.getY()-getY(), 2)) >= DETACH_DISTANCE) {
 					//this chip is more than DETACH_DISTANCE away from the chip below, so detach
 					detach();
 					SFXManager.playChipGrabSound();
 				}
-				else if(chipBelow == null) { //search for chips to attach to if there is no chip below this chip
-					for(Actor actor : getParent().getChildren()) { //loop through each actor in the ChipGroup to search for candidates to attach to
-						if(actor instanceof ChipHolder) {
+				else if (chipBelow == null) { //search for chips to attach to if there is no chip below this chip
+					for (Actor actor : getParent().getChildren()) { //loop through each actor in the ChipGroup to search for candidates to attach to
+						if (actor instanceof ChipHolder) {
 							ChipHolder holder = (ChipHolder)actor;
 							Vector2 distance = new Vector2(holder.getX() - getX(), holder.getY() - getY());
-							if(distance.len() < ATTACH_DISTANCE && holder.isTopChip()) {
+							if (distance.len() < ATTACH_DISTANCE && holder.isTopChip()) {
 								//attach to the holder if the distance is small enough
 								attachToChip(holder);
 								SFXManager.playChipLaySound();
 							}
 						}
-						else if(actor instanceof ChipActor && !(actor instanceof ChipSpawner)) {
+						else if (actor instanceof ChipActor && !(actor instanceof ChipSpawner)) {
 							ChipActor chipAttachCandidate = (ChipActor)actor;
 							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY());
-							if(chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE) {
-								if(!isInStack(chipAttachCandidate)) {
+							if (chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE) {
+								if (!isInStack(chipAttachCandidate)) {
 									//attach to the chip if the distance between the chips is small enough and if the chip isn't already in the same stack as this chip
 									attachToChip(chipAttachCandidate);
 									SFXManager.playChipLaySound();
@@ -154,7 +154,7 @@ public class ChipActor extends Actor {
 	 * attaches the chip to a chip underneath it
 	 */
 	public void attachToChip(ChipActor chipBelow) {
-		if(this.chipBelow != null) detach();
+		if (this.chipBelow != null) detach();
 		this.chipBelow = chipBelow;
 		chipBelow.setChipAbove(this);
 		unpop();
@@ -182,13 +182,13 @@ public class ChipActor extends Actor {
 	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all children.
 	 */
 	public void draw(Batch batch, float parentAlpha) {
-		if(chipBelow != null) {
+		if (chipBelow != null) {
 			sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE);
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		}
-		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
+		if (popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
-		if(rising && chipBelowBeforeRise != null && Math.abs(getY() - chipBelowBeforeRise.getY()) > DETACH_DISTANCE * 4 && !chipBelowBeforeRise.isRising()) {
+		if (rising && chipBelowBeforeRise != null && Math.abs(getY() - chipBelowBeforeRise.getY()) > DETACH_DISTANCE * 4 && !chipBelowBeforeRise.isRising()) {
 			chipBelowBeforeRise.floatAway();
 		}
 	}
@@ -201,19 +201,19 @@ public class ChipActor extends Actor {
 		Texture chips = new Texture("GameAssets/Isometric/Chips/ChipsA_Outline_Flat_Small-128x72.png");
 		int x = 0;
 		int y = 0;
-		if(chipValue <= 1) {
+		if (chipValue <= 1) {
 			x = 0;
 		}
-		else if(chipValue <= 5) {
+		else if (chipValue <= 5) {
 			x = 128;
 		}
-		else if(chipValue <= 10) {
+		else if (chipValue <= 10) {
 			x = 128*2;
 		}
-		else if(chipValue <= 25) {
+		else if (chipValue <= 25) {
 			x = 128*3;
 		}
-		else if(chipValue <= 100) {
+		else if (chipValue <= 100) {
 			x = 128*4;
 		}
 		return new TextureRegion(chips, x+20, y+8, 88, 56);
@@ -224,7 +224,7 @@ public class ChipActor extends Actor {
 	 */
 	public void pop() {
 		popped = true;
-		if(!isTopChip()) chipAbove.pop();
+		if (!isTopChip()) chipAbove.pop();
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class ChipActor extends Actor {
 	 */
 	public void unpop() {
 		popped = false;
-		if(!isTopChip()) chipAbove.unpop();
+		if (!isTopChip()) chipAbove.unpop();
 	}
 
 	/**
@@ -240,14 +240,14 @@ public class ChipActor extends Actor {
 	 */
 	public void disable() {
 		setTouchable(Touchable.disabled);
-		if(!isTopChip()) chipAbove.disable();
+		if (!isTopChip()) chipAbove.disable();
 	}
 	/**
 	 * enable this chip and all chips above it, making the user able to interact with it
 	 */
 	public void enable() {
 		setTouchable(Touchable.enabled);
-		if(!isTopChip()) chipAbove.enable();
+		if (!isTopChip()) chipAbove.enable();
 	}
 
 	/**
@@ -272,8 +272,8 @@ public class ChipActor extends Actor {
 	 * @return if target is in the stack above this
 	 */
 	private boolean isInStackAbove(ChipActor target) {
-		if(target == this) return true;
-		if(chipAbove != null) return chipAbove.isInStackAbove(target);
+		if (target == this) return true;
+		if (chipAbove != null) return chipAbove.isInStackAbove(target);
 		return false;
 	}
 	/**
@@ -282,8 +282,8 @@ public class ChipActor extends Actor {
 	 * @return if target is in the stack below this
 	 */
 	private boolean isInStackBelow(ChipActor target) {
-		if(target == this) return true;
-		if(chipBelow != null) return chipBelow.isInStackBelow(target);
+		if (target == this) return true;
+		if (chipBelow != null) return chipBelow.isInStackBelow(target);
 		return false;
 	}
 	/**
@@ -291,21 +291,21 @@ public class ChipActor extends Actor {
 	 */
 	public void focusStack(int z) {
 		setZIndex(z);
-		if(chipAbove != null) {
+		if (chipAbove != null) {
 			chipAbove.focusStack(z+1);
 		}
 	}
 	public void transferStackToGroup(ChipGroupBet chipGroupBet) {
-		if(this instanceof ChipHolder) System.out.println("holder added.");
+		if (this instanceof ChipHolder) System.out.println("holder added.");
 		chipGroupBet.addActor(this);
-		if(!isTopChip()) chipAbove.transferStackToGroup(chipGroupBet);
+		if (!isTopChip()) chipAbove.transferStackToGroup(chipGroupBet);
 	}
 	/**
 	 * calculates the currency value of this chip and all chips above it
 	 * @return the value of this chip and all chips above it
 	 */
 	public int calculate() {
-		if(chipAbove != null) return chipAbove.calculate() + chip.getValue();
+		if (chipAbove != null) return chipAbove.calculate() + chip.getValue();
 		else return chip.getValue();
 	}
 

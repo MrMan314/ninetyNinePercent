@@ -46,11 +46,11 @@ public class PokerGame {
 		pot = 0;
 
 		Stack<PokerPlayer> tempPlayerStack = new Stack<>();
-		for(int i = dealerIndex; i < numPlayers; i++) {
+		for (int i = dealerIndex; i < numPlayers; i++) {
 			tempPlayerStack.push(players.get(i));
 		}
 		tempPlayerStack.addAll(players);
-		if(numPlayers >= 3) {
+		if (numPlayers >= 3) {
 			dealer = tempPlayerStack.pop();
 			smallBlind = tempPlayerStack.pop();
 			bigBlind = tempPlayerStack.pop();
@@ -62,26 +62,26 @@ public class PokerGame {
 		preFlop();
 		betPhase();
 		System.out.println(numPlayersIn);
-		if(numPlayersIn >= 2) {
+		if (numPlayersIn >= 2) {
 			flop();
 			betPhase();
 		}
-		if(numPlayersIn >= 2) {
+		if (numPlayersIn >= 2) {
 			turn();
 			betPhase();
 		}
-		if(numPlayersIn >= 2) {
+		if (numPlayersIn >= 2) {
 			river();
 			betPhase();
 		}
-		if(numPlayersIn >= 2) {
+		if (numPlayersIn >= 2) {
 			findWinner();
 		}
 		//else turnOrder.poll().addToBalance(pot);
 		endRound();
 	}
 	public void preFlop() {
-		for(int i = 0; i < numPlayers; i++) {
+		for (int i = 0; i < numPlayers; i++) {
 			players.get(i).drawCard(deck);
 			players.get(i).drawCard(deck);
 		}
@@ -123,9 +123,9 @@ public class PokerGame {
 
 			ArrayList<PokerPlayer.Actions> availActions = new ArrayList<>();
 			availActions.add(PokerPlayer.Actions.FOLD);
-			if(!turnOrder.isEmpty()) {
+			if (!turnOrder.isEmpty()) {
 				assert currentPlayer != null;
-				if(currentPlayer.getBalanceInPot() < highestBet) {
+				if (currentPlayer.getBalanceInPot() < highestBet) {
 					availActions.add(PokerPlayer.Actions.RAISE);
 					availActions.add(PokerPlayer.Actions.CALL);
 				}
@@ -133,27 +133,27 @@ public class PokerGame {
 			numPlayersIn--;
 //			PokerPlayer.Actions action = currentPlayer.getAction();
 //			//player folds
-//			if(action == PokerPlayer.Actions.FOLD) {
+//			if (action == PokerPlayer.Actions.FOLD) {
 //				currentPlayer.fold();
 //				turnOrder.remove(currentPlayer);
 //				numPlayersIn--;
 //			}
-//			else if(action == 1) {
+//			else if (action == 1) {
 //
 //			}
 //			//player calls
-//			else if(action == 2) {
-//				if(currentPlayer.getBalanceInPot() < highestBet) {
+//			else if (action == 2) {
+//				if (currentPlayer.getBalanceInPot() < highestBet) {
 //					pot += currentPlayer.bet(highestBet-currentPlayer.getBalanceInPot());
 //				}
 //			}
 //			//player raises
-//			else if(action == 3) {
+//			else if (action == 3) {
 //				numConsecutiveChecks = 0;
 //			}
 			//nextPlayer();
 
-			for(PokerPlayer player : players) {
+			for (PokerPlayer player : players) {
 				player.clearBalanceInPot();
 			}
 		}
@@ -163,7 +163,7 @@ public class PokerGame {
 	}
 	public void endRound() {
 		dealerIndex++;
-		if(dealerIndex >= numPlayers) dealerIndex = 0;
+		if (dealerIndex >= numPlayers) dealerIndex = 0;
 	}
 	private void nextPlayer() {
 		turnOrder.add(turnOrder.poll());

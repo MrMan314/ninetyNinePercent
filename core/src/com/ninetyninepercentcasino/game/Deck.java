@@ -15,7 +15,7 @@ public class Deck {
 	public Deck() {
 		deck = new ArrayList<>();
 		//creating all the cards in the deck
-		for(int i = 0; i < 4; i++) { //loop through each available suit
+		for (int i = 0; i < 4; i++) { //loop through each available suit
 			for (int j = 13; j >= 1; j--) { //loop through each available number
 				deck.add(new Card(j, i)); //add a card with j number and i suit
 			}

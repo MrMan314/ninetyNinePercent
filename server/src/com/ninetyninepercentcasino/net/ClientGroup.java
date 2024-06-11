@@ -28,8 +28,8 @@ public class ClientGroup {
 				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
 				.toString();
 			validCode = true;
-			for(ClientGroup group: clientGroups) {
-				if(this.joinCode.equals(group.getJoinCode())) {
+			for (ClientGroup group: clientGroups) {
+				if (this.joinCode.equals(group.getJoinCode())) {
 					validCode = false;
 					continue;
 				}

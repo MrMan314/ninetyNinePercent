@@ -33,7 +33,7 @@ public class BJClient extends Connection {
 	public void run() {
 		try {
 			while (alive) {
-				if(!clientSocket.isConnected()) {
+				if (!clientSocket.isConnected()) {
 					finish();
 				}
 				try {

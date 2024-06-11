@@ -48,7 +48,7 @@ public class ChipHolder extends ChipActor {
 	 */
 	@Override
 	public int calculate() {
-		if(chipAbove != null) return chipAbove.calculate();
+		if (chipAbove != null) return chipAbove.calculate();
 		else return 0;
 	}
 
@@ -58,6 +58,6 @@ public class ChipHolder extends ChipActor {
 	 */
 	@Override
 	public void floatAway() {
-		if(chipAbove != null) chipAbove.floatAway();
+		if (chipAbove != null) chipAbove.floatAway();
 	}
 }

@@ -28,7 +28,7 @@ public class InsureButton extends CasinoButton {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) signalInsure();
+				if (isAvailable) signalInsure();
 				return true;
 			}
 		});

@@ -39,7 +39,7 @@ public class HolePunchConnection extends Connection {
 			public void run() {
 				try {
 					while (alive) {
-						if(!clientSocket.isConnected()) {
+						if (!clientSocket.isConnected()) {
 							finish();
 						}
 						try {

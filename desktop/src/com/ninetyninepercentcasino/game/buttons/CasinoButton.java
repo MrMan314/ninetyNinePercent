@@ -37,14 +37,14 @@ public abstract class CasinoButton extends Actor {
 			 */
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(isAvailable) buttonSprite.setColor(65, 65, 65, 0.8f);
+				if (isAvailable) buttonSprite.setColor(65, 65, 65, 0.8f);
 			}
 			/**
 			 * called when the cursor exits the button to make it solid again
 			 */
 			@Override
 			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(isAvailable) buttonSprite.setColor(1, 1,1 ,1f);
+				if (isAvailable) buttonSprite.setColor(1, 1,1 ,1f);
 			}
 		});
 	}
@@ -58,7 +58,7 @@ public abstract class CasinoButton extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		buttonSprite.setPosition(getX(), getY());
 		buttonOutlineSprite.setPosition(getX(), getY());
-		if(!isAvailable) buttonOutlineSprite.draw(batch);
+		if (!isAvailable) buttonOutlineSprite.draw(batch);
 		else {
 			buttonSprite.draw(batch);
 		}

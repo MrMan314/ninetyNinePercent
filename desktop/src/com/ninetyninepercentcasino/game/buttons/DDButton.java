@@ -31,7 +31,7 @@ public class DDButton extends CasinoButton {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) {
+				if (isAvailable) {
 					try {
 						signalDD();
 					} catch (IOException e) {

@@ -24,13 +24,13 @@ public class SFXManager {
 	 * loads the sound effects. must be called once within the game for the SFX to be loaded
 	 */
 	public static void loadSFX() {
-		for(int i = 1; i <= 8; i++) {
+		for (int i = 1; i <= 8; i++) {
 			cardSlideSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/cardSlide" + i + ".ogg")));
 		}
-		for(int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= 6; i++) {
 			chipStackSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsStack" + i + ".ogg")));
 		}
-		for(int i = 1; i <= 2; i++) {
+		for (int i = 1; i <= 2; i++) {
 			chipLaySounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipLay" + i + ".ogg")));
 		}
 	}

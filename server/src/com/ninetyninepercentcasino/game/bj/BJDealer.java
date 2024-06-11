@@ -31,10 +31,10 @@ public class BJDealer {
 	public int getScore() {
 		int score = 0;
 		int numAces = 0;
-		for(Card card : hand.getCards()) {
+		for (Card card : hand.getCards()) {
 			int cardValue = card.getNum();
-			if(cardValue == 1) numAces++;
-			else if(cardValue > 10) cardValue = 10;
+			if (cardValue == 1) numAces++;
+			else if (cardValue > 10) cardValue = 10;
 			score += cardValue;
 		}
 		while(numAces > 0 && score + 10 <= 21) {

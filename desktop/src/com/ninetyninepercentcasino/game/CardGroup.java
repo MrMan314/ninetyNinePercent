@@ -24,7 +24,7 @@ public class CardGroup extends Table {
 	public CardGroup(boolean faceUp, boolean isLocalHand) {
 		this.faceUp = faceUp;
 		this.isLocalHand = isLocalHand;
-		if(isLocalHand) setTouchable(Touchable.enabled);
+		if (isLocalHand) setTouchable(Touchable.enabled);
 		else setTouchable(Touchable.disabled);
 		hand = new Hand();
 	}
@@ -37,7 +37,7 @@ public class CardGroup extends Table {
 	 */
 	public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand) {
 		this(faceUp, isLocalHand);
-		for(Card card : hand.getCards()) {
+		for (Card card : hand.getCards()) {
 			add(new CardActor(card, faceUp, isLocalHand));
 		}
 		this.hand = hand;
@@ -48,7 +48,7 @@ public class CardGroup extends Table {
 	 * post: adds the CardActor to the hand
 	 */
 	public void addCard(CardActor card) {
-		if(isLocalHand) card.makeActive();
+		if (isLocalHand) card.makeActive();
 		hand.addCard(card.getCard());
 		add(card);
 	}
@@ -73,9 +73,9 @@ public class CardGroup extends Table {
 	}
 	public CardActor removeCard(Card card) {
 		int index = 0;
-		for(int i = 0; i < hand.getCards().size(); i++) { //loop through each card
+		for (int i = 0; i < hand.getCards().size(); i++) { //loop through each card
 			Card cardInHand = hand.getCard(i);
-			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()) { //card matches the target card
+			if (card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()) { //card matches the target card
 				index = i;
 				hand.removeCard(i);
 			}
@@ -93,7 +93,7 @@ public class CardGroup extends Table {
 	 * Hides the hand by hiding all CardActors
 	 */
 	public void hide() {
-		for(Actor cardActor: getChildren()) {
+		for (Actor cardActor: getChildren()) {
 			((CardActor)cardActor).hide(); //hide each CardActor this manages
 		}
 	}
@@ -101,7 +101,7 @@ public class CardGroup extends Table {
 	 * Reveals the hand by revealing all CardActors
 	 */
 	public void reveal() {
-		for(Actor cardActor: getChildren()) {
+		for (Actor cardActor: getChildren()) {
 			((CardActor)cardActor).reveal(); //reveal each CardActor this manages
 		}
 	}

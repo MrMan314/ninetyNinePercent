@@ -34,9 +34,9 @@ public class CardActor extends Actor {
 	public CardActor(Card card, boolean faceUp, boolean isLocalCard) {
 		this.card = card;
 		faceUpTex = new TextureRegion(findTexture(card)); //call the method to find the appropriate texture for the Card
-		if(faceUp) sprite = new Sprite(faceUpTex); //set the sprite to the appropriate texture to match its faceUp property
+		if (faceUp) sprite = new Sprite(faceUpTex); //set the sprite to the appropriate texture to match its faceUp property
 		else sprite = new Sprite(faceDownTex);
-		if(isLocalCard) { //the card is local, so increase its size
+		if (isLocalCard) { //the card is local, so increase its size
 			sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
 		}
 		else setTouchable(Touchable.disabled); //the card is not local, so make it not interactable
@@ -54,7 +54,7 @@ public class CardActor extends Actor {
 			 */
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(pointer == -1) popped = true; //if the pointer isn't down, pop the card
+				if (pointer == -1) popped = true; //if the pointer isn't down, pop the card
 			}
 			/**
 			 * called when the cursor exits the actor, and will make the card unpop
@@ -66,7 +66,7 @@ public class CardActor extends Actor {
 			 */
 			@Override
 			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				if(pointer == -1) popped = false; //if the pointer isn't down, unpop the card
+				if (pointer == -1) popped = false; //if the pointer isn't down, unpop the card
 			}
 		});
 	}
@@ -75,7 +75,7 @@ public class CardActor extends Actor {
 	 * reveals the side of the card with the number and suit on it if not already revealed
 	 */
 	public void reveal() {
-		if(!faceUp) {
+		if (!faceUp) {
 			faceUp = true;
 			sprite = new Sprite(faceUpTex);
 		}
@@ -85,7 +85,7 @@ public class CardActor extends Actor {
 	 * flips the card over to the back side
 	 */
 	public void hide() {
-		if(faceUp) {
+		if (faceUp) {
 			faceUp = false;
 			sprite = new Sprite(faceDownTex);
 		}
@@ -98,7 +98,7 @@ public class CardActor extends Actor {
 	 *		   children.
 	 */
 	public void draw(Batch batch, float parentAlpha) {
-		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight()); //translate the visual up by POP_DISTANCE if the card is popped
+		if (popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight()); //translate the visual up by POP_DISTANCE if the card is popped
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 
@@ -106,7 +106,7 @@ public class CardActor extends Actor {
 	 * enlarges the card, called when it is added to a currently active hand
 	 */
 	public void makeActive() {
-		if(!isLocalCard) {
+		if (!isLocalCard) {
 			sprite.setSize(sprite.getWidth()*3, sprite.getHeight()*3);
 			isLocalCard = true;
 			setTouchable(Touchable.enabled);
@@ -127,9 +127,9 @@ public class CardActor extends Actor {
 		//each card is 88 wide and 124 tall
 		int textureRegionX = 0;
 		int textureRegionY = 0;
-		for(int i = 1; i < cardNum; i++) {
+		for (int i = 1; i < cardNum; i++) {
 			textureRegionX += 88; //increment by 88 in the row to get to the next number's texture
-			if(textureRegionX > 88*4) { //the end of the row has been reached, so travel to the next row
+			if (textureRegionX > 88*4) { //the end of the row has been reached, so travel to the next row
 				textureRegionX = 0;
 				textureRegionY += 124;
 			}

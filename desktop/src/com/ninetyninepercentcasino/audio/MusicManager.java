@@ -62,7 +62,7 @@ public class MusicManager implements Music.OnCompletionListener {
 	@Override
 	public void onCompletion(Music music) {
 		currentTrack++;
-		if(currentTrack > 23) currentTrack = 1; //loops track back to 1 because we don't have more than 22 tracks to play
+		if (currentTrack > 23) currentTrack = 1; //loops track back to 1 because we don't have more than 22 tracks to play
 		setTrack(); //update the music
 		playMusic();
 	}

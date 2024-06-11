@@ -128,12 +128,12 @@ public abstract class Connection extends Thread {
 
 		}
 
-		for(Thread timerThread: timerThreads) {
+		for (Thread timerThread: timerThreads) {
 			timerThread.interrupt();
 		}
 
 		// Remove self from clients list if it is a server thread
-		if(isServer) {
+		if (isServer) {
 			clients.remove(this);
 		}
 
@@ -168,7 +168,7 @@ public abstract class Connection extends Thread {
 				public void run() {
 					try {
 						// If the connection is closed, finish
-						if(!clientSocket.isConnected()) {
+						if (!clientSocket.isConnected()) {
 							finish();
 							return;
 						}
@@ -189,7 +189,7 @@ public abstract class Connection extends Thread {
 						}
 
 						// If the aliveMessage is still empty, the client is dead.  finish them.
-						if(aliveMessage.isEmpty()) {
+						if (aliveMessage.isEmpty()) {
 							finish();
 							return;
 						}

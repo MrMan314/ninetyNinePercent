@@ -58,26 +58,26 @@ public class BJStage extends Stage {
 	 * @param update the DTO containing information about the game update
 	 */
 	public void handleDTO(DTO update) {
-		if(update instanceof BJBetMessage) {
+		if (update instanceof BJBetMessage) {
 			startBetPhase();
 		}
-		else if(update instanceof BJInsuranceMessage) {
+		else if (update instanceof BJInsuranceMessage) {
 			startInsurePhase();
 		}
-		else if(update instanceof BJCardUpdate) {
-			if(((BJCardUpdate)update).isPlayerCard()) addPlayerCard(((BJCardUpdate)update).getCard());
+		else if (update instanceof BJCardUpdate) {
+			if (((BJCardUpdate)update).isPlayerCard()) addPlayerCard(((BJCardUpdate)update).getCard());
 			else {
 				addDealerCard(((BJCardUpdate)update).getCard());
-				if(((BJCardUpdate)update).isVisible()) revealDealerHand(); //only the first card for the dealer will be sent as visible, so revealing the hand will just reveal that first card
+				if (((BJCardUpdate)update).isVisible()) revealDealerHand(); //only the first card for the dealer will be sent as visible, so revealing the hand will just reveal that first card
 			}
 		}
-		else if(update instanceof BJAvailActionUpdate) {
+		else if (update instanceof BJAvailActionUpdate) {
 			updateButtons(((BJAvailActionUpdate)update).getActions());
 		}
-		else if(update instanceof BJSplit) {
+		else if (update instanceof BJSplit) {
 			handleSplit((BJSplit)update);
 		}
-		else if(update instanceof BJHandEnd) {
+		else if (update instanceof BJHandEnd) {
 			revealDealerHand();
 			endHand((BJHandEnd)update);
 		}
@@ -128,7 +128,7 @@ public class BJStage extends Stage {
 	 * called by the BJScreen every render
 	 */
 	public void updateBetDisplay() {
-		if(betDisplay != null) betDisplay.setText(chips.calculate());
+		if (betDisplay != null) betDisplay.setText(chips.calculate());
 	}
 
 	/**
@@ -248,7 +248,7 @@ public class BJStage extends Stage {
 	 * @param card the card to be added
 	 */
 	private void addDealerCard(Card card) {
-		if(dealerHand.getCards().size() == 2) dealerHand.reveal();
+		if (dealerHand.getCards().size() == 2) dealerHand.reveal();
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
 	}
@@ -275,29 +275,29 @@ public class BJStage extends Stage {
 	 */
 	private void updateButtons(HashMap<BJAction, Boolean> actions) {
 		boolean handOver = true;
-		if(actions.get(BJAction.HIT)) {
+		if (actions.get(BJAction.HIT)) {
 			hitButton.enable();
 			handOver = false;
 		}
 		else hitButton.disable();
-		if(actions.get(BJAction.STAND)) {
+		if (actions.get(BJAction.STAND)) {
 			standButton.enable();
 			handOver = false;
 		}
 		else standButton.disable();
-		if(actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) {
+		if (actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) {
 			splitButton.enable();
 			handOver = false;
 		}
 		else splitButton.disable();
-		if(actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) {
+		if (actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) {
 			doubleDownButton.enable();
 			handOver = false;
 		}
 		else doubleDownButton.disable();
-		if(handOver) {
-			if(!splitHands.getCards().isEmpty()) {
-				for(Card card : playerHand.getCards()) {
+		if (handOver) {
+			if (!splitHands.getCards().isEmpty()) {
+				for (Card card : playerHand.getCards()) {
 					resolvedHands.addCard(card);
 				}
 				playerHand.clearCards();
@@ -332,8 +332,8 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if(!splitHands.getCards().isEmpty()) {
-			for(Card card : playerHand.getCards()) {
+		if (!splitHands.getCards().isEmpty()) {
+			for (Card card : playerHand.getCards()) {
 				resolvedHands.addCard(card);
 			}
 			playerHand.clearCards();
@@ -390,10 +390,10 @@ public class BJStage extends Stage {
 
 	private void endHand(BJHandEnd handEnd) {
 		playerHand.hide();
-		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
+		if (handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
 			betChips.floatAway();
 		}
-		else if(handEnd.getWinnings() > 0) {
+		else if (handEnd.getWinnings() > 0) {
 			game.balance += handEnd.getWinnings();
 		}
 	}

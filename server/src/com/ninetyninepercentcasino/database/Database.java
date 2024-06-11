@@ -34,8 +34,8 @@ public class Database {
 	public Account loadUser(String username, String password) throws SQLException, AccountNonExistent, PasswordIncorrect {
 		PreparedStatement loadUser=database.prepareStatement("SELECT * FROM Accounts");
 		ResultSet result=loadUser.executeQuery();
-		if(userExists(result, username)) { //User does exist
-			if(result.getString("Hash").equals(Base64Utils.byteArrayTobase64(hash(password, Base64Utils.base64ToByteArray(result.getString("Salt")))))) { //Compares the password provided to the password in the database
+		if (userExists(result, username)) { //User does exist
+			if (result.getString("Hash").equals(Base64Utils.byteArrayTobase64(hash(password, Base64Utils.base64ToByteArray(result.getString("Salt")))))) { //Compares the password provided to the password in the database
 				Account user=new Account(result.getString("Username"));
 				return user;
 			} else {
@@ -54,7 +54,7 @@ public class Database {
 	public Account createUser(String username, String password) throws SQLException, UserAlreadyExists, AccountNonExistent, PasswordIncorrect {
 		PreparedStatement loadUser=database.prepareStatement("SELECT Username FROM Accounts");
 		ResultSet result=loadUser.executeQuery();
-		if(!userExists(result, username)) { //User doesn't exist
+		if (!userExists(result, username)) { //User doesn't exist
 			SecureRandom secureRandom=new SecureRandom();
 			byte[] salt=new byte[32];
 			secureRandom.nextBytes(salt);
@@ -89,7 +89,7 @@ public class Database {
 	 */
 	private boolean userExists(ResultSet result, String username) throws SQLException {
 		while(result.next()) { //Next returns false if there is not another value.
-			if(result.getString("Username").equals(username)) {
+			if (result.getString("Username").equals(username)) {
 				return true; //Username exists
 			}
 		}

@@ -24,7 +24,7 @@ public class BJHand extends Hand {
 	public BJHand(BJPlayer player) {
 		this.player = player;
 		availableActions = new HashMap<>();
-		for(BJAction action : BJAction.values()) {
+		for (BJAction action : BJAction.values()) {
 			availableActions.put(action, false);
 		}
 	}
@@ -55,10 +55,10 @@ public class BJHand extends Hand {
 	public int getScore() {
 		int score = 0;
 		int numAces = 0;
-		for(Card card : getCards()) {
+		for (Card card : getCards()) {
 			int cardValue = card.getNum();
-			if(cardValue == 1) numAces++;
-			else if(cardValue > 10) cardValue = 10;
+			if (cardValue == 1) numAces++;
+			else if (cardValue > 10) cardValue = 10;
 			score += cardValue;
 		}
 		while(numAces > 0 && score + 10 <= 21) {
@@ -74,14 +74,14 @@ public class BJHand extends Hand {
 	 */
 	public HashMap<BJAction, Boolean> getOptions() {
 		int score = getScore();
-		for(BJAction action : availableActions.keySet()) {
+		for (BJAction action : availableActions.keySet()) {
 			availableActions.replace(action, false);
 		}
-		if(score < 21) { //if the score is 21 or above the player has no more choice over their actions, so they are all false
+		if (score < 21) { //if the score is 21 or above the player has no more choice over their actions, so they are all false
 			availableActions.replace(BJAction.STAND, true);
 			availableActions.replace(BJAction.HIT, true);
-			if(canSplit()) availableActions.replace(BJAction.SPLIT, true);
-			if(canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
+			if (canSplit()) availableActions.replace(BJAction.SPLIT, true);
+			if (canDoubleDown()) availableActions.replace(BJAction.DOUBLE_DOWN, true);
 		}
 		return availableActions;
 	}
@@ -97,7 +97,7 @@ public class BJHand extends Hand {
 	 * @return whether doubling down is a legal action on this hand
 	 */
 	private boolean canDoubleDown() {
-		if(getCards().size() != 2) return false;
+		if (getCards().size() != 2) return false;
 		Card card1 = getCards().get(0);
 		Card card2 = getCards().get(1);
 		int score = getScore();

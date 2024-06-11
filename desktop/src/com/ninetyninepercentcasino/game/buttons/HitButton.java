@@ -28,7 +28,7 @@ public class HitButton extends CasinoButton {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) {
+				if (isAvailable) {
 					signalHit();
 				}
 				return true;

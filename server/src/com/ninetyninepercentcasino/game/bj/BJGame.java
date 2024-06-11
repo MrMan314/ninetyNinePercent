@@ -59,7 +59,7 @@ public class BJGame extends Thread {
 		firstHand.setBet(firstBet);
 		hands.push(firstHand);
 
-		if(dealer.hasVisibleAce()) getInsurance(); //get insurance bet if the dealer has a visible ace
+		if (dealer.hasVisibleAce()) getInsurance(); //get insurance bet if the dealer has a visible ace
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
 		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
@@ -69,14 +69,14 @@ public class BJGame extends Thread {
 			BJHand currentHand = hands.peek();
 			HashMap<BJAction, Boolean> availableActions = currentHand.getOptions();
 			boolean handOver = true;
-			for(Boolean available : availableActions.values()) {
-				if(available) {
+			for (Boolean available : availableActions.values()) {
+				if (available) {
 					handOver = false;
 					break;
 				}
 			}
 			sendOptions(availableActions, handOver);
-			if(handOver) {
+			if (handOver) {
 				resolved.push(hands.pop());
 			}
 			else {
@@ -130,7 +130,7 @@ public class BJGame extends Thread {
 			}
 			sendHandEnd(outcome, winnings); //inform the client of the result of the hand
 		}
-		if(dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
+		if (dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
 			player.addBalance(insuranceBet*3);
 		}
 	}
@@ -198,16 +198,16 @@ public class BJGame extends Thread {
 	private int findWinner(BJHand playerHand, BJDealer dealer) {
 		int playerScore = playerHand.getScore();
 		int dealerScore = dealer.getScore();
-		if(playerScore == 21 && dealerScore == 21) {
-			if(playerHand.getCards().size() == 2 && dealer.getNumCards() == 2) return TIE;
-			else if(playerHand.getCards().size() == 2) return PLAYER_BLACKJACK;
+		if (playerScore == 21 && dealerScore == 21) {
+			if (playerHand.getCards().size() == 2 && dealer.getNumCards() == 2) return TIE;
+			else if (playerHand.getCards().size() == 2) return PLAYER_BLACKJACK;
 			else return DEALER_WON;
 		}
-		else if((playerScore > 21 && dealerScore > 21)) return DEALER_WON;
-		else if(playerScore == dealerScore) return TIE;
-		else if(playerScore > 21) return DEALER_WON;
-		else if(dealerScore > 21) return PLAYER_WON;
-		else if(playerScore > dealerScore) return PLAYER_WON;
+		else if ((playerScore > 21 && dealerScore > 21)) return DEALER_WON;
+		else if (playerScore == dealerScore) return TIE;
+		else if (playerScore > 21) return DEALER_WON;
+		else if (dealerScore > 21) return PLAYER_WON;
+		else if (playerScore > dealerScore) return PLAYER_WON;
 		else return DEALER_WON;
 	}
 
@@ -239,7 +239,7 @@ public class BJGame extends Thread {
 		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, update);
 		try {
 			player.getConnection().message(actionUpdate);
-			if(!handOver) {
+			if (!handOver) {
 				synchronized(bjSynchronizer) {
 					bjSynchronizer.wait(); //waits until the client returns the action
 				}

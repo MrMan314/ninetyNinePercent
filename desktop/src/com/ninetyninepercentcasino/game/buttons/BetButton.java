@@ -29,7 +29,7 @@ public class BetButton extends CasinoButton {
 			 */
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) {
+				if (isAvailable) {
 					bet(); //place a bet once the button has been clicked
 				}
 				return true;

@@ -17,7 +17,7 @@ public class BackButton extends CasinoButton {
 		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				if(isAvailable) signalSplit();
+				if (isAvailable) signalSplit();
 				return true;
 			}
 		});

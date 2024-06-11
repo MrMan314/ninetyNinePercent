@@ -20,7 +20,7 @@ public class BrokerConnection extends Connection {
 			// Loop until dead
 			while (alive) {
 				// If connection is closed, quit
-				if(!clientSocket.isConnected()) {
+				if (!clientSocket.isConnected()) {
 					finish();
 				}
 				try {

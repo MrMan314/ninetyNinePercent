@@ -75,7 +75,7 @@ public class SettingsMenu extends CasinoScreen {
 		stage.addCaptureListener(new InputListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
-				if(keycode == Input.Keys.ESCAPE) {
+				if (keycode == Input.Keys.ESCAPE) {
 					game.setScreen(previousScreen);
 					return true;
 				}

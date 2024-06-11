@@ -115,11 +115,11 @@ public class BJScreen extends CasinoScreen {
 	 */
 	@Override
 	public void render(float delta) {
-		if(firstRender) {
+		if (firstRender) {
 			Gdx.graphics.requestRendering();
 			firstRender = false;
 		}
-		if(!updates.isEmpty()) {
+		if (!updates.isEmpty()) {
 			stage.handleDTO(updates.remove(0)); //update the stage with a DTO if there are still DTOs in the queue
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);

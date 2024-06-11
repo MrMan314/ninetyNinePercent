@@ -37,11 +37,11 @@ public class ChipGroup extends Group {
 		int blackChips = 0;
 		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
 		while(totalValue > 0) {
-			if(totalValue >= 2500) {
+			if (totalValue >= 2500) {
 				totalValue -= 100;
 				blackChips++;
 			}
-			else if(totalValue >= 141) {
+			else if (totalValue >= 141) {
 				totalValue -= 141;
 				whiteChips++;
 				redChips++;
@@ -49,20 +49,20 @@ public class ChipGroup extends Group {
 				greenChips++;
 				blackChips++;
 			}
-			else if(totalValue >= 41) {
+			else if (totalValue >= 41) {
 				totalValue -= 41;
 				whiteChips++;
 				redChips++;
 				blueChips++;
 				greenChips++;
 			}
-			else if(totalValue >= 16) {
+			else if (totalValue >= 16) {
 				totalValue -= 16;
 				whiteChips++;
 				redChips++;
 				blueChips++;
 			}
-			else if(totalValue >= 6) {
+			else if (totalValue >= 6) {
 				totalValue -= 6;
 				whiteChips++;
 				redChips++;
@@ -104,11 +104,11 @@ public class ChipGroup extends Group {
 	 * @param numHolders the number of holders to spawn
 	 */
 	private void setupHolders(int numHolders, boolean isNormalHolder) {
-		for(int i = 0; i < numHolders; i++) {
+		for (int i = 0; i < numHolders; i++) {
 			ChipHolder chipHolder = new ChipHolder();
 			chipHolder.setPosition(holderSpawnX, holderSpawnY);
 			addActor(chipHolder);
-			if(isNormalHolder) holders.add(chipHolder);
+			if (isNormalHolder) holders.add(chipHolder);
 			else insuranceHolders.add(chipHolder);
 			holderSpawnX += chipHolder.getWidth(); //move the spawn location over by the width of the chip so the next holder spawns to the right of this one
 		}
@@ -160,11 +160,11 @@ public class ChipGroup extends Group {
 		int blackChips = 0;
 		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
 		while(totalValue > 0) {
-			if(totalValue >= 2500) {
+			if (totalValue >= 2500) {
 				totalValue -= 100;
 				blackChips++;
 			}
-			else if(totalValue >= 141) {
+			else if (totalValue >= 141) {
 				totalValue -= 141;
 				whiteChips++;
 				redChips++;
@@ -172,20 +172,20 @@ public class ChipGroup extends Group {
 				greenChips++;
 				blackChips++;
 			}
-			else if(totalValue >= 41) {
+			else if (totalValue >= 41) {
 				totalValue -= 41;
 				whiteChips++;
 				redChips++;
 				blueChips++;
 				greenChips++;
 			}
-			else if(totalValue >= 16) {
+			else if (totalValue >= 16) {
 				totalValue -= 16;
 				whiteChips++;
 				redChips++;
 				blueChips++;
 			}
-			else if(totalValue >= 6) {
+			else if (totalValue >= 6) {
 				totalValue -= 6;
 				whiteChips++;
 				redChips++;
@@ -230,10 +230,10 @@ public class ChipGroup extends Group {
 	 */
 	public int calculate() {
 		int total = 0;
-		for(ChipHolder holder : holders) {
+		for (ChipHolder holder : holders) {
 			total += holder.calculate();
 		}
-		for(ChipHolder holder : insuranceHolders) {
+		for (ChipHolder holder : insuranceHolders) {
 			total += holder.calculate();
 		}
 		return total;
