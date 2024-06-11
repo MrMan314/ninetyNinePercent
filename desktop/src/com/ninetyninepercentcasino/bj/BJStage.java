@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -94,6 +95,7 @@ public class BJStage extends Stage {
 			game.balance += ((BJPayout)(update)).getWinnings();
 			showPlayAgainButton();
 		}
+		Gdx.graphics.requestRendering();
 	}
 
 	/**
@@ -191,8 +193,8 @@ public class BJStage extends Stage {
 		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.5f);
 
 		Table upperTable = new Table(); //will hold the deck and dealer hand
-		upperTable.add(deckActor).spaceRight(100);
-		upperTable.add(dealerHand);
+		upperTable.add(deckActor).width(deckActor.getWidth()*2);
+		upperTable.add(dealerHand).width(deckActor.getWidth()*2);
 		upperTable.setPosition(WORLD_WIDTH / 2.4f, WORLD_HEIGHT / 1.55f);
 
 		Table lowerTable = new Table(); //will hold all the player's cards
@@ -233,7 +235,7 @@ public class BJStage extends Stage {
 	 */
 	public void sendInsure() {
 		insuredChips = new ChipGroupBet(chips.getInsuranceHolders());
-		game.balance -= insuredChips.calculate();
+		game.balance -= insuredChips.calculate(); //subtract the amount bet from the balance
 		BJInsuranceMessage insuranceBet = new BJInsuranceMessage(insuredChips.calculate());
 		addActor(insuredChips);
 		insuredChips.stowHolders();
@@ -299,12 +301,12 @@ public class BJStage extends Stage {
 			handOver = false;
 		}
 		else standButton.disable();
-		if(actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) {
+		if(actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) { //only activates the split button if there is enough money remaining to split
 			splitButton.enable();
 			handOver = false;
 		}
 		else splitButton.disable();
-		if(actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) {
+		if(actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) { //only activates the double down button if there is enough money remaining to split
 			doubleDownButton.enable();
 			handOver = false;
 		}
