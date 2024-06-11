@@ -32,7 +32,7 @@ public class SplashScreen implements Screen {
 	public void show() {
 		time = 0;
 		alpha = 0;
-		splashScreen = new Texture("Menus/Background.jpg");
+		splashScreen = new Texture("GameAssets/SplashScreen.png");
 		stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
 	}
 
@@ -57,11 +57,12 @@ public class SplashScreen implements Screen {
 			Gdx.graphics.setContinuousRendering(false); //the rest of this project is a turn-based game that doesn't require continuous rendering
 			game.music.playMusic(); //begin the music
 			game.setScreen(new MainMenu(game)); //set the screen to be the main menu screen, passing it an instance of the game
+			Gdx.graphics.requestRendering();
 		}
 		else {
 			stage.getBatch().begin();
 			stage.getBatch().setColor(255, 255, 255, alpha); //set the batch to the appropriate alpha
-			stage.getBatch().draw(splashScreen, 0, 0, 2000, 2000*((float) 2/3)); //draw the splashScreen
+			stage.getBatch().draw(splashScreen, 0, 0); //draw the splashScreen
 			stage.getBatch().end();
 		}
 	}
