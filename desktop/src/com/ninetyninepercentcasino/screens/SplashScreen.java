@@ -1,6 +1,8 @@
 package com.ninetyninepercentcasino.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -11,6 +13,7 @@ import com.ninetyninepercentcasino.MainCasino;
  */
 public class SplashScreen implements Screen {
 	private float time;
+	private float alpha; //will store the alpha (fade effect) to draw the screen at
 	private final MainCasino game;
 	private Stage stage;
 	private Texture splashScreen;
@@ -28,6 +31,7 @@ public class SplashScreen implements Screen {
 	@Override
 	public void show() {
 		time = 0;
+		alpha = 0;
 		splashScreen = new Texture("Menus/Background.jpg");
 		stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
 	}
@@ -38,14 +42,25 @@ public class SplashScreen implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clear the screen to remove previously drawn frames
 		time += delta;
-		if(time > 2f){ //once the screen has been displayed for more than 2 seconds, switch to the main menu screen
+		if(time < 1){ //
+			alpha += delta; //fade in effect
+			System.out.println(alpha);
+		}
+		else if(time > 3){ //begin fading out once 3 seconds have passed
+			alpha -= delta; //fade out effect
+			System.out.println(alpha);
+		}
+		if(time > 4f){ //once the screen has been displayed for more than 2 seconds, switch to the main menu screen
 			dispose(); //dispose of this screen
+			Gdx.graphics.setContinuousRendering(false); //the rest of this project is a turn-based game that doesn't require continuous rendering
 			game.music.playMusic(); //begin the music
 			game.setScreen(new MainMenu(game)); //set the screen to be the main menu screen, passing it an instance of the game
 		}
 		else {
 			stage.getBatch().begin();
+			stage.getBatch().setColor(255, 255, 255, alpha); //set the batch to the appropriate alpha
 			stage.getBatch().draw(splashScreen, 0, 0, 2000, 2000*((float) 2/3)); //draw the splashScreen
 			stage.getBatch().end();
 		}
