@@ -79,19 +79,19 @@ public class ServerConnection extends Connection {
 								else if (content instanceof BJBetMessage) {
 									// Process BJBetMessage if it is a BJBetMessage
 									bjGame.setFirstBet(((BJBetMessage)content).getAmountBet());
-									synchronized(bjGame.getBjSynchronizer()) {
+									synchronized (bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
 								}
 								else if (content instanceof BJInsuranceMessage) {
 									bjGame.setInsuranceBet(((BJInsuranceMessage) content).getInsureAmount());
-									synchronized(bjGame.getBjSynchronizer()) {
+									synchronized (bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
 								} else if (content instanceof BJActionUpdate) {
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());
-									synchronized(bjGame.getBjSynchronizer()) {
+									synchronized (bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
 								} else if (content instanceof LoginRequest) {

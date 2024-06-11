@@ -88,7 +88,7 @@ public class Database {
 	 * Postcondition: True returned if username is in database, false if not.
 	 */
 	private boolean userExists(ResultSet result, String username) throws SQLException {
-		while(result.next()) { //Next returns false if there is not another value.
+		while (result.next()) { //Next returns false if there is not another value.
 			if (result.getString("Username").equals(username)) {
 				return true; //Username exists
 			}

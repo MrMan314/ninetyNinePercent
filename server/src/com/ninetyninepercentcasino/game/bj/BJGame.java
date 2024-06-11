@@ -65,7 +65,7 @@ public class BJGame extends Thread {
 		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
 
-		while(!hands.isEmpty()) {
+		while (!hands.isEmpty()) {
 			BJHand currentHand = hands.peek();
 			HashMap<BJAction, Boolean> availableActions = currentHand.getOptions();
 			boolean handOver = true;
@@ -138,7 +138,7 @@ public class BJGame extends Thread {
 	 * simulates the action of the dealer
 	 */
 	private void actDealer() {
-		while(dealer.getScore() < 17) {
+		while (dealer.getScore() < 17) {
 			drawCardUpdate(dealer.drawCard(), true, false);
 		}
 	}
@@ -158,7 +158,7 @@ public class BJGame extends Thread {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		synchronized(bjSynchronizer) {
+		synchronized (bjSynchronizer) {
 			try {
 				bjSynchronizer.wait(); //waits until the client returns the amount bet
 			} catch (InterruptedException e) {
@@ -181,7 +181,7 @@ public class BJGame extends Thread {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		synchronized(bjSynchronizer) {
+		synchronized (bjSynchronizer) {
 			try {
 				bjSynchronizer.wait(); //waits until the client returns the amount bet
 			} catch (InterruptedException e) {
@@ -240,7 +240,7 @@ public class BJGame extends Thread {
 		try {
 			player.getConnection().message(actionUpdate);
 			if (!handOver) {
-				synchronized(bjSynchronizer) {
+				synchronized (bjSynchronizer) {
 					bjSynchronizer.wait(); //waits until the client returns the action
 				}
 			}
@@ -283,7 +283,7 @@ public class BJGame extends Thread {
 		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(outcome, winnings));
 		try {
 			player.getConnection().message(handEndUpdate); //message the player about the hand end
-			synchronized(bjSynchronizer) {
+			synchronized (bjSynchronizer) {
 				bjSynchronizer.wait(); //waits until the client returns the action
 			}
 		} catch (SocketException e) {

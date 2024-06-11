@@ -36,7 +36,7 @@ public class ChipGroup extends Group {
 		int greenChips = 0;
 		int blackChips = 0;
 		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
-		while(totalValue > 0) {
+		while (totalValue > 0) {
 			if (totalValue >= 2500) {
 				totalValue -= 100;
 				blackChips++;
@@ -122,13 +122,13 @@ public class ChipGroup extends Group {
 	 */
 	private void spawnChips(int value, int numChips) {
 		int leftInStack = STACK_SIZE;
-		while(numChips > 0) {
+		while (numChips > 0) {
 			ChipActor chipBelow = new ChipActor(new Chip(value));
 			chipBelow.setPosition(spawnX, spawnY);
 			addActor(chipBelow);
 			leftInStack--;
 			numChips--;
-			while(leftInStack > 0 && numChips > 0) {
+			while (leftInStack > 0 && numChips > 0) {
 				ChipActor chipAbove = new ChipActor(new Chip(value));
 				addActor(chipAbove);
 				chipAbove.attachToChip(chipBelow); //attach the newly spawned chip to the chip previously spawned to make a stack
@@ -159,7 +159,7 @@ public class ChipGroup extends Group {
 		int greenChips = 0;
 		int blackChips = 0;
 		//this while loop will try to equalize the number of each type of chip being spawned while keeping the total number of chips reasonable
-		while(totalValue > 0) {
+		while (totalValue > 0) {
 			if (totalValue >= 2500) {
 				totalValue -= 100;
 				blackChips++;
@@ -203,23 +203,23 @@ public class ChipGroup extends Group {
 	 */
 	private int calculateNumStacks(int whiteChips, int redChips, int blueChips, int greenChips, int blackChips) {
 		int numStacks = 0;
-		while(whiteChips > 0) {
+		while (whiteChips > 0) {
 			whiteChips -= STACK_SIZE;
 			numStacks++;
 		}
-		while(redChips > 0) {
+		while (redChips > 0) {
 			redChips -= STACK_SIZE;
 			numStacks++;
 		}
-		while(blueChips > 0) {
+		while (blueChips > 0) {
 			blueChips -= STACK_SIZE;
 			numStacks++;
 		}
-		while(greenChips > 0) {
+		while (greenChips > 0) {
 			greenChips -= STACK_SIZE;
 			numStacks++;
 		}
-		while(blackChips > 0) {
+		while (blackChips > 0) {
 			blackChips -= STACK_SIZE;
 			numStacks++;
 		}

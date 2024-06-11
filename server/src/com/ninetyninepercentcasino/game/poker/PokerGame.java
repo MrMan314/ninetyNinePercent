@@ -106,16 +106,16 @@ public class PokerGame {
 		int currentPlayerIndex = dealerIndex;
 
 		//finds the first person to act, who is the person to the left of the dealer
-		while(turnOrder.peek() != dealer) {
+		while (turnOrder.peek() != dealer) {
 			nextPlayer();
 		}
 		nextPlayer();
 
-		while(numConsecutiveChecks < numPlayersIn) {
+		while (numConsecutiveChecks < numPlayersIn) {
 			numConsecutiveChecks = 500;
 			//if the player has folded, skip their turn
 			//this may be redundant code
-//			while(turnOrder.peek().folded) {
+//			while (turnOrder.peek().folded) {
 //				turnOrder.poll();
 //			}
 			PokerPlayer currentPlayer = turnOrder.poll();

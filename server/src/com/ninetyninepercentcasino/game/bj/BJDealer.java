@@ -37,7 +37,7 @@ public class BJDealer {
 			else if (cardValue > 10) cardValue = 10;
 			score += cardValue;
 		}
-		while(numAces > 0 && score + 10 <= 21) {
+		while (numAces > 0 && score + 10 <= 21) {
 			numAces--;
 			score += 10;
 		}
