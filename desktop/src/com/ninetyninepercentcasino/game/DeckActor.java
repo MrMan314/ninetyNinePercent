@@ -17,7 +17,7 @@ public class DeckActor extends Actor {
 	/**
 	 * initializes a new unshuffled deck
 	 */
-	public DeckActor(){
+	public DeckActor() {
 		deck = new Deck();
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight()); //set the hitbox of this Actor to match the sprite
 	}
@@ -26,7 +26,7 @@ public class DeckActor extends Actor {
 	 * initializes a new DeckActor from a preexisting Deck
 	 * @param deck the deck this DeckActor will wrap
 	 */
-	public DeckActor(Deck deck){
+	public DeckActor(Deck deck) {
 		this.deck = deck;
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight()); //set the hitbox of this Actor to match the sprite
 	}
@@ -36,7 +36,7 @@ public class DeckActor extends Actor {
 	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
 	 *		   children.
 	 */
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 }

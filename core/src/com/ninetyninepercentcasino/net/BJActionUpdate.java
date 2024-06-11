@@ -11,14 +11,14 @@ public class BJActionUpdate extends DTO {
 	 * initializes a BJActionUpdate with a given action
 	 * @param action the chosen action
 	 */
-	public BJActionUpdate(BJAction action){
+	public BJActionUpdate(BJAction action) {
 		chosenAction = action;
 	}
 
 	/**
 	 * @return the chosen action
 	 */
-	public BJAction getChosenAction(){
+	public BJAction getChosenAction() {
 		return chosenAction;
 	}
 }

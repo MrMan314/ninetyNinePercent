@@ -23,14 +23,14 @@ public class SFXManager {
 	/**
 	 * loads the sound effects. must be called once within the game for the SFX to be loaded
 	 */
-	public static void loadSFX(){
-		for(int i = 1; i <= 8; i++){
+	public static void loadSFX() {
+		for(int i = 1; i <= 8; i++) {
 			cardSlideSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/cardSlide" + i + ".ogg")));
 		}
-		for(int i = 1; i <= 6; i++){
+		for(int i = 1; i <= 6; i++) {
 			chipStackSounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipsStack" + i + ".ogg")));
 		}
-		for(int i = 1; i <= 2; i++){
+		for(int i = 1; i <= 2; i++) {
 			chipLaySounds.add(Gdx.audio.newSound(Gdx.files.internal("Sound/CasinoAudio/chipLay" + i + ".ogg")));
 		}
 	}
@@ -38,33 +38,33 @@ public class SFXManager {
 	/**
 	 * plays a random card slide sound
 	 */
-	public static void playSlideSound(){
+	public static void playSlideSound() {
 		cardSlideSounds.get(MathUtils.random(cardSlideSounds.size()-1)).play(volume);
 	}
 
 	/**
 	 * plays a random chip stack sound
 	 */
-	public static void playStackSound(){
+	public static void playStackSound() {
 		cardSlideSounds.get(MathUtils.random(chipStackSounds.size()-1)).play(volume);
 	}
 
 	/**
 	 * plays the chip grabbing sound
 	 */
-	public static void playChipGrabSound(){
+	public static void playChipGrabSound() {
 		chipGrabSound.play(volume);
 	}
 	/**
 	 * plays the chip lay sound
 	 */
-	public static void playChipLaySound(){
+	public static void playChipLaySound() {
 		chipLaySounds.get(MathUtils.random(chipLaySounds.size()-1)).play(volume);
 	}
 	/**
 	 * @return the volume of the SFX
 	 */
-	public static float getVolume(){
+	public static float getVolume() {
 		return volume;
 	}
 
@@ -72,7 +72,7 @@ public class SFXManager {
 	 * updates SFX volume
 	 * @param volume the new volume
 	 */
-	public static void setVolume(float volume){
+	public static void setVolume(float volume) {
 		SFXManager.volume = volume;
 	}
 }

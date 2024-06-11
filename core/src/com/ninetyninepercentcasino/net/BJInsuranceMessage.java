@@ -10,7 +10,7 @@ public class BJInsuranceMessage extends DTO {
 	/**
 	 * initializes a new request for insurance
 	 */
-	public BJInsuranceMessage(){
+	public BJInsuranceMessage() {
 
 	}
 
@@ -18,14 +18,14 @@ public class BJInsuranceMessage extends DTO {
 	 * initializes a response with the amount insured
 	 * @param insureAmount the amount insured
 	 */
-	public BJInsuranceMessage(int insureAmount){
+	public BJInsuranceMessage(int insureAmount) {
 		this.insureAmount = insureAmount;
 	}
 
 	/**
 	 * @return the amount insured
 	 */
-	public int getInsureAmount(){
+	public int getInsureAmount() {
 		return insureAmount;
 	}
 }

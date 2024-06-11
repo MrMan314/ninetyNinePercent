@@ -40,7 +40,7 @@ public class PokerScreen extends CasinoScreen {
 
 //		pokerTable.setX(WORLD_WIDTH / 2);
 //		pokerTable.setY(WORLD_HEIGHT / 2);
-//		for(int i = 0; i < pokerGame.communityCards.size(); i++){
+//		for(int i = 0; i < pokerGame.communityCards.size(); i++) {
 //			pokerTable.add(new CardActor(pokerGame.communityCards.get(i), false, false)).pad(6);
 //		}
 //		pokerTable.add(deck).padLeft(200);
@@ -60,7 +60,7 @@ public class PokerScreen extends CasinoScreen {
 //		stage.addActor(pokerTable);
 		stage.addActor(bottomUI);
 
-		stage.addCaptureListener(new InputListener(){
+		stage.addCaptureListener(new InputListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
@@ -68,27 +68,27 @@ public class PokerScreen extends CasinoScreen {
 					return true;
 				}
 				float distance = 100f;
-				if(keycode == Input.Keys.W){
+				if(keycode == Input.Keys.W) {
 					stage.getCamera().translate(0, distance, 0);
 					return true;
 				}
-				if(keycode == Input.Keys.A){
+				if(keycode == Input.Keys.A) {
 					stage.getCamera().translate(-distance, 0, 0);
 					return true;
 				}
-				if(keycode == Input.Keys.S){
+				if(keycode == Input.Keys.S) {
 					stage.getCamera().translate(0, -distance, 0);
 					return true;
 				}
-				if(keycode == Input.Keys.D){
+				if(keycode == Input.Keys.D) {
 					stage.getCamera().translate(distance, 0, 0);
 					return true;
 				}
-//				if(keycode == Input.Keys.E){
+//				if(keycode == Input.Keys.E) {
 //					((OrthographicCamera)stage.getCamera()).zoom += 5;
 //					return true;
 //				}
-//				if(keycode == Input.Keys.F){
+//				if(keycode == Input.Keys.F) {
 //					((OrthographicCamera)stage.getCamera()).zoom -= 5;
 //					return true;
 //				}

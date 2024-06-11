@@ -18,7 +18,7 @@ public class BJHandEnd extends DTO {
 	 * @param outcome the outcome of the hand
 	 * @param winnings the amount the client has won
 	 */
-	public BJHandEnd(int outcome, int winnings){
+	public BJHandEnd(int outcome, int winnings) {
 		this.outcome = outcome;
 		this.winnings = winnings;
 	}
@@ -26,7 +26,7 @@ public class BJHandEnd extends DTO {
 	/**
 	 * @return the outcome of the game
 	 */
-	public int getOutcome(){
+	public int getOutcome() {
 		return outcome;
 	}
 

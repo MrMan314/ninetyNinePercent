@@ -72,7 +72,7 @@ public class ServerConnection extends Connection {
 								System.out.printf("[%s] %s: %s\n",  message.getType(), clientSocket.getRemoteSocketAddress().toString(), message.getContent());
 								// Read content of message
 								Object content = message.getContent();
-								if(content instanceof BJBeginGame){
+								if(content instanceof BJBeginGame) {
 									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
 									bjGame.start();
 								}
@@ -83,12 +83,12 @@ public class ServerConnection extends Connection {
 										bjGame.getBjSynchronizer().notify();
 									}
 								}
-								else if(content instanceof BJInsuranceMessage){
+								else if(content instanceof BJInsuranceMessage) {
 									bjGame.setInsuranceBet(((BJInsuranceMessage) content).getInsureAmount());
 									synchronized(bjGame.getBjSynchronizer()) {
 										bjGame.getBjSynchronizer().notify();
 									}
-								} else if(content instanceof BJActionUpdate){
+								} else if(content instanceof BJActionUpdate) {
 									// Update action, notify synchronizer
 									bjGame.setAction(((BJActionUpdate)content).getChosenAction());
 									synchronized(bjGame.getBjSynchronizer()) {

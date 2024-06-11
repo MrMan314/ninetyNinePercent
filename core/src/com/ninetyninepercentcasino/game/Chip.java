@@ -11,7 +11,7 @@ public class Chip {
 	 * initializes a new chip
 	 * @param value the value of the chip
 	 */
-	public Chip(int value){
+	public Chip(int value) {
 		this.value = value;
 	}
 

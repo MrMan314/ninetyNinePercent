@@ -16,7 +16,7 @@ public class Card implements Serializable {
 	 * pre: suit is number from 0-3
 	 * post: initializes a new card object assigned to the given numberValue and suit
 	 */
-	public Card(int cardNum, int suit){
+	public Card(int cardNum, int suit) {
 		this.suit = suit;
 		this.cardNum = cardNum;
 
@@ -26,7 +26,7 @@ public class Card implements Serializable {
 	 * pre: none
 	 * post: returns the number of the card
 	 */
-	public int getNum(){
+	public int getNum() {
 		return cardNum;
 	}
 	/**
@@ -34,14 +34,14 @@ public class Card implements Serializable {
 	 * pre: none
 	 * post: returns the suit of the card as a string
 	 */
-	public int getSuit(){
+	public int getSuit() {
 		return suit;
 	}
 
 	/**
 	 * @return the string of the suit name
 	 */
-	public String getSuitName(){
+	public String getSuitName() {
 		return suitNames[suit];
 	}
 }

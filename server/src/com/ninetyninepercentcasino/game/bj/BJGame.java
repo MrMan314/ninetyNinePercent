@@ -65,12 +65,12 @@ public class BJGame extends Thread {
 		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
 
-		while(!hands.isEmpty()){
+		while(!hands.isEmpty()) {
 			BJHand currentHand = hands.peek();
 			HashMap<BJAction, Boolean> availableActions = currentHand.getOptions();
 			boolean handOver = true;
-			for(Boolean available : availableActions.values()){
-				if(available){
+			for(Boolean available : availableActions.values()) {
+				if(available) {
 					handOver = false;
 					break;
 				}
@@ -80,7 +80,7 @@ public class BJGame extends Thread {
 				resolved.push(hands.pop());
 			}
 			else {
-				switch(action){ //simulate the action that the user selected
+				switch(action) { //simulate the action that the user selected
 					case HIT:
 						drawCardUpdate(currentHand.drawCard(deck), true, true); //draw a card for the hit
 						break;
@@ -112,7 +112,7 @@ public class BJGame extends Thread {
 			BJHand currentHand = resolved.pop();
 			int outcome = findWinner(currentHand, dealer); //calculate the outcome of the hand
 			int winnings = 0; //total amount the player wins + the amount initially bet
-			switch(outcome){
+			switch(outcome) {
 				case PLAYER_BLACKJACK:
 					player.addBalance((int) (currentHand.getAmountBet()*2.5));
 					winnings = (int) (currentHand.getAmountBet()*2.5);
@@ -137,8 +137,8 @@ public class BJGame extends Thread {
 	/**
 	 * simulates the action of the dealer
 	 */
-	private void actDealer(){
-		while(dealer.getScore() < 17){
+	private void actDealer() {
+		while(dealer.getScore() < 17) {
 			drawCardUpdate(dealer.drawCard(), true, false);
 		}
 	}
@@ -146,7 +146,7 @@ public class BJGame extends Thread {
 	/**
 	 * sends bet message to client and waits until a bet has been placed
 	 */
-	private void getInitialBet(){
+	private void getInitialBet() {
 		NetMessage getBet = new NetMessage(NetMessage.MessageType.INFO, new BJBetMessage());
 		try {
 			player.getConnection().message(getBet);
@@ -169,7 +169,7 @@ public class BJGame extends Thread {
 	/**
 	 * sends an insurance request to the player and waits until a bet has been received
 	 */
-	private void getInsurance(){
+	private void getInsurance() {
 		NetMessage insuranceMessage = new NetMessage(NetMessage.MessageType.INFO, new BJInsuranceMessage());
 		try {
 			player.getConnection().message(insuranceMessage);
@@ -195,10 +195,10 @@ public class BJGame extends Thread {
 	 * @param dealer the dealer's hand
 	 * @return 0 if the player won, 1 if the dealer won, 2 for a tie
 	 */
-	private int findWinner(BJHand playerHand, BJDealer dealer){
+	private int findWinner(BJHand playerHand, BJDealer dealer) {
 		int playerScore = playerHand.getScore();
 		int dealerScore = dealer.getScore();
-		if(playerScore == 21 && dealerScore == 21){
+		if(playerScore == 21 && dealerScore == 21) {
 			if(playerHand.getCards().size() == 2 && dealer.getNumCards() == 2) return TIE;
 			else if(playerHand.getCards().size() == 2) return PLAYER_BLACKJACK;
 			else return DEALER_WON;
@@ -214,7 +214,7 @@ public class BJGame extends Thread {
 	/**
 	 * called when the client needs to be updated about a card that was drawn
 	 */
-	private void drawCardUpdate(Card card, boolean visible, boolean isPlayerCard){
+	private void drawCardUpdate(Card card, boolean visible, boolean isPlayerCard) {
 		NetMessage cardUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJCardUpdate(card, visible, isPlayerCard));
 		try {
 			player.getConnection().message(cardUpdate);
@@ -234,12 +234,12 @@ public class BJGame extends Thread {
 	 * it is guaranteed that after this method is called setAction() will be called to resume the thread
 	 * @param availableActions the
 	 */
-	private void sendOptions(HashMap<BJAction, Boolean> availableActions, boolean handOver){
+	private void sendOptions(HashMap<BJAction, Boolean> availableActions, boolean handOver) {
 		BJAvailActionUpdate update = new BJAvailActionUpdate(availableActions);
 		NetMessage actionUpdate = new NetMessage(NetMessage.MessageType.INFO, update);
 		try {
 			player.getConnection().message(actionUpdate);
-			if(!handOver){
+			if(!handOver) {
 				synchronized(bjSynchronizer) {
 					bjSynchronizer.wait(); //waits until the client returns the action
 				}
@@ -260,7 +260,7 @@ public class BJGame extends Thread {
 	 * @param hand1 the hand that will be played out first
 	 * @param hand2 the hand that will be played out second
 	 */
-	private void signalSplit(Hand hand1, Hand hand2){
+	private void signalSplit(Hand hand1, Hand hand2) {
 		NetMessage splitUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJSplit(hand1, hand2));
 		try {
 			player.getConnection().message(splitUpdate); //message the player about the split information
@@ -279,7 +279,7 @@ public class BJGame extends Thread {
 	 * @param outcome the outcome of the hand
 	 * @param winnings
 	 */
-	private void sendHandEnd(int outcome, int winnings){
+	private void sendHandEnd(int outcome, int winnings) {
 		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(outcome, winnings));
 		try {
 			player.getConnection().message(handEndUpdate); //message the player about the hand end
@@ -307,7 +307,7 @@ public class BJGame extends Thread {
 	 * called by the ServerConnection managing the game when it receives the client's first bet
 	 * @param firstBet the amount the client has chosen to bet
 	 */
-	public void setFirstBet(int firstBet){
+	public void setFirstBet(int firstBet) {
 		this.firstBet = firstBet;
 	}
 
@@ -315,20 +315,20 @@ public class BJGame extends Thread {
 	 * called by the ServerConnection managing the game when it receives the client's insurance bet
 	 * @param insuranceBet the amount bet
 	 */
-	public void setInsuranceBet(int insuranceBet){
+	public void setInsuranceBet(int insuranceBet) {
 		this.insuranceBet = insuranceBet;
 	}
 	/**
 	 * called by the ServerConnection managing the game when it receives the client's action
 	 * @param action the action the client has chosen to perform
 	 */
-	public void setAction(BJAction action){
+	public void setAction(BJAction action) {
 		this.action = action;
 	}
 	/**
 	 * sleeps the thread to animate a pause between information sends, usually done in between card draws
 	 */
-	private void pause(){
+	private void pause() {
 		try {
 			Thread.sleep(PAUSE_TIME);
 		} catch (InterruptedException e) {

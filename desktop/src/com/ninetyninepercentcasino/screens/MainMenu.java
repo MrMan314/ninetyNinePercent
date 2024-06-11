@@ -66,7 +66,7 @@ public class MainMenu extends CasinoScreen {
 		 * adding change listeners to the buttons on the main menu
 		 * this gives them their functionality to switch the game over to another screen when clicked
 		 */
-		settingsButton.addListener(new ChangeListener(){
+		settingsButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				nextScreen = new AccountMenu(game, getThis());
 				game.setScreen(nextScreen);
@@ -81,7 +81,7 @@ public class MainMenu extends CasinoScreen {
 				(event.getTarget()).setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
 			}
 		});
-		playButton.addListener(new ChangeListener(){
+		playButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				nextScreen = new BJScreen(game, getThis());
 				game.setScreen(nextScreen); //set the screen to be a new game selection screen
@@ -104,7 +104,7 @@ public class MainMenu extends CasinoScreen {
 	 * @param delta The time in seconds since the last render.
 	 */
 	@Override
-	public void render(float delta){
+	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clear the screen to remove previously drawn frames
 		stage.getBatch().begin(); //begin the stage batch to draw the background separately
 		stage.getBatch().setColor(1, 1,1 ,1f);

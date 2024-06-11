@@ -72,7 +72,7 @@ public class SettingsMenu extends CasinoScreen {
 
 		background = new Texture("Menus/Background.jpg");
 
-		stage.addCaptureListener(new InputListener(){
+		stage.addCaptureListener(new InputListener() {
 			@Override
 			public boolean keyDown(InputEvent event, int keycode) {
 				if(keycode == Input.Keys.ESCAPE) {
@@ -95,14 +95,14 @@ public class SettingsMenu extends CasinoScreen {
 		}; //makes the button fade a little when hovering over it
 
 		settingsButton.addListener(buttonDown);
-		settingsButton.addListener(new ChangeListener(){
+		settingsButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				game.setScreen(previousScreen);
 			}
 		});
 	}
 	@Override
-	public void render(float delta){
+	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0f, 1);
 		stage.getBatch().begin();
 		stage.getBatch().setColor(1, 1,1 ,1f);

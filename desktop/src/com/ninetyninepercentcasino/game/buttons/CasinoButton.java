@@ -27,23 +27,23 @@ public abstract class CasinoButton extends Actor {
 	/**
 	 * initializes a button
 	 */
-	public CasinoButton(){
+	public CasinoButton() {
 		isAvailable = false;
 		setTouchable(Touchable.enabled); //let the button be touchable
 		buttonOutlineSprite.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-		addListener(new ClickListener(){ //listens for cursor entering and exiting actor events
+		addListener(new ClickListener() { //listens for cursor entering and exiting actor events
 			/**
 			 * called when the cursor hovers over the button to make it fade out a little
 			 */
 			@Override
-			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(isAvailable) buttonSprite.setColor(65, 65, 65, 0.8f);
 			}
 			/**
 			 * called when the cursor exits the button to make it solid again
 			 */
 			@Override
-			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				if(isAvailable) buttonSprite.setColor(1, 1,1 ,1f);
 			}
 		});
@@ -55,7 +55,7 @@ public abstract class CasinoButton extends Actor {
 	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all
 	 *		   children.
 	 */
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		buttonSprite.setPosition(getX(), getY());
 		buttonOutlineSprite.setPosition(getX(), getY());
 		if(!isAvailable) buttonOutlineSprite.draw(batch);
@@ -67,14 +67,14 @@ public abstract class CasinoButton extends Actor {
 	/**
 	 * disables the button, and the entering/exiting animations
 	 */
-	public void disable(){
+	public void disable() {
 		isAvailable = false;
 	}
 
 	/**
 	 * enables the button and the entering/exiting animations
 	 */
-	public void enable(){
+	public void enable() {
 		isAvailable = true;
 	}
 }

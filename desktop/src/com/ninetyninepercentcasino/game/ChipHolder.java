@@ -15,7 +15,7 @@ public class ChipHolder extends ChipActor {
 	/**
 	 * initializes a new ChipHolder
 	 */
-	public ChipHolder(){
+	public ChipHolder() {
 		chipAbove = null;
 		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
@@ -25,20 +25,20 @@ public class ChipHolder extends ChipActor {
 	 * ChipHolders cannot be popped, so override with an empty method
 	 */
 	@Override
-	public void pop(){
+	public void pop() {
 	}
 	/**
 	 * ChipHolders cannot be popped, so override with an empty method
 	 */
 	@Override
-	public void unpop(){
+	public void unpop() {
 	}
 	/**
 	 * draws the ChipHolder
 	 * ChipHolders cannot attach onto other chips either, so override the ChipActor functionality there
 	 */
 	@Override
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 
@@ -47,7 +47,7 @@ public class ChipHolder extends ChipActor {
 	 * @return the value of all chips above this one
 	 */
 	@Override
-	public int calculate(){
+	public int calculate() {
 		if(chipAbove != null) return chipAbove.calculate();
 		else return 0;
 	}
@@ -57,7 +57,7 @@ public class ChipHolder extends ChipActor {
 	 * this will still float the stack above it away though
 	 */
 	@Override
-	public void floatAway(){
+	public void floatAway() {
 		if(chipAbove != null) chipAbove.floatAway();
 	}
 }

@@ -10,10 +10,10 @@ public class Account {
 	public Account(String username) {
 		this.username=username;
 	}
-	public void addBalance(int amountAdded){
+	public void addBalance(int amountAdded) {
 
 	}
-	public void withdraw(int withdrawAmount){
+	public void withdraw(int withdrawAmount) {
 
 	}
 }

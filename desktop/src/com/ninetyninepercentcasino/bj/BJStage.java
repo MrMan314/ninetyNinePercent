@@ -49,7 +49,7 @@ public class BJStage extends Stage {
 	 * initializes a new BJStage
 	 * @param viewport the viewport to be used
 	 */
-	public BJStage(Viewport viewport){
+	public BJStage(Viewport viewport) {
 		super(viewport);
 	}
 
@@ -57,27 +57,27 @@ public class BJStage extends Stage {
 	 * called by a BJScreen to update the game state
 	 * @param update the DTO containing information about the game update
 	 */
-	public void handleDTO(DTO update){
-		if(update instanceof BJBetMessage){
+	public void handleDTO(DTO update) {
+		if(update instanceof BJBetMessage) {
 			startBetPhase();
 		}
-		else if(update instanceof BJInsuranceMessage){
+		else if(update instanceof BJInsuranceMessage) {
 			startInsurePhase();
 		}
-		else if(update instanceof BJCardUpdate){
+		else if(update instanceof BJCardUpdate) {
 			if(((BJCardUpdate)update).isPlayerCard()) addPlayerCard(((BJCardUpdate)update).getCard());
 			else {
 				addDealerCard(((BJCardUpdate)update).getCard());
 				if(((BJCardUpdate)update).isVisible()) revealDealerHand(); //only the first card for the dealer will be sent as visible, so revealing the hand will just reveal that first card
 			}
 		}
-		else if(update instanceof BJAvailActionUpdate){
+		else if(update instanceof BJAvailActionUpdate) {
 			updateButtons(((BJAvailActionUpdate)update).getActions());
 		}
-		else if(update instanceof BJSplit){
+		else if(update instanceof BJSplit) {
 			handleSplit((BJSplit)update);
 		}
-		else if(update instanceof BJHandEnd){
+		else if(update instanceof BJHandEnd) {
 			revealDealerHand();
 			endHand((BJHandEnd)update);
 		}
@@ -86,7 +86,7 @@ public class BJStage extends Stage {
 	/**
 	 * begins the betting phase before cards are drawn
 	 */
-	private void startBetPhase(){
+	private void startBetPhase() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -127,14 +127,14 @@ public class BJStage extends Stage {
 	 * updates the number displayed by the chip value calculator
 	 * called by the BJScreen every render
 	 */
-	public void updateBetDisplay(){
+	public void updateBetDisplay() {
 		if(betDisplay != null) betDisplay.setText(chips.calculate());
 	}
 
 	/**
 	 * sends a bet to the server
 	 */
-	public void sendBet(){
+	public void sendBet() {
 		betChips = new ChipGroupBet(chips.getHolders());
 		game.balance -= betChips.calculate();
 		BJBetMessage betRequest = new BJBetMessage(betChips.calculate());
@@ -195,7 +195,7 @@ public class BJStage extends Stage {
 	/**
 	 * begins the insurance phase of betting
 	 */
-	private void startInsurePhase(){
+	private void startInsurePhase() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
@@ -238,7 +238,7 @@ public class BJStage extends Stage {
 	 * the card is immediately displayed
 	 * @param card the card to be added
 	 */
-	private void addPlayerCard(Card card){
+	private void addPlayerCard(Card card) {
 		SFXManager.playSlideSound();
 		playerHand.addCard(card);
 	}
@@ -247,7 +247,7 @@ public class BJStage extends Stage {
 	 * the card is immediately shown on screen either face up or face down
 	 * @param card the card to be added
 	 */
-	private void addDealerCard(Card card){
+	private void addDealerCard(Card card) {
 		if(dealerHand.getCards().size() == 2) dealerHand.reveal();
 		SFXManager.playSlideSound();
 		dealerHand.addCard(card);
@@ -256,7 +256,7 @@ public class BJStage extends Stage {
 	/**
 	 * reveals all cards in the dealer's hand
 	 */
-	private void revealDealerHand(){
+	private void revealDealerHand() {
 		dealerHand.reveal();
 	}
 
@@ -265,7 +265,7 @@ public class BJStage extends Stage {
 	 * @return this stage's viewport
 	 */
 	@Override
-	public Viewport getViewport(){
+	public Viewport getViewport() {
 		return super.getViewport();
 	}
 
@@ -273,7 +273,7 @@ public class BJStage extends Stage {
 	 * updates the BJ buttons given the available actions
 	 * @param actions describes the available and unavailable actions
 	 */
-	private void updateButtons(HashMap<BJAction, Boolean> actions){
+	private void updateButtons(HashMap<BJAction, Boolean> actions) {
 		boolean handOver = true;
 		if(actions.get(BJAction.HIT)) {
 			hitButton.enable();
@@ -295,9 +295,9 @@ public class BJStage extends Stage {
 			handOver = false;
 		}
 		else doubleDownButton.disable();
-		if(handOver){
-			if(!splitHands.getCards().isEmpty()){
-				for(Card card : playerHand.getCards()){
+		if(handOver) {
+			if(!splitHands.getCards().isEmpty()) {
+				for(Card card : playerHand.getCards()) {
 					resolvedHands.addCard(card);
 				}
 				playerHand.clearCards();
@@ -332,8 +332,8 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if(!splitHands.getCards().isEmpty()){
-			for(Card card : playerHand.getCards()){
+		if(!splitHands.getCards().isEmpty()) {
+			for(Card card : playerHand.getCards()) {
 				resolvedHands.addCard(card);
 			}
 			playerHand.clearCards();
@@ -345,7 +345,7 @@ public class BJStage extends Stage {
 	 * performs the double down action in blackjack
 	 * sends the action to the server
 	 */
-	public void doubleDown(){
+	public void doubleDown() {
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.DOUBLE_DOWN);
 		game.balance -= betChips.calculate();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -360,7 +360,7 @@ public class BJStage extends Stage {
 	 * performs the splitting action in blackjack
 	 * sends the action to the server
 	 */
-	public void split(){
+	public void split() {
 		BJActionUpdate actionUpdate = new BJActionUpdate(BJAction.SPLIT);
 		game.balance -= betChips.calculate();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, actionUpdate);
@@ -374,21 +374,21 @@ public class BJStage extends Stage {
 	/**
 	 * handles the server sending over a successful split
 	 */
-	private void handleSplit(BJSplit bjSplit){
+	private void handleSplit(BJSplit bjSplit) {
 		splitHands.addCard(bjSplit.getHand2().getCard(0));
 		playerHand.removeCard(bjSplit.getHand2().getCard(0));
 	}
 	/**
 	 * disables each button
 	 */
-	private void disableAllButtons(){
+	private void disableAllButtons() {
 		hitButton.disable();
 		standButton.disable();
 		splitButton.disable();
 		doubleDownButton.disable();
 	}
 
-	private void endHand(BJHandEnd handEnd){
+	private void endHand(BJHandEnd handEnd) {
 		playerHand.hide();
 		if(handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
 			betChips.floatAway();
@@ -401,14 +401,14 @@ public class BJStage extends Stage {
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
 	 * @param client the client of the stage that communicates with the server
 	 */
-	public void setClient(BJClient client){
+	public void setClient(BJClient client) {
 		this.client = client;
 	}
 
 	/**
 	 * @param screen the screen that this stage is being drawn on
 	 */
-	public void setScreen(CasinoScreen screen){
+	public void setScreen(CasinoScreen screen) {
 		this.screen = screen;
 		game = (MainCasino)screen.getGame();
 	}

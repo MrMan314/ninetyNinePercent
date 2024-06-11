@@ -16,13 +16,13 @@ public class InsureButton extends CasinoButton {
 	/**
 	 * initializes a new insure button
 	 */
-	public InsureButton(){
+	public InsureButton() {
 		super();
 		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 256, 0, BUTTON_ASSET_WIDTH, BUTTON_ASSET_HEIGHT));
 		buttonSprite.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
-		addListener(new ClickListener(){
+		addListener(new ClickListener() {
 			/**
 			 * called when the button is clicked, will signal an insure action
 			 */
@@ -36,7 +36,7 @@ public class InsureButton extends CasinoButton {
 	/**
 	 * called when the button is clicked
 	 */
-	public void signalInsure(){
+	public void signalInsure() {
 		((BJStage)getStage()).sendInsure();
 	}
 }

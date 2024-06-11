@@ -26,7 +26,7 @@ public abstract class CasinoScreen implements Screen {
 	 * general constructor for a screen in the game
 	 * @param game the game that the screen is a part of
 	 */
-	public CasinoScreen(MainCasino game){
+	public CasinoScreen(MainCasino game) {
 		this.game = game; //record the game as the one passed to the constructor
 		LabelStyleGenerator LSG = new LabelStyleGenerator();
 		Label.LabelStyle labelStyle = LSG.getLeagueGothicLabelStyle(60);
@@ -41,7 +41,7 @@ public abstract class CasinoScreen implements Screen {
 	 * general constructor for a screen in the game
 	 * @param game the game that the screen is a part of
 	 */
-	public CasinoScreen(MainCasino game, CasinoScreen previousScreen){
+	public CasinoScreen(MainCasino game, CasinoScreen previousScreen) {
 		this(game);
 		this.previousScreen = previousScreen;
 	}
@@ -52,7 +52,7 @@ public abstract class CasinoScreen implements Screen {
 	 * @param height the height of the new window
 	 */
 	@Override
-	public void resize(int width, int height){
+	public void resize(int width, int height) {
 		stage.getViewport().update(width, height, true); //update the viewport of the screen's stage to accurately represent the screen size change
 		screenHeight = Gdx.graphics.getHeight(); //update screenHeight and screenWidth variables as needed
 		screenWidth = Gdx.graphics.getWidth();
@@ -85,10 +85,10 @@ public abstract class CasinoScreen implements Screen {
 	/**
 	 * updates any global UI modules
 	 */
-	public void updateGlobalUI(){
+	public void updateGlobalUI() {
 		balanceDisplay.setText("$" + game.balance); //update the bet display to the player's balance
 	}
-	public Game getGame(){
+	public Game getGame() {
 		return game;
 	}
 

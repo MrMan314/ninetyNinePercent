@@ -21,7 +21,7 @@ public class CardGroup extends Table {
 	 * pre: none
 	 * post: initializes a new empty player hand
 	 */
-	public CardGroup(boolean faceUp, boolean isLocalHand){
+	public CardGroup(boolean faceUp, boolean isLocalHand) {
 		this.faceUp = faceUp;
 		this.isLocalHand = isLocalHand;
 		if(isLocalHand) setTouchable(Touchable.enabled);
@@ -35,9 +35,9 @@ public class CardGroup extends Table {
 	 * @param faceUp the orientation that new cards will automatically have
 	 * @param isLocalHand whether this CardGroup should be drawn bigger
 	 */
-	public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand){
+	public CardGroup(Hand hand, boolean faceUp, boolean isLocalHand) {
 		this(faceUp, isLocalHand);
-		for(Card card : hand.getCards()){
+		for(Card card : hand.getCards()) {
 			add(new CardActor(card, faceUp, isLocalHand));
 		}
 		this.hand = hand;
@@ -47,7 +47,7 @@ public class CardGroup extends Table {
 	 * pre: none
 	 * post: adds the CardActor to the hand
 	 */
-	public void addCard(CardActor card){
+	public void addCard(CardActor card) {
 		if(isLocalHand) card.makeActive();
 		hand.addCard(card.getCard());
 		add(card);
@@ -57,7 +57,7 @@ public class CardGroup extends Table {
 	 * pre: none
 	 * post: adds the CardActor to the hand
 	 */
-	public void addCard(Card card){
+	public void addCard(Card card) {
 		hand.addCard(card);
 		CardActor newCard = new CardActor(card, faceUp, isLocalHand);
 		add(newCard);
@@ -67,48 +67,48 @@ public class CardGroup extends Table {
 	 * pre: none
 	 * post: removes the CardActor from the hand
 	 */
-	public void removeCard(CardActor card){
+	public void removeCard(CardActor card) {
 		hand.removeCard(card.getCard());
 		removeActor(card);
 	}
-	public CardActor removeCard(Card card){
+	public CardActor removeCard(Card card) {
 		int index = 0;
-		for(int i = 0; i < hand.getCards().size(); i++){ //loop through each card
+		for(int i = 0; i < hand.getCards().size(); i++) { //loop through each card
 			Card cardInHand = hand.getCard(i);
-			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()){ //card matches the target card
+			if(card.getNum() == cardInHand.getNum() && card.getSuit() == cardInHand.getSuit()) { //card matches the target card
 				index = i;
 				hand.removeCard(i);
 			}
 		}
 		return (CardActor) removeActorAt(index, true);
 	}
-	public CardActor removeCard(int index){
+	public CardActor removeCard(int index) {
 		return removeCard(hand.removeCard(index));
 	}
-	public void clearCards(){
+	public void clearCards() {
 		hand.getCards().clear();
 		clearChildren();
 	}
 	/**
 	 * Hides the hand by hiding all CardActors
 	 */
-	public void hide(){
-		for(Actor cardActor: getChildren()){
+	public void hide() {
+		for(Actor cardActor: getChildren()) {
 			((CardActor)cardActor).hide(); //hide each CardActor this manages
 		}
 	}
 	/**
 	 * Reveals the hand by revealing all CardActors
 	 */
-	public void reveal(){
-		for(Actor cardActor: getChildren()){
+	public void reveal() {
+		for(Actor cardActor: getChildren()) {
 			((CardActor)cardActor).reveal(); //reveal each CardActor this manages
 		}
 	}
-	public ArrayList<Card> getCards(){
+	public ArrayList<Card> getCards() {
 		return hand.getCards();
 	}
-	public Card getCard(int index){
+	public Card getCard(int index) {
 		return hand.getCard(index);
 	}
 

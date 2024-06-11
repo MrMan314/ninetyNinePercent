@@ -13,7 +13,7 @@ public class BJPlayer extends Player {
 	 * @param account the account connected to the player
 	 * @param connection the player's connection to the server
 	 */
-	public BJPlayer(Account account, ServerConnection connection){
+	public BJPlayer(Account account, ServerConnection connection) {
 		super(account, connection);
 	}
 
@@ -21,7 +21,7 @@ public class BJPlayer extends Player {
 	 * adds to the balance of the player's account
 	 * @param amountAdded the amount to add to the balance
 	 */
-	public void addBalance(int amountAdded){
+	public void addBalance(int amountAdded) {
 		account.addBalance(amountAdded);
 	}
 
@@ -29,7 +29,7 @@ public class BJPlayer extends Player {
 	 * withdraws from the balance of the player's account
 	 * @param withdrawAmount amount to withdraw from the balance
 	 */
-	public void withdraw(int withdrawAmount){
+	public void withdraw(int withdrawAmount) {
 		account.withdraw(withdrawAmount);
 	}
 }

@@ -8,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class BackButton extends CasinoButton {
-	public BackButton(){
+	public BackButton() {
 		super();
 		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/BJButtons.png"), 0, 0, 64, 72));
 		buttonSprite.setSize(192, 192 * ((float) 72/64));
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
-		addListener(new ClickListener(){
+		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				if(isAvailable) signalSplit();
@@ -22,14 +22,14 @@ public class BackButton extends CasinoButton {
 			}
 		});
 	}
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		buttonSprite.setPosition(getX(), getY());
 		buttonSprite.draw(batch);
 	}
 	/**
 	 * called when the button is clicked
 	 */
-	public void signalSplit(){
+	public void signalSplit() {
 		System.out.println("among us");
 	}
 }

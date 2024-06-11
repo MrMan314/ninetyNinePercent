@@ -12,44 +12,44 @@ public class PokerPlayer {
 	private int balance;
 	boolean folded;
 	private int balanceInPot; //stores how much money the player has bet during a street
-	public enum Actions{
+	public enum Actions {
 		FOLD,
 		CHECK,
 		CALL,
 		RAISE,
 		BET;
 	}
-	public PokerPlayer(){
+	public PokerPlayer() {
 		super();
 		hand = new Hand();
 		folded = false;
 		balance = 0;
 		balanceInPot = 0;
 	}
-	public Hand getHand(){
+	public Hand getHand() {
 		return hand;
 	}
-	public void drawCard(Deck deck){
+	public void drawCard(Deck deck) {
 		deck.deal(hand);
 	}
-	public void fold(){
+	public void fold() {
 		folded = true;
 	}
-	public int getBalanceInPot(){
+	public int getBalanceInPot() {
 		return balanceInPot;
 	}
 	/**
 	 * Called after a round of betting, this simulates the player putting their chips into the pot.
 	 */
-	public void clearBalanceInPot(){
+	public void clearBalanceInPot() {
 		balanceInPot = 0;
 	}
-	public int bet(int betAmount){
+	public int bet(int betAmount) {
 		balance -= betAmount;
 		balanceInPot += betAmount;
 		return betAmount;
 	}
-	public void addToBalance(int addAmount){
+	public void addToBalance(int addAmount) {
 		balance += addAmount;
 	}
 	/**
@@ -58,7 +58,7 @@ public class PokerPlayer {
 	 * available actions are to raise, call, or fold. maybe more, not sure yet
 	 * @return the player's action
 	 */
-	public Actions getAction(){
+	public Actions getAction() {
 		//TODO networking? try to return something other than an int.
 		return Actions.RAISE;
 	}

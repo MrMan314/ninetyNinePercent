@@ -26,7 +26,7 @@ public class LabelStyleGenerator {
 	 * @param size the font size
 	 * @return a LabelStyle with the leagueGothic font
 	 */
-	public Label.LabelStyle getLeagueGothicLabelStyle(int size){
+	public Label.LabelStyle getLeagueGothicLabelStyle(int size) {
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
 		parameter.size = size; //set the font size to the requested size
 		leagueGothicFont = generator.generateFont(parameter);

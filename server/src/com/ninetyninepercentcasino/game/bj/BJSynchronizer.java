@@ -7,7 +7,7 @@ public class BJSynchronizer {
 	/**
 	 * initializes a new BJSynchronizer
 	 */
-	public BJSynchronizer(){
+	public BJSynchronizer() {
 
 	}
 }

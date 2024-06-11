@@ -53,7 +53,7 @@ public class BJScreen extends CasinoScreen {
 	 * @param height the height of the new window
 	 */
 	@Override
-	public void resize(int width, int height){
+	public void resize(int width, int height) {
 		stage.getViewport().update(width, height, true); //update the viewport of the screen's stage to accurately represent the screen size change
 		screenHeight = Gdx.graphics.getHeight(); //update screenHeight and screenWidth variables as needed
 		screenWidth = Gdx.graphics.getWidth();
@@ -119,7 +119,7 @@ public class BJScreen extends CasinoScreen {
 			Gdx.graphics.requestRendering();
 			firstRender = false;
 		}
-		if(!updates.isEmpty()){
+		if(!updates.isEmpty()) {
 			stage.handleDTO(updates.remove(0)); //update the stage with a DTO if there are still DTOs in the queue
 		}
 		ScreenUtils.clear(0, 0, 0, 1f);
@@ -175,7 +175,7 @@ public class BJScreen extends CasinoScreen {
 	 * since multithreading and scene2d don't go well together, this must be done to move the update onto the main Application thread
 	 * @param latestUpdate the DTO transferred by the server holding the information for the update
 	 */
-	public void requestUpdate(DTO latestUpdate){
+	public void requestUpdate(DTO latestUpdate) {
 		updates.add(latestUpdate);
 		Gdx.graphics.requestRendering();
 	}

@@ -15,7 +15,7 @@ public class MusicManager implements Music.OnCompletionListener {
 	/**
 	 * Initializes the music manager
 	 */
-	public MusicManager(){
+	public MusicManager() {
 		currentTrack = MathUtils.random(22)+1; //sets the track number to a random number
 		setTrack(); //call to update the music instance to match the current track number
 		music.setOnCompletionListener(this); //when the music instance is done playing, it will notify the listener, which will be the music manager
@@ -24,19 +24,19 @@ public class MusicManager implements Music.OnCompletionListener {
 	/**
 	 * plays the current track
 	 */
-	public void playMusic(){
+	public void playMusic() {
 		music.play();
 	}
 	/**
 	 * pauses the current track
 	 */
-	public void pauseMusic(){
+	public void pauseMusic() {
 		music.pause();
 	}
 	/**
 	 * sets the current file being streamed to match currentTrack
 	 */
-	private void setTrack(){
+	private void setTrack() {
 		music = Gdx.audio.newMusic(Gdx.files.internal("Sound/Music/Track" + currentTrack + ".mp3")); //retrieves the file with the number matching currentTrack
 	}
 
@@ -44,14 +44,14 @@ public class MusicManager implements Music.OnCompletionListener {
 	 * sets the volume of the music
 	 * @param volume volume of the music
 	 */
-	public void setVolume(float volume){
+	public void setVolume(float volume) {
 		music.setVolume(volume);
 	}
 
 	/**
 	 * @return the current volume of the music
 	 */
-	public float getVolume(){
+	public float getVolume() {
 		return music.getVolume();
 	}
 
@@ -70,7 +70,7 @@ public class MusicManager implements Music.OnCompletionListener {
 	/**
 	 * disposes the music instance to save memory
 	 */
-	public void dispose(){
+	public void dispose() {
 		music.dispose();
 	}
 }

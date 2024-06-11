@@ -21,10 +21,10 @@ public class BJHand extends Hand {
 	 * initialize a new empty blackjack hand
 	 * @param player the BJPlayer this is connected to
 	 */
-	public BJHand(BJPlayer player){
+	public BJHand(BJPlayer player) {
 		this.player = player;
 		availableActions = new HashMap<>();
-		for(BJAction action : BJAction.values()){
+		for(BJAction action : BJAction.values()) {
 			availableActions.put(action, false);
 		}
 	}
@@ -34,7 +34,7 @@ public class BJHand extends Hand {
 	 * @param player the BJPlayer that this is connected to
 	 * @param card1 the card that will start off in this hand
 	 */
-	public BJHand(BJPlayer player, Card card1){
+	public BJHand(BJPlayer player, Card card1) {
 		this(player);
 		addCard(card1);
 	}
@@ -44,7 +44,7 @@ public class BJHand extends Hand {
 	 * @param deck the deck that the card is to be drawn from
 	 * @return the card drawn
 	 */
-	public Card drawCard(Deck deck){
+	public Card drawCard(Deck deck) {
 		return addCard(deck.drawCard());
 	}
 
@@ -52,16 +52,16 @@ public class BJHand extends Hand {
 	 * calculates the highest possible blackjack score of a hand that doesn't bust
 	 * @return score of the hand
 	 */
-	public int getScore(){
+	public int getScore() {
 		int score = 0;
 		int numAces = 0;
-		for(Card card : getCards()){
+		for(Card card : getCards()) {
 			int cardValue = card.getNum();
 			if(cardValue == 1) numAces++;
 			else if(cardValue > 10) cardValue = 10;
 			score += cardValue;
 		}
-		while(numAces > 0 && score + 10 <= 21){
+		while(numAces > 0 && score + 10 <= 21) {
 			numAces--;
 			score += 10;
 		}
@@ -72,9 +72,9 @@ public class BJHand extends Hand {
 	 * updates the available actions on this hand
 	 * @return the available actions
 	 */
-	public HashMap<BJAction, Boolean> getOptions(){
+	public HashMap<BJAction, Boolean> getOptions() {
 		int score = getScore();
-		for(BJAction action : availableActions.keySet()){
+		for(BJAction action : availableActions.keySet()) {
 			availableActions.replace(action, false);
 		}
 		if(score < 21) { //if the score is 21 or above the player has no more choice over their actions, so they are all false
@@ -89,14 +89,14 @@ public class BJHand extends Hand {
 	/**
 	 * @return whether this hand can be split
 	 */
-	private boolean canSplit(){
+	private boolean canSplit() {
 		return getCards().size() == 2 && getCards().get(0).getNum() == getCards().get(1).getNum();
 	}
 
 	/**
 	 * @return whether doubling down is a legal action on this hand
 	 */
-	private boolean canDoubleDown(){
+	private boolean canDoubleDown() {
 		if(getCards().size() != 2) return false;
 		Card card1 = getCards().get(0);
 		Card card2 = getCards().get(1);
@@ -108,12 +108,12 @@ public class BJHand extends Hand {
 	 * sets the amount bet on this hand
 	 * @param amountBet the amount bet on this hand
 	 */
-	public void setBet(int amountBet){
+	public void setBet(int amountBet) {
 		player.withdraw(amountBet-this.amountBet);
 		this.amountBet = amountBet;
 	}
 
-	public void doubleBet(){
+	public void doubleBet() {
 		player.withdraw(amountBet);
 		amountBet *= 2;
 	}
@@ -121,7 +121,7 @@ public class BJHand extends Hand {
 	/**
 	 * @return the amount bet on this hand
 	 */
-	public int getAmountBet(){
+	public int getAmountBet() {
 		return amountBet;
 	}
 

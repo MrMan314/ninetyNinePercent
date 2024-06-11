@@ -67,7 +67,7 @@ public class GameSelect extends CasinoScreen {
 			}
 		}; //makes the button fade a little when hovering over it
 
-		BJButton.addListener(new ChangeListener(){
+		BJButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				nextScreen = new BJScreen(game, getThis().getPreviousScreen());
 				game.setScreen(nextScreen);
@@ -75,7 +75,7 @@ public class GameSelect extends CasinoScreen {
 		});
 		BJButton.addListener(buttonDown);
 
-		pokerButton.addListener(new ChangeListener(){
+		pokerButton.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
 				nextScreen = new PokerScreen(game, getThis().getPreviousScreen());
 				game.setScreen(nextScreen);
@@ -86,7 +86,7 @@ public class GameSelect extends CasinoScreen {
 		background = new Texture("Menus/Background.jpg");
 	}
 	@Override
-	public void render(float delta){
+	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.getBatch().begin();
 		stage.getBatch().setColor(1, 1,1 ,1f);

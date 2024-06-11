@@ -16,9 +16,9 @@ public class ChipGroupBet extends Group {
 	 * initializes a new group of chips that have been bet
 	 * @param holders the holders that held the chips that were bet
 	 */
-	public ChipGroupBet(ArrayList<ChipHolder> holders){
+	public ChipGroupBet(ArrayList<ChipHolder> holders) {
 		this.holders = new ArrayList<>(holders);
-		for(ChipHolder holder : holders){
+		for(ChipHolder holder : holders) {
 			holder.transferStackToGroup(this); //transfer all chips on the holders to this group
 			holder.disable(); //disable all bet chips
 		}
@@ -28,13 +28,13 @@ public class ChipGroupBet extends Group {
 	/**
 	 * makes all chips on this group's chip holders fly away into the sky
 	 */
-	public void floatAway(){
-		for(ChipHolder holder : holders){
+	public void floatAway() {
+		for(ChipHolder holder : holders) {
 			holder.floatAway();
 		}
 	}
 
-	public void stowHolders(){
+	public void stowHolders() {
 		float x = getStage().getWidth()/1.6f;
 		float y = getStage().getHeight()/1.5f;
 		for (ChipHolder holder : holders) {
@@ -45,9 +45,9 @@ public class ChipGroupBet extends Group {
 	/**
 	 * @return the value of all the chips on the chipHolders
 	 */
-	public int calculate(){
+	public int calculate() {
 		int total = 0;
-		for(ChipHolder holder : holders){
+		for(ChipHolder holder : holders) {
 			total += holder.calculate();
 		}
 		return total;

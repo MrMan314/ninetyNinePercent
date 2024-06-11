@@ -12,7 +12,7 @@ public class Deck {
 	/**
 	 * initializes a new, unshuffled deck
 	 */
-	public Deck(){
+	public Deck() {
 		deck = new ArrayList<>();
 		//creating all the cards in the deck
 		for(int i = 0; i < 4; i++) { //loop through each available suit
@@ -25,7 +25,7 @@ public class Deck {
 	/**
 	 * shuffles the deck randomly
 	 */
-	public void shuffle(){
+	public void shuffle() {
 		Collections.shuffle(deck);
 	}
 
@@ -33,7 +33,7 @@ public class Deck {
 	 * removes a card from the top of the deck and returns it
 	 * @return the card that was drawn
 	 */
-	public Card drawCard(){
+	public Card drawCard() {
 		return deck.remove(0);
 	}
 
@@ -41,7 +41,7 @@ public class Deck {
 	 * deals a Card to the given Hand
 	 * @param hand the Hand that will receive the Card
 	 */
-	public void deal(Hand hand){
+	public void deal(Hand hand) {
 		hand.addCard(deck.remove(0));
 	}
 }

@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
  * @author Grant Liang
  */
 public class RaiseButton extends CasinoButton {
-	public RaiseButton(){
+	public RaiseButton() {
 		super();
 		buttonSprite = new Sprite(new TextureRegion(new Texture("GameAssets/PokerButtons.png"), 64, 0, 64, 72));
 		buttonSprite.setSize(192, 192 * ((float) 72/64));
 		setBounds(getX(), getY(), buttonSprite.getWidth(), buttonSprite.getHeight());
 		buttonSprite.setPosition(getX(), getY());
-		addListener(new ClickListener(){
+		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				signalRaise();
@@ -27,13 +27,13 @@ public class RaiseButton extends CasinoButton {
 			}
 		});
 	}
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		buttonSprite.setPosition(getX(), getY());
 		buttonSprite.draw(batch);
 	}
 	/**
 	 * called when the button is clicked
 	 */
-	public void signalRaise(){
+	public void signalRaise() {
 	}
 }

@@ -14,7 +14,7 @@ public class Hand implements Serializable {
 	 * pre: none
 	 * post: initializes a new empty player hand
 	 */
-	public Hand(){
+	public Hand() {
 		hand = new ArrayList<>();
 	}
 	/**
@@ -22,7 +22,7 @@ public class Hand implements Serializable {
 	 * pre: none
 	 * post: initializes a hand with a given card
 	 */
-	public Hand(Card card){
+	public Hand(Card card) {
 		hand = new ArrayList<>();
 		hand.add(card);
 	}
@@ -31,7 +31,7 @@ public class Hand implements Serializable {
 	 * pre: none
 	 * post: adds the Card to the hand
 	 */
-	public Card addCard(Card card){
+	public Card addCard(Card card) {
 		hand.add(card);
 		return card;
 	}
@@ -40,7 +40,7 @@ public class Hand implements Serializable {
 	 * pre: none
 	 * post: removes the Card from the hand
 	 */
-	public void removeCard(Card card){
+	public void removeCard(Card card) {
 		hand.remove(card);
 	}
 
@@ -49,7 +49,7 @@ public class Hand implements Serializable {
 	 * @param index the index of the card to be removed
 	 * @return the removed card
 	 */
-	public Card removeCard(int index){
+	public Card removeCard(int index) {
 		return hand.remove(index);
 	}
 
@@ -58,7 +58,7 @@ public class Hand implements Serializable {
 	 * @param deck the deck that the card is to be drawn from
 	 * @return the card drawn
 	 */
-	public Card drawCard(Deck deck){
+	public Card drawCard(Deck deck) {
 		Card card = deck.drawCard();
 		hand.add(card);
 		return card;
@@ -66,7 +66,7 @@ public class Hand implements Serializable {
 	/**
 	 * @return all cards in the hand
 	 */
-	public ArrayList<Card> getCards(){
+	public ArrayList<Card> getCards() {
 		return hand;
 	}
 	/**
@@ -74,7 +74,7 @@ public class Hand implements Serializable {
 	 * @param index 0-indexed location of the card. 0 will always be the first card in
 	 * @return the card at that index in the hand
 	 */
-	public Card getCard(int index){
+	public Card getCard(int index) {
 		return hand.get(index);
 	}
 

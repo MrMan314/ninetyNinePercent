@@ -10,21 +10,21 @@ public class BJBetMessage extends DTO{
 	/**
 	 * initializes a new empty bet request
 	 */
-	public BJBetMessage(){
+	public BJBetMessage() {
 	}
 
 	/**
 	 * initializes a bet
 	 * @param amountBet the amount bet
 	 */
-	public BJBetMessage(int amountBet){
+	public BJBetMessage(int amountBet) {
 		this.amountBet = amountBet;
 	}
 
 	/**
 	 * @return the amount bet
 	 */
-	public int getAmountBet(){
+	public int getAmountBet() {
 		return amountBet;
 	}
 }

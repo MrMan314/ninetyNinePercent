@@ -12,7 +12,7 @@ public class BJAvailActionUpdate extends DTO {
 	 * initializes a new BJAvailActionUpdate with a given HashMap of actions
 	 * @param actions describes the available actions
 	 */
-	public BJAvailActionUpdate(HashMap<BJAction, Boolean> actions){
+	public BJAvailActionUpdate(HashMap<BJAction, Boolean> actions) {
 		this.actions = new boolean[4];
 		this.actions[0] = actions.get(BJAction.HIT);
 		this.actions[1] = actions.get(BJAction.STAND);
@@ -23,7 +23,7 @@ public class BJAvailActionUpdate extends DTO {
 	/**
 	 * @return HashMap of actions and their availability
 	 */
-	public HashMap<BJAction, Boolean> getActions(){
+	public HashMap<BJAction, Boolean> getActions() {
 		HashMap<BJAction, Boolean> availActions = new HashMap<>();
 		availActions.put(BJAction.HIT, actions[0]);
 		availActions.put(BJAction.STAND, actions[1]);

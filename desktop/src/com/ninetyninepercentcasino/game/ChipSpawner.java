@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.ninetyninepercentcasino.MainCasino;
 
 
-public class ChipSpawner extends ChipActor{
+public class ChipSpawner extends ChipActor {
 	private MainCasino game;
 	private ChipGroup chipGroup;
 	private int chipValue;
@@ -27,7 +27,7 @@ public class ChipSpawner extends ChipActor{
 		sprite = new Sprite(findTexture(chipValue));
 		sprite.setSize(CHIP_WIDTH, CHIP_HEIGHT);
 		setBounds(getX(), getY(), sprite.getWidth(), sprite.getHeight());
-		addListener(new ClickListener(){
+		addListener(new ClickListener() {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				game.balance -= chipValue;
@@ -41,7 +41,7 @@ public class ChipSpawner extends ChipActor{
 	 * ChipSpawners cannot attach onto other chips either, so override the ChipActor functionality there
 	 */
 	@Override
-	public void draw(Batch batch, float parentAlpha){
+	public void draw(Batch batch, float parentAlpha) {
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 }

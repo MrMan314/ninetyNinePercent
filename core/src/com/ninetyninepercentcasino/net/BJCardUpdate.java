@@ -13,7 +13,7 @@ public class BJCardUpdate extends DTO {
 	/**
 	 * initializes a new BJCardUpdate
 	 */
-	public BJCardUpdate(Card card, boolean visible, boolean isPlayerCard){
+	public BJCardUpdate(Card card, boolean visible, boolean isPlayerCard) {
 		this.card = card;
 		this.visible = visible;
 		this.isPlayerCard = isPlayerCard;
@@ -22,21 +22,21 @@ public class BJCardUpdate extends DTO {
 	/**
 	 * @return the card introduced to the game
 	 */
-	public Card getCard(){
+	public Card getCard() {
 		return card;
 	}
 
 	/**
 	 * @return whether the card is visible or not to the client
 	 */
-	public boolean isVisible(){
+	public boolean isVisible() {
 		return visible;
 	}
 
 	/**
 	 * @return whether the player owns the card or not
 	 */
-	public boolean isPlayerCard(){
+	public boolean isPlayerCard() {
 		return isPlayerCard;
 	}
 }
