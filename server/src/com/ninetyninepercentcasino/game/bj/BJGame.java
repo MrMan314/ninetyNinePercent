@@ -50,9 +50,9 @@ public class BJGame extends Thread {
 		deck.shuffle();
 
 		dealer = new BJDealer(deck);
-		drawCardUpdate(new Card(1, 1), true, false);
-		dealer.addCard(new Card(1, 1)); //TODO remove
-		//drawCardUpdate(dealer.drawCard(), true, false);
+		//drawCardUpdate(new Card(1, 1), true, false);
+		//dealer.addCard(new Card(1, 1)); //TODO remove
+		drawCardUpdate(dealer.drawCard(), true, false);
 		drawCardUpdate(dealer.drawCard(), false, false);
 
 		BJHand firstHand = new BJHand(player);
@@ -62,8 +62,8 @@ public class BJGame extends Thread {
 		if(dealer.hasVisibleAce()) getInsurance(); //get insurance bet if the dealer has a visible ace
 
 		drawCardUpdate(firstHand.drawCard(deck), true, true);
-		drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
-		//drawCardUpdate(firstHand.drawCard(deck), true, true);
+		//drawCardUpdate(firstHand.addCard(firstHand.getCard(0)), true, true);
+		drawCardUpdate(firstHand.drawCard(deck), true, true);
 
 		while(!hands.isEmpty()){
 			BJHand currentHand = hands.peek();
