@@ -35,7 +35,7 @@ public class ChipGroupBet extends Group {
 	}
 
 	public void stowHolders(){
-		float x = getStage().getWidth()/1.5f;
+		float x = getStage().getWidth()/1.6f;
 		float y = getStage().getHeight()/1.5f;
 		for (ChipHolder holder : holders) {
 			holder.setPosition(x, y);
