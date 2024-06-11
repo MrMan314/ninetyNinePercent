@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -98,6 +99,7 @@ public class CardActor extends Actor {
 	 *		   children.
 	 */
 	public void draw(Batch batch, float parentAlpha){
+		setColor(Color.WHITE);
 		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight()); //translate the visual up by POP_DISTANCE if the card is popped
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}

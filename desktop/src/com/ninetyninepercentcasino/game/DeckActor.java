@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,6 +38,7 @@ public class DeckActor extends Actor {
 	 *		   children.
 	 */
 	public void draw(Batch batch, float parentAlpha){
+		setColor(Color.WHITE); //ensures that this is drawn with no tint
 		batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 	}
 }

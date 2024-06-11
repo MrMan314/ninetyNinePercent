@@ -1,5 +1,6 @@
 package com.ninetyninepercentcasino.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -182,14 +183,15 @@ public class ChipActor extends Actor {
 	 * @param parentAlpha The parent alpha, to be multiplied with this actor's alpha, allowing the parent's alpha to affect all children.
 	 */
 	public void draw(Batch batch, float parentAlpha){
+		batch.setColor(Color.WHITE);
 		if(chipBelow != null) {
-			sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE);
+			sprite.setPosition(chipBelow.getX(), chipBelow.getY() + CHIP_DISTANCE); //sets the position of this chip based on the chip underneath it
 			setBounds(sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight());
 		}
-		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight());
+		if(popped) batch.draw(sprite, getX(), getY()+POP_DISTANCE, sprite.getWidth(), sprite.getHeight()); //draws the chip above its hitbox to simulate it being popped
 		else batch.draw(sprite, getX(), getY(), sprite.getWidth(), sprite.getHeight());
 		if(rising && chipBelowBeforeRise != null && Math.abs(getY() - chipBelowBeforeRise.getY()) > DETACH_DISTANCE * 4 && !chipBelowBeforeRise.isRising()){
-			chipBelowBeforeRise.floatAway();
+			chipBelowBeforeRise.floatAway(); //
 		}
 	}
 

@@ -92,25 +92,7 @@ public class BJStage extends Stage {
 		}
 		else if(update instanceof BJPayout){
 			game.balance += ((BJPayout)(update)).getWinnings();
-			Button playAgainButton = new Button(new TextureRegionDrawable(new Texture("GameAssets/PlayAgainButton.png")));
-			playAgainButton.setPosition(getViewport().getWorldWidth()/2, getViewport().getWorldHeight()/2);
-			playAgainButton.addListener(new ChangeListener(){
-				public void changed (ChangeEvent event, Actor actor) {
-					game.setScreen(new BJScreen(game));
-					screen.dispose();
-				}
-			});
-			playAgainButton.addListener(new ClickListener() {
-				public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-					playAgainButton.setColor(65, 65, 65, 0.7f);; //fades the button slightly when the cursor enters
-				}
-				@Override
-				public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-					playAgainButton.setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
-				}
-			});
-			playAgainButton.toBack();
-			addActor(playAgainButton);
+			showPlayAgainButton();
 		}
 	}
 
@@ -428,6 +410,30 @@ public class BJStage extends Stage {
 		else if(handEnd.getWinnings() > 0) {
 			game.balance += handEnd.getWinnings();
 		}
+	}
+
+	/**
+	 * shows the play again button that can be clicked to start a new round
+	 */
+	private void showPlayAgainButton(){
+		Button playAgainButton = new Button(new TextureRegionDrawable(new Texture("GameAssets/PlayAgainButton.png")));
+		playAgainButton.setPosition(getViewport().getWorldWidth()/2f - playAgainButton.getWidth()/2, getViewport().getWorldHeight()/1.2f - playAgainButton.getHeight()/2);
+		playAgainButton.addListener(new ChangeListener(){
+			public void changed (ChangeEvent event, Actor actor) {
+				game.setScreen(new BJScreen(game));
+				screen.dispose();
+			}
+		});
+		playAgainButton.addListener(new ClickListener() {
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				playAgainButton.setColor(65, 65, 65, 0.7f);; //fades the button slightly when the cursor enters
+			}
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				playAgainButton.setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
+			}
+		});
+		addActor(playAgainButton);
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server
