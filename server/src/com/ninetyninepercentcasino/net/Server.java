@@ -50,7 +50,7 @@ public abstract class Server extends Thread {
 	 * post: message is sent to all connected and alive clients
 	 */
 	public void sendAll(NetMessage message) throws IOException {
-		for (Connection client: clients) {
+		for (Connection client : clients) {
 			client.message(message);
 		}
 	}
@@ -61,7 +61,7 @@ public abstract class Server extends Thread {
 	 * post: message is sent to all connected and alive clients
 	 */
 	public void sendAll(NetMessage message, Connection origin) throws IOException {
-		for (Connection client: clients) {
+		for (Connection client : clients) {
 			if (client != origin) {
 				client.message(message);
 			}

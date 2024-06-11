@@ -128,7 +128,7 @@ public abstract class Connection extends Thread {
 
 		}
 
-		for (Thread timerThread: timerThreads) {
+		for (Thread timerThread : timerThreads) {
 			timerThread.interrupt();
 		}
 

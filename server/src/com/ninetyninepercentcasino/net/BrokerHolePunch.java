@@ -47,7 +47,7 @@ public class BrokerHolePunch extends Thread {
 			if (message.getContent() instanceof SocketAddress) {
 				SocketAddress address = (SocketAddress) message.getContent();
 				message.setType(NetMessage.MessageType.NORMAL);
-				for (Connection client: clients) {
+				for (Connection client : clients) {
 					if (client.getClientSocket().getRemoteSocketAddress().toString().equals(address.toString())) {
 						message.setContent(clientSocket.getRemoteSocketAddress());
 						client.message(message);

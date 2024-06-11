@@ -93,7 +93,7 @@ public class CardGroup extends Table {
 	 * Hides the hand by hiding all CardActors
 	 */
 	public void hide() {
-		for (Actor cardActor: getChildren()) {
+		for (Actor cardActor : getChildren()) {
 			((CardActor)cardActor).hide(); //hide each CardActor this manages
 		}
 	}
@@ -101,7 +101,7 @@ public class CardGroup extends Table {
 	 * Reveals the hand by revealing all CardActors
 	 */
 	public void reveal() {
-		for (Actor cardActor: getChildren()) {
+		for (Actor cardActor : getChildren()) {
 			((CardActor)cardActor).reveal(); //reveal each CardActor this manages
 		}
 	}
