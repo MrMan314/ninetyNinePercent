@@ -110,35 +110,39 @@ public class BJGame extends Thread {
 			}
 		}
 		actDealer();
+		try {
 		while (!resolved.isEmpty()) { //go through each finished hand
 			BJHand currentHand = resolved.pop();
 			int outcome = findWinner(currentHand, dealer); //calculate the outcome of the hand
 			int winnings = 0; //total amount the player wins + the amount initially bet
 			switch(outcome){
 				case PLAYER_BLACKJACK:
-					TransactionComposer.createTransaction((int)currentHand.getAmountBet()*2.5, "Server", player.getPublicKey());
+					TransactionComposer.createTransaction((int)(currentHand.getAmountBet()*2.5), "Server", player.getPublicKey());
 					winnings = (int) (currentHand.getAmountBet()*2.5);
 					break;
 				case PLAYER_WON:
-					TransactionComposer.createTransaction((int)currentHand.getAmountBet()*2, "Server", player.getPublicKey());
+					TransactionComposer.createTransaction((int)(currentHand.getAmountBet()*2), "Server", player.getPublicKey());
 					winnings = currentHand.getAmountBet()*2;
 					break;
 				case TIE:
-				TransactionComposer.createTransaction((int)currentHand.getAmountBet(), "Server", player.getPublicKey());
+				TransactionComposer.createTransaction((int)(currentHand.getAmountBet()), "Server", player.getPublicKey());
 					winnings = currentHand.getAmountBet();
 					break;
 				case DEALER_WON:
-					if(TransactionComposer.findAccountValue(player.getPublicKey())==0) { //If the player is out of money,
-						TransactionComposer.createTransaction(100, "Server", player.getPublicKey); //Gives some money to continue playing
+					if(TransactionComposer.findAccountValue(player.getPublicKey().getEncoded())==0) { //If the player is out of money,
+						TransactionComposer.createTransaction(100, "Server", player.getPublicKey()); //Gives some money to continue playing
 					}
 					break;
 			}
 			sendHandEnd(outcome, winnings); //inform the client of the result of the hand
+			if(dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
+				TransactionComposer.createTransaction((int)(currentHand.getAmountBet()*3), "Server", player.getPublicKey());
+			}
+			payoutPlayer(insuranceBet*3);
 		}
-		if(dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
-			TransactionComposer.createTransaction((int)currentHand.getAmountBet()*3, "Server", player.getPublicKey());
+		} catch(Exception e) {
+			System.out.println("Server is out of funds");
 		}
-		payoutPlayer(insuranceBet*3);
 	}
 	/**
 	 * simulates the action of the dealer

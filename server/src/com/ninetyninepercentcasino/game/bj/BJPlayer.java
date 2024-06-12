@@ -19,7 +19,7 @@ public class BJPlayer extends Player {
 	 */
 	public BJPlayer(Account account, ServerConnection connection){
 		super(account, connection);
-		key=KeyPairManager.readKey("Client");
+		key=KeyPairManager.readKey("Client").getPublic();
 	}
 	public PublicKey getPublicKey() {
 		return key;

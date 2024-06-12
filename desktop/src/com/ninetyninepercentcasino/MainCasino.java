@@ -9,6 +9,8 @@ import com.ninetyninepercentcasino.screens.SplashScreen;
 import ninetyNinePercentChain.NetworkTransaction.TransactionComposer;
 import ninetyNinePercentChain.NetworkTransaction.NetworkInterface;
 import ninetyNinePercentChain.Keys.KeyPairManager;
+import ninetyNinePercentChain.Keys.NewKeyPair;
+import java.io.File;
 
 /**
  * The main Game class that will delegate to screens
@@ -26,10 +28,14 @@ public class MainCasino extends Game {
 		NetworkInterface.setup(); //Lets us send transactions
 		new File("keys").mkdir(); //Makes a new keys directory, if one does not already exist
 		if(!new File("./keys/Client.ser").exists()) { //If a client key does not exist,
-			KeyPairManager.writeKey(NewKeyPair.NewKeyPair(), "Client"); //Create client key
+			KeyPairManager.writekey(NewKeyPair.newKeyPair(), "Client"); //Create client key
 		}
-		TransactionComposer.createTransaction(1000, "Server", KeyPairManager.readKey("Client").getPublic()); //Gives some money to start
-		balance = TransactionComposer.findAccountValue(KeyPairManager.readKey("Client")); //Gets player's balance
+		try {
+			TransactionComposer.createTransaction(1000, "Server", KeyPairManager.readKey("Client").getPublic().getEncoded()); //Gives some money to start
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		balance = TransactionComposer.findAccountValue(KeyPairManager.readKey("Client").getPublic().getEncoded()); //Gets player's balance
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); //set the game to fullscreen
 		music = new MusicManager(); //music manager that will be accessible to all screens
 		SFXManager.loadSFX();

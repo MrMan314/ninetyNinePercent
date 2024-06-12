@@ -154,7 +154,11 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		NetworkTransaction.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		try {
+			TransactionComposer.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 		setupGame();
 	}
 
@@ -363,7 +367,11 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		TransactionComposer.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		try {
+			TransactionComposer.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 		disableAllButtons();
 	}
 	/**
