@@ -49,7 +49,6 @@ public class SplashScreen implements Screen {
 		}
 		else if(time > 3){ //begin fading out once 3 seconds have passed
 			alpha -= delta; //fade out effect
-			System.out.println(alpha);
 		}
 		if(time > 4f){ //once the screen has been displayed for more than 2 seconds, switch to the main menu screen
 			dispose(); //dispose of this screen
