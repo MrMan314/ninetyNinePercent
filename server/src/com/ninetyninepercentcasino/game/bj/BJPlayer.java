@@ -1,35 +1,22 @@
 package com.ninetyninepercentcasino.game.bj;
 
+import java.security.PublicKey;
+
 import com.ninetyninepercentcasino.database.Account;
 import com.ninetyninepercentcasino.game.Player;
+import com.ninetyninepercentcasino.net.Connection;
 import com.ninetyninepercentcasino.net.ServerConnection;
 
 /**
  * Models a blackjack player that manages a CardGroup, Connection, and links to an Account
  */
 public class BJPlayer extends Player {
-	/**
-	 * initializes a new blackjack player
-	 * @param account the account connected to the player
-	 * @param connection the player's connection to the server
-	 */
+<<<<<<< Updated upstream
 	public BJPlayer(Account account, ServerConnection connection){
 		super(account, connection);
-	}
-
-	/**
-	 * adds to the balance of the player's account
-	 * @param amountAdded the amount to add to the balance
-	 */
-	public void addBalance(int amountAdded){
-		account.addBalance(amountAdded);
-	}
-
-	/**
-	 * withdraws from the balance of the player's account
-	 * @param withdrawAmount amount to withdraw from the balance
-	 */
-	public void withdraw(int withdrawAmount){
-		account.withdraw(withdrawAmount);
+=======
+	public BJPlayer(Account account, ServerConnection connection, PublicKey publicKey){
+		super(account, connection, publicKey);
+>>>>>>> Stashed changes
 	}
 }

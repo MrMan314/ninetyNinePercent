@@ -73,7 +73,7 @@ public class ServerConnection extends Connection {
 								// Read content of message
 								Object content = message.getContent();
 								if(content instanceof BJBeginGame){
-									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
+									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this, player.getPublicKey())); //TODO accounts
 									bjGame.start();
 								}
 								else if(content instanceof BJBetMessage) {

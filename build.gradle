@@ -56,6 +56,7 @@ project(":desktop") {
 
 	dependencies {
 		implementation project(":core")
+		implementation project(":chain")
 		api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 		api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 		api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
@@ -67,10 +68,6 @@ project(":desktop") {
 
 project(":core") {
 	apply plugin: "java-library"
-
-	dependencies {
-		implementation project(":chain")
-	}
 }
 
 project(":chain") {
@@ -82,6 +79,7 @@ project(":server") {
 
 	dependencies {
 		implementation project(":core")
+		implementation project(":chain")
 		implementation 'mysql:mysql-connector-java:8.0.33'
 	}
 }

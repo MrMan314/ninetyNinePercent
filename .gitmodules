@@ -1,6 +1,6 @@
-[submodule "core/src/com/ninetyninepercentcasino/chain"]
-	path = core/src/com/ninetyninepercentcasino/chain
-	url = git@github.com:Icy262/ninetyNinePercentChain
 [submodule "chain/src"]
 	path = chain/src
-	url = git@github.com:Icy262/ninetyNinePercentChain
+	url = https://github.com:Icy262/ninetyNinePercentChain.git
+[submodule "ninetyNinePercentChainDNS"]
+	path = ninetyNinePercentChainDNS
+	url = https://github.com/Icy262/ninetyNinePercentChainDNS
