@@ -14,6 +14,10 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+
+/**
+ * Launches the desktop application
+ */
 public class DesktopLauncher {
 	public static void main (String[] args) throws IOException {
 		Properties props = new Properties();
