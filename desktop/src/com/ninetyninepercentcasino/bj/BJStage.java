@@ -31,6 +31,7 @@ import java.util.HashMap;
  */
 public class BJStage extends Stage {
 	private CasinoScreen screen; //the screen that displays this stage
+	private CasinoScreen previousScreen;
 	private MainCasino game;
 	private CardGroup playerHand; //holds the current hand the player is managing
 	private CardGroup dealerHand;
@@ -58,8 +59,9 @@ public class BJStage extends Stage {
 	 * initializes a new BJStage
 	 * @param viewport the viewport to be used
 	 */
-	public BJStage(Viewport viewport) {
+	public BJStage(Viewport viewport, CasinoScreen previousScreen) {
 		super(viewport);
+		this.previousScreen = previousScreen;
 	}
 
 	/**
@@ -408,7 +410,7 @@ public class BJStage extends Stage {
 		playAgainButton.setPosition(getViewport().getWorldWidth()/2f - playAgainButton.getWidth()/2, getViewport().getWorldHeight()/1.2f - playAgainButton.getHeight()/2);
 		playAgainButton.addListener(new ChangeListener(){
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new BJScreen(game));
+				game.setScreen(new BJScreen(game, previousScreen));
 				screen.dispose();
 			}
 		});

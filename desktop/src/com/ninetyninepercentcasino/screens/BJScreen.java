@@ -66,7 +66,7 @@ public class BJScreen extends CasinoScreen {
 	@Override
 	public void show() {
 		firstRender = true;
-		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
+		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738), super.previousScreen);
 		Gdx.input.setInputProcessor(stage);
 
 		updates = new ArrayList<>();
