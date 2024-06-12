@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.ninetyninepercentcasino.audio.MusicManager;
 import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
-import com.ninetyninepercentcasino.screens.MainMenu;
+import com.ninetyninepercentcasino.screens.SplashScreen;
 
 /**
  * The main Game class that will delegate to screens
@@ -23,20 +23,17 @@ public class MainCasino extends Game {
 		this.serverPort = serverPort;
 	}
 
-	public int balance;
+	public int balance; //the amount of money the client has
 	/**
 	 * creates a new game, delegating immediately to a new MainMenu screen
 	 */
 	@Override
 	public void create () {
 		balance = 1000;
-		Gdx.graphics.setContinuousRendering(false); //this project is a turn-based game that doesn't require continuous rendering
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); //set the game to fullscreen
 		music = new MusicManager(); //music manager that will be accessible to all screens
-		music.playMusic();
 		SFXManager.loadSFX();
-		menu = new MainMenu(this);
-		setScreen(menu); //set the screen to be the main menu screen, passing it an instance of the game
+		setScreen(new SplashScreen(this)); //set the screen to a new splash screen
 	}
 
 	public String getServerAddress() {

@@ -2,10 +2,11 @@ package com.ninetyninepercentcasino.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.bj.BJClient;
@@ -68,8 +69,6 @@ public class BJScreen extends CasinoScreen {
 		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
 
-		stage.addActor(globalUI);
-
 		updates = new ArrayList<>();
 
 		background = new Texture("GameAssets/PokerTable.png");
@@ -81,6 +80,7 @@ public class BJScreen extends CasinoScreen {
 					game.setScreen(previousScreen);
 					try {
 						client.finish();
+						getThis().dispose();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -122,9 +122,10 @@ public class BJScreen extends CasinoScreen {
 		if (!updates.isEmpty()) {
 			stage.handleDTO(updates.remove(0)); //update the stage with a DTO if there are still DTOs in the queue
 		}
-		ScreenUtils.clear(0, 0, 0, 1f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.updateBetDisplay(); //update the chip calculator number display
 		stage.getBatch().begin();
+		stage.getBatch().setColor(Color.WHITE);
 		stage.getBatch().draw(background, -((1920-stage.getViewport().getWorldWidth())/2), -((1080-stage.getViewport().getWorldHeight())/2)); //draw the background
 		stage.getBatch().end();
 		updateGlobalUI();

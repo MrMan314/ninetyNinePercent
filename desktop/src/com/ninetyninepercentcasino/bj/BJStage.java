@@ -1,14 +1,23 @@
 package com.ninetyninepercentcasino.bj;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ninetyninepercentcasino.MainCasino;
 import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.game.*;
 import com.ninetyninepercentcasino.game.buttons.*;
 import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.screens.BJScreen;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 
@@ -16,18 +25,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * this class contains all the actors in a BJGame stage
- * also includes methods for changing the game state and handles DTOs coming in from the server
+ * This class contains all the actors required for a blackjack game
+ * Also includes methods for changing the game state and handles DTOs coming in from the server
  * @author Grant Liang
  */
 public class BJStage extends Stage {
 	private CasinoScreen screen; //the screen that displays this stage
 	private MainCasino game;
-	private CardGroup playerHand;
+	private CardGroup playerHand; //holds the current hand the player is managing
 	private CardGroup dealerHand;
-	private CardGroup splitHands;
-	private CardGroup resolvedHands;
-	private DeckActor deckActor;
+	private CardGroup splitHands; //holds the hands that have been split and are waiting to be resolved
+	private CardGroup resolvedHands; //holds all resolved hands
 	private ChipGroup chips; //the chips displayed on screen
 	private ChipGroupBet betChips;
 	private ChipGroupBet insuredChips;
@@ -38,8 +46,9 @@ public class BJStage extends Stage {
 	private StandButton standButton;
 	private DDButton doubleDownButton;
 	private Table bjButtons;
+
 	private Table betDisplays;
-	private Label betDisplay;
+	private Label betDisplay; //will display to the user the value of all chips on the chip holders
 
 	private Table chipSpawners;
 
@@ -58,7 +67,8 @@ public class BJStage extends Stage {
 	 * @param update the DTO containing information about the game update
 	 */
 	public void handleDTO(DTO update) {
-		if (update instanceof BJBetMessage) {
+		//check the type of message and call the appropriate method
+		if(update instanceof BJBetMessage){
 			startBetPhase();
 		}
 		else if (update instanceof BJInsuranceMessage) {
@@ -81,6 +91,11 @@ public class BJStage extends Stage {
 			revealDealerHand();
 			endHand((BJHandEnd)update);
 		}
+		else if(update instanceof BJPayout){
+			game.balance += ((BJPayout)(update)).getWinnings();
+			showPlayAgainButton();
+		}
+		Gdx.graphics.requestRendering();
 	}
 
 	/**
@@ -90,22 +105,9 @@ public class BJStage extends Stage {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
 		final float WORLD_HEIGHT = getViewport().getWorldHeight();
 
+		//spawn the chips in
 		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/2.8f);
 		addActor(chips);
-
-		chipSpawners = new Table();
-		ChipSpawner whiteSpawner = new ChipSpawner(game, chips, 1);
-		ChipSpawner redSpawner = new ChipSpawner(game, chips, 5);
-		ChipSpawner blueSpawner = new ChipSpawner(game, chips, 10);
-		ChipSpawner greenSpawner = new ChipSpawner(game, chips, 25);
-		ChipSpawner blackSpawner = new ChipSpawner(game, chips, 100);
-		chipSpawners.add(whiteSpawner);
-		chipSpawners.add(redSpawner);
-		chipSpawners.add(blueSpawner);
-		chipSpawners.add(greenSpawner);
-		chipSpawners.add(blackSpawner);
-		chipSpawners.setFillParent(true);
-		chipSpawners.top().left().padTop(WORLD_HEIGHT/16).padLeft(WORLD_WIDTH/16);
 
 		//addActor(chipSpawners);
 
@@ -120,7 +122,8 @@ public class BJStage extends Stage {
 		betDisplays.add(betDisplay).width(WORLD_HEIGHT/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/5.8f);
 		addActor(betDisplays);
-		betDisplays.toBack();
+		betDisplays.toBack(); //send bet displays to the back, so they don't cover chips and make them irretrievable
+
 	}
 
 	/**
@@ -150,7 +153,7 @@ public class BJStage extends Stage {
 	}
 
 	/**
-	 * sets up the player hand, dealer hand, buttons, and everything else needed for the BJ gaem
+	 * sets up the player hand, dealer hand, buttons, and everything else needed for the BJ game
 	 */
 	private void setupGame() {
 		final float WORLD_WIDTH = getViewport().getWorldWidth();
@@ -162,9 +165,9 @@ public class BJStage extends Stage {
 		dealerHand = new CardGroup(false, false);
 		splitHands = new CardGroup(true, false);
 		resolvedHands = new CardGroup(true, false);
-		deckActor = new DeckActor();
+		DeckActor deckActor = new DeckActor();
 
-		bjButtons = new Table();
+		bjButtons = new Table(); //will hold all the buttons
 		hitButton = new HitButton();
 		splitButton = new SplitButton();
 		standButton = new StandButton();
@@ -176,12 +179,12 @@ public class BJStage extends Stage {
 
 		bjButtons.setPosition(WORLD_WIDTH / 2f, WORLD_HEIGHT / 2.5f);
 
-		Table upperTable = new Table();
-		upperTable.add(deckActor).spaceRight(100);
-		upperTable.add(dealerHand);
+		Table upperTable = new Table(); //will hold the deck and dealer hand
+		upperTable.add(deckActor).width(deckActor.getWidth()*2);
+		upperTable.add(dealerHand).width(deckActor.getWidth()*2);
 		upperTable.setPosition(WORLD_WIDTH / 2.4f, WORLD_HEIGHT / 1.55f);
 
-		Table lowerTable = new Table();
+		Table lowerTable = new Table(); //will hold all the player's cards
 		lowerTable.setPosition(WORLD_WIDTH / 2, 0);
 		lowerTable.add(resolvedHands).top().padRight(WORLD_WIDTH/16);
 		lowerTable.add(playerHand).bottom();
@@ -204,8 +207,8 @@ public class BJStage extends Stage {
 		chips.addInsuranceHolders(5, WORLD_WIDTH/2, WORLD_HEIGHT/5f);
 		insureButton.enable();
 
-		betDisplays = new Table();
-		betDisplays.add(insureButton).padRight(WORLD_WIDTH/80);
+		betDisplays = new Table(); //reset the bet display
+		betDisplays.add(insureButton).padRight(WORLD_WIDTH/80); //add on the insurance button
 		betDisplays.add(betDisplay).width(WORLD_WIDTH/4);
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/2.3f);
 		betDisplays.setVisible(true);
@@ -219,7 +222,7 @@ public class BJStage extends Stage {
 	 */
 	public void sendInsure() {
 		insuredChips = new ChipGroupBet(chips.getInsuranceHolders());
-		game.balance -= insuredChips.calculate();
+		game.balance -= insuredChips.calculate(); //subtract the amount bet from the balance
 		BJInsuranceMessage insuranceBet = new BJInsuranceMessage(insuredChips.calculate());
 		addActor(insuredChips);
 		insuredChips.stowHolders();
@@ -285,12 +288,12 @@ public class BJStage extends Stage {
 			handOver = false;
 		}
 		else standButton.disable();
-		if (actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) {
+		if (actions.get(BJAction.SPLIT) && game.balance >= betChips.calculate()) { //only activates the split button if there is enough money remaining to split
 			splitButton.enable();
 			handOver = false;
 		}
 		else splitButton.disable();
-		if (actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) {
+		if (actions.get(BJAction.DOUBLE_DOWN) && game.balance >= betChips.calculate()) { //only activates the double down button if there is enough money remaining to split
 			doubleDownButton.enable();
 			handOver = false;
 		}
@@ -332,7 +335,7 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		if (!splitHands.getCards().isEmpty()) {
+		if(!splitHands.getCards().isEmpty()) { //there are still hands waiting to be resolved
 			for (Card card : playerHand.getCards()) {
 				resolvedHands.addCard(card);
 			}
@@ -391,11 +394,34 @@ public class BJStage extends Stage {
 	private void endHand(BJHandEnd handEnd) {
 		playerHand.hide();
 		if (handEnd.getOutcome() == BJHandEnd.DEALER_WON) {
-			betChips.floatAway();
-		}
-		else if (handEnd.getWinnings() > 0) {
+			betChips.floatAway(); //floats away all the chips that have been bet
+		} else if (handEnd.getWinnings() > 0) {
 			game.balance += handEnd.getWinnings();
 		}
+	}
+
+	/**
+	 * shows the play again button that can be clicked to start a new round
+	 */
+	private void showPlayAgainButton(){
+		Button playAgainButton = new Button(new TextureRegionDrawable(new Texture("GameAssets/PlayAgainButton.png")));
+		playAgainButton.setPosition(getViewport().getWorldWidth()/2f - playAgainButton.getWidth()/2, getViewport().getWorldHeight()/1.2f - playAgainButton.getHeight()/2);
+		playAgainButton.addListener(new ChangeListener(){
+			public void changed (ChangeEvent event, Actor actor) {
+				game.setScreen(new BJScreen(game));
+				screen.dispose();
+			}
+		});
+		playAgainButton.addListener(new ClickListener() {
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				playAgainButton.setColor(65, 65, 65, 0.7f);; //fades the button slightly when the cursor enters
+			}
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				playAgainButton.setColor(1, 1, 1, 1f); //resets the fade when the cursor exits the actor
+			}
+		});
+		addActor(playAgainButton);
 	}
 	/**
 	 * this method NEEDS TO BE CALLED to set the client of a BJStage if the stage is to communicate with server

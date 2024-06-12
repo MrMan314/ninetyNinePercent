@@ -1,6 +1,8 @@
 package com.ninetyninepercentcasino.bj;
 
-import com.ninetyninepercentcasino.net.*;
+import com.ninetyninepercentcasino.net.Connection;
+import com.ninetyninepercentcasino.net.DTO;
+import com.ninetyninepercentcasino.net.NetMessage;
 import com.ninetyninepercentcasino.screens.BJScreen;
 
 import java.io.EOFException;
@@ -10,7 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * client of a blackjack game that receives messages from the server and handles them
+ * Client of a blackjack game that receives messages from the server and handles them, calling updates on the screen as needed
  */
 public class BJClient extends Connection {
 	private BJScreen screen; //the BJScreen that this BJClient will update
@@ -39,7 +41,7 @@ public class BJClient extends Connection {
 				try {
 					NetMessage message = (NetMessage) in.readObject(); //read the object coming from server
 					message.setOrigin(clientSocket.getRemoteSocketAddress());
-					if (message.getContent() != null) {
+					if (message.getContent() != null) { //there is content to read
 						switch(message.getType()) {
 							case ACK:
 								aliveMessage = (String) message.getContent();
@@ -73,6 +75,9 @@ public class BJClient extends Connection {
 		}
 	}
 
+	/**
+	 * called when the connection is disposed
+	 */
 	public void dispose() {
 	}
 }

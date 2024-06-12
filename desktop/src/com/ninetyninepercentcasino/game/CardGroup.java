@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-
 /**
  * Models a group of CardActors and formats them like a hand of cards
  * @author Grant Liang
@@ -71,6 +69,12 @@ public class CardGroup extends Table {
 		hand.removeCard(card.getCard());
 		removeActor(card);
 	}
+
+	/**
+	 * removes a given card from this group
+	 * @param card the card to be removed
+	 * @return the CardActor that wrapped the Card that was removed
+	 */
 	public CardActor removeCard(Card card) {
 		int index = 0;
 		for (int i = 0; i < hand.getCards().size(); i++) { //loop through each card
@@ -85,6 +89,10 @@ public class CardGroup extends Table {
 	public CardActor removeCard(int index) {
 		return removeCard(hand.removeCard(index));
 	}
+
+	/**
+	 * clears all cards in this group
+	 */
 	public void clearCards() {
 		hand.getCards().clear();
 		clearChildren();
@@ -105,9 +113,18 @@ public class CardGroup extends Table {
 			((CardActor)cardActor).reveal(); //reveal each CardActor this manages
 		}
 	}
+
+	/**
+	 * @return all the cards in this group
+	 */
 	public ArrayList<Card> getCards() {
 		return hand.getCards();
 	}
+
+	/**
+	 * @param index the index of the card in the hand
+	 * @return the Card at that index
+	 */
 	public Card getCard(int index) {
 		return hand.getCard(index);
 	}

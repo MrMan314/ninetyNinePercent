@@ -1,6 +1,7 @@
 package com.ninetyninepercentcasino.game.buttons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -56,6 +57,7 @@ public abstract class CasinoButton extends Actor {
 	 *		   children.
 	 */
 	public void draw(Batch batch, float parentAlpha) {
+		setColor(Color.WHITE); //ensures that this is drawn with no tint
 		buttonSprite.setPosition(getX(), getY());
 		buttonOutlineSprite.setPosition(getX(), getY());
 		if (!isAvailable) buttonOutlineSprite.draw(batch);
