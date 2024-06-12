@@ -20,6 +20,8 @@ import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.screens.BJScreen;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
+import ninetyNinePercentChain.Keys.KeyPairManager;
+import ninetyNinePercentChain.NetworkTransaction.TransactionComposer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -149,7 +151,11 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		TransactionComposer.createTransaction(chips.calculate(), KeyPairManager.readKey("Client").getPrivate(), KeyPairManager.readKey("ServerPublic").getPublic());
+		try {
+			TransactionComposer.createTransaction(chips.calculate(), "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 		currentBet=chips.calculate();
 		chips.disableChipsHeld();
 		setupGame();
@@ -360,7 +366,11 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		TransactionComposer.createTransaction(amountBet), KeyPairManager.readKey("Client").getPrivate(), KeyPairManager.readKey("ServerPublic").getPublic());
+		try {
+			TransactionComposer.createTransaction(currentBet, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 		disableAllButtons();
 	}
 	/**
