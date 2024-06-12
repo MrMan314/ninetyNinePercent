@@ -252,6 +252,13 @@ public class ChipGroup extends Group {
 	public ArrayList<ChipHolder> getInsuranceHolders(){
 		return insuranceHolders;
 	}
+
+	/**
+	 * adds insurance holders to the group, to hold the player's insurance bet
+	 * @param numHolders the number of holders to add
+	 * @param spawnX spawn location of the center of the holders
+	 * @param spawnY spawn location of the bottom edge of the holders
+	 */
 	public void addInsuranceHolders(int numHolders, float spawnX, float spawnY){
 		this.holderSpawnX = spawnX - (numHolders * ChipActor.CHIP_WIDTH) / 2;
 		this.holderSpawnY = spawnY;

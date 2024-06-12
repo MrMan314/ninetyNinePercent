@@ -74,6 +74,10 @@ public abstract class CasinoScreen implements Screen {
 		return previousScreen;
 	}
 
+	/**
+	 * displays a dialogue box
+	 * @param message the message to be displayed
+	 */
 	public void displayDialogBox(String message) {
 		LabelStyleGenerator LSG = new LabelStyleGenerator();
 		Label text;

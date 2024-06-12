@@ -69,8 +69,6 @@ public class BJScreen extends CasinoScreen {
 		stage = new BJStage(new ExtendViewport(1312, 738, 1312, 738));
 		Gdx.input.setInputProcessor(stage);
 
-		stage.addActor(globalUI);
-
 		updates = new ArrayList<>();
 
 		background = new Texture("GameAssets/PokerTable.png");

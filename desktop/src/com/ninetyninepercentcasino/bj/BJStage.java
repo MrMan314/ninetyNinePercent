@@ -123,6 +123,7 @@ public class BJStage extends Stage {
 		betDisplays.setPosition(WORLD_WIDTH/2, WORLD_HEIGHT/5.8f);
 		addActor(betDisplays);
 		betDisplays.toBack(); //send bet displays to the back, so they don't cover chips and make them irretrievable
+
 	}
 
 	/**
