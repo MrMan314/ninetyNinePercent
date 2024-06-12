@@ -122,6 +122,9 @@ public class ChipGroup extends Group {
 	 */
 	private void spawnChips(int value, int numChips){
 		int leftInStack = STACK_SIZE;
+		if(leftInStack>5000) { //Prevents excessively large chipstacks
+			leftInStack=5000;
+		}
 		while(numChips > 0){
 			ChipActor chipBelow = new ChipActor(new Chip(value));
 			chipBelow.setPosition(spawnX, spawnY);

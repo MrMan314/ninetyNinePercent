@@ -10,6 +10,8 @@ import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Stack;
 
+import ninetyNinePercentChain.NetworkTransaction.TransactionComposer;
+
 /**
  * Runs logic for a blackjack game and sends messages to client as needed
  * @author Grant Liang
@@ -114,24 +116,27 @@ public class BJGame extends Thread {
 			int winnings = 0; //total amount the player wins + the amount initially bet
 			switch(outcome){
 				case PLAYER_BLACKJACK:
-					player.addBalance((int) (currentHand.getAmountBet()*2.5));
+					TransactionComposer.createTransaction((int)currentHand.getAmountBet()*2.5, "Server", player.getPublicKey());
 					winnings = (int) (currentHand.getAmountBet()*2.5);
 					break;
 				case PLAYER_WON:
-					player.addBalance(currentHand.getAmountBet()*2);
+					TransactionComposer.createTransaction((int)currentHand.getAmountBet()*2, "Server", player.getPublicKey());
 					winnings = currentHand.getAmountBet()*2;
 					break;
 				case TIE:
-					player.addBalance(currentHand.getAmountBet());
+				TransactionComposer.createTransaction((int)currentHand.getAmountBet(), "Server", player.getPublicKey());
 					winnings = currentHand.getAmountBet();
 					break;
 				case DEALER_WON:
+					if(TransactionComposer.findAccountValue(player.getPublicKey())==0) { //If the player is out of money,
+						TransactionComposer.createTransaction(100, "Server", player.getPublicKey); //Gives some money to continue playing
+					}
 					break;
 			}
 			sendHandEnd(outcome, winnings); //inform the client of the result of the hand
 		}
 		if(dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
-			player.addBalance(insuranceBet*3);
+			TransactionComposer.createTransaction((int)currentHand.getAmountBet()*3, "Server", player.getPublicKey());
 		}
 		payoutPlayer(insuranceBet*3);
 	}

@@ -20,6 +20,8 @@ import com.ninetyninepercentcasino.net.*;
 import com.ninetyninepercentcasino.screens.BJScreen;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
+import ninetyNinePercentChain.NetworkTransaction.TransactionComposer;
+import ninetyNinePercentChain.Keys.KeyPairManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,6 +55,8 @@ public class BJStage extends Stage {
 	private Table chipSpawners;
 
 	private BJClient client;
+
+	private int betAmount;
 
 	/**
 	 * initializes a new BJStage
@@ -140,7 +144,8 @@ public class BJStage extends Stage {
 	public void sendBet(){
 		betChips = new ChipGroupBet(chips.getHolders());
 		game.balance -= betChips.calculate();
-		BJBetMessage betRequest = new BJBetMessage(betChips.calculate());
+		betAmount=betChips.calculate();
+		BJBetMessage betRequest = new BJBetMessage(betAmount);
 		addActor(betChips);
 		betChips.stowHolders();
 		NetMessage message = new NetMessage(NetMessage.MessageType.INFO, betRequest);
@@ -149,6 +154,7 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		NetworkTransaction.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
 		setupGame();
 	}
 
@@ -357,6 +363,7 @@ public class BJStage extends Stage {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		TransactionComposer.createTransaction(betAmount, "Client", KeyPairManager.readKey("ServerPublic").getPublic());
 		disableAllButtons();
 	}
 	/**
