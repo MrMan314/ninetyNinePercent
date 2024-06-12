@@ -105,6 +105,7 @@ public class BJScreen extends CasinoScreen {
 		}
 		stage.setClient(client);
 		stage.setScreen(this);
+		stage.addActor(globalUI);
 
 	}
 

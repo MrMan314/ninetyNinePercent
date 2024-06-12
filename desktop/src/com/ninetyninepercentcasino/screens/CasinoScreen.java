@@ -30,12 +30,11 @@ public abstract class CasinoScreen implements Screen {
 	public CasinoScreen(MainCasino game){
 		this.game = game; //record the game as the one passed to the constructor
 		LabelStyleGenerator LSG = new LabelStyleGenerator();
-		Label.LabelStyle labelStyle = LSG.getLeagueGothicLabelStyle(60);
-		balanceDisplay = new Label("$1000", labelStyle);
+		balanceDisplay = new Label("$1000", LSG.getLeagueGothicLabelStyle(60));
 		globalUI = new Table();
 		globalUI.setFillParent(true);
 		globalUI.top().left();
-		globalUI.add(new HelpDisplay()).right().top();
+		globalUI.add(new HelpDisplay()).right().top().padTop(balanceDisplay.getHeight()/12f).padLeft(balanceDisplay.getHeight()/8f);
 		globalUI.add(balanceDisplay).padTop(balanceDisplay.getHeight()/12f).padLeft(balanceDisplay.getHeight()/8f);
 	}
 

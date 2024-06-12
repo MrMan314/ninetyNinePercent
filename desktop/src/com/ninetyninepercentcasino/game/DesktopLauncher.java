@@ -5,7 +5,14 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.ninetyninepercentcasino.MainCasino;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+
+/**
+ * Launches the desktop application
+ */
 public class DesktopLauncher {
+	/**
+	 * this is executed when the project is run, and will launch the game window
+	 */
 	public static void main (String[] args) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
