@@ -114,20 +114,12 @@ public class BJHand extends Hand {
 	 * @param amountBet the amount bet on this hand
 	 */
 	public void setBet(int amountBet){
-<<<<<<< Updated upstream
 		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
 		this.amountBet = amountBet;
 	}
 
 	public void doubleBet(){
 		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey().getEncoded(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
-=======
-		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet-this.amountBet)).startWait();
-		this.amountBet = amountBet;
-	}
-	public void doubleBet(){
-		WaitForTransactionManager.addWait(new WaitForTransaction(player.getPublicKey(), KeyPairManager.readKey("Server").getPrivate().getEncoded(), amountBet)).startWait();
->>>>>>> Stashed changes
 		amountBet *= 2;
 	}
 
