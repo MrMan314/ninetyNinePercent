@@ -1,7 +1,6 @@
 package com.ninetyninepercentcasino;
 
 import com.ninetyninepercentcasino.net.BJServer;
-import com.ninetyninepercentcasino.net.Broker;
 
 import java.util.Properties;
 import java.io.IOException;
