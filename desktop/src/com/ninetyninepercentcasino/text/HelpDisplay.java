@@ -13,6 +13,10 @@ public class HelpDisplay extends Actor{
 	private Sprite sprite; //the sprite that will model the visuals of the actor
 	private Label helpText;
 
+	/**
+	 * initializes a new help display
+	 * the help display is a question mark that when hovered over displays some help text
+	 */
 	public HelpDisplay(){
 		sprite = new Sprite(new Texture("GameAssets/QuestionMark.png"));
 		LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
@@ -58,10 +62,17 @@ public class HelpDisplay extends Actor{
 		helpText.setPosition(getX() + sprite.getWidth()/2, getY() - sprite.getHeight()*2);
 		helpText.draw(batch, parentAlpha);
 	}
+
+	/**
+	 * displays the text by setting the text on the label
+	 */
 	public void displayHelpMenu(){
 		helpText.setText("Move chips around by clicking and dragging them.\nBet chips by placing them onto the gray chip holders\nRead up on the rules of blackjack if you are unfamiliar with the game");
-		helpText.setZIndex(10000);
 	}
+
+	/**
+	 * hides the text on the label by setting the text to nothing
+	 */
 	public void hideHelpMenu(){
 		helpText.setText("");
 	}
