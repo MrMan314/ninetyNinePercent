@@ -1,3 +1,6 @@
 [submodule "chain/src"]
 	path = chain/src
 	url = https://github.com:Icy262/ninetyNinePercentChain.git
+[submodule "ninetyNinePercentChainDNS"]
+	path = ninetyNinePercentChainDNS
+	url = https://github.com/Icy262/ninetyNinePercentChainDNS

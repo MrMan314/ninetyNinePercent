@@ -3,6 +3,7 @@ package com.ninetyninepercentcasino.game;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.ninetyninepercentcasino.MainCasino;
+import ninetyNinePercentChain.NetworkTransaction.NetworkInterface;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
@@ -14,5 +15,6 @@ public class DesktopLauncher {
 		config.setWindowedMode(1920, 1080);
 		config.setWindowIcon("DesktopWindowIcon.png");
 		new Lwjgl3Application(new MainCasino(), config);
+		NetworkInterface.setup();
 	}
 }
