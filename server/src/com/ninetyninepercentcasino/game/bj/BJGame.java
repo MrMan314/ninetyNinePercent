@@ -133,6 +133,7 @@ public class BJGame extends Thread {
 		if (dealer.getNumCards() == 2 && dealer.hasVisibleAce()) {
 			player.addBalance(insuranceBet*3);
 		}
+		payoutPlayer(insuranceBet*3);
 	}
 	/**
 	 * simulates the action of the dealer
@@ -283,15 +284,25 @@ public class BJGame extends Thread {
 		NetMessage handEndUpdate = new NetMessage(NetMessage.MessageType.INFO, new BJHandEnd(outcome, winnings));
 		try {
 			player.getConnection().message(handEndUpdate); //message the player about the hand end
-			synchronized (bjSynchronizer) {
-				bjSynchronizer.wait(); //waits until the client returns the action
-			}
 		} catch (SocketException e) {
 			try {
 				player.getConnection().finish();
 			} catch (IOException f) {
 			}
-		} catch (InterruptedException e) {
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * called to notify the player about any money they have won
+	 * @param winnings the amount won
+	 */
+	private void payoutPlayer(int winnings){
+		System.out.println("payout");
+		NetMessage payoutMessage = new NetMessage(NetMessage.MessageType.INFO, new BJPayout(winnings));
+		try {
+			player.getConnection().message(payoutMessage); //message the player about the hand end
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -47,7 +47,7 @@ public class ChipGroupBet extends Group {
 	 */
 	public int calculate() {
 		int total = 0;
-		for (ChipHolder holder : holders) {
+		for (ChipHolder holder : holders) { //loop through each holder in this group
 			total += holder.calculate();
 		}
 		return total;
