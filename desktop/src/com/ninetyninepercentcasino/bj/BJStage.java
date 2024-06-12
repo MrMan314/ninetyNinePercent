@@ -157,7 +157,6 @@ public class BJStage extends Stage {
 			System.out.println(e);
 		}
 		currentBet=chips.calculate();
-		chips.disableChipsHeld();
 		setupGame();
 	}
 
