@@ -69,6 +69,12 @@ public class CardGroup extends Table {
 		hand.removeCard(card.getCard());
 		removeActor(card);
 	}
+
+	/**
+	 * removes a given card from this group
+	 * @param card the card to be removed
+	 * @return the CardActor that wrapped the Card that was removed
+	 */
 	public CardActor removeCard(Card card){
 		int index = 0;
 		for(int i = 0; i < hand.getCards().size(); i++){ //loop through each card
@@ -83,6 +89,9 @@ public class CardGroup extends Table {
 	public CardActor removeCard(int index){
 		return removeCard(hand.removeCard(index));
 	}
+	/**
+	 * clears all cards in this group
+	 */
 	public void clearCards(){
 		hand.getCards().clear();
 		clearChildren();

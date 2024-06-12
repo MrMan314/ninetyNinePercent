@@ -109,20 +109,6 @@ public class BJStage extends Stage {
 		chips = new ChipGroup(game.balance, 5, WORLD_WIDTH/2, WORLD_HEIGHT/1.8f, WORLD_WIDTH/2f, WORLD_HEIGHT/2.8f);
 		addActor(chips);
 
-		chipSpawners = new Table();
-		ChipSpawner whiteSpawner = new ChipSpawner(game, chips, 1);
-		ChipSpawner redSpawner = new ChipSpawner(game, chips, 5);
-		ChipSpawner blueSpawner = new ChipSpawner(game, chips, 10);
-		ChipSpawner greenSpawner = new ChipSpawner(game, chips, 25);
-		ChipSpawner blackSpawner = new ChipSpawner(game, chips, 100);
-		chipSpawners.add(whiteSpawner);
-		chipSpawners.add(redSpawner);
-		chipSpawners.add(blueSpawner);
-		chipSpawners.add(greenSpawner);
-		chipSpawners.add(blackSpawner);
-		chipSpawners.setFillParent(true);
-		chipSpawners.top().left().padTop(WORLD_HEIGHT/16).padLeft(WORLD_WIDTH/16);
-
 		//addActor(chipSpawners);
 
 		betButton = new BetButton();

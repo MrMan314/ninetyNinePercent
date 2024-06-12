@@ -111,7 +111,7 @@ public class ChipActor extends Actor {
 								SFXManager.playChipLaySound();
 							}
 						}
-						else if(actor instanceof ChipActor && !(actor instanceof ChipSpawner)){
+						else if(actor instanceof ChipActor){
 							ChipActor chipAttachCandidate = (ChipActor)actor;
 							Vector2 distance = new Vector2(chipAttachCandidate.getX() - getX(), chipAttachCandidate.getY() - getY()); //vector for the distance between
 							if(chipAttachCandidate.isTopChip() && chipAttachCandidate != event.getTarget() && distance.len() < ATTACH_DISTANCE){

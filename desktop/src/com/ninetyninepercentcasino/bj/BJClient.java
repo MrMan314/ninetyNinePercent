@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 /**
- * client of a blackjack game that receives messages from the server and handles them
+ * Client of a blackjack game that receives messages from the server and handles them, calling updates on the screen as needed
  */
 public class BJClient extends Connection {
 	private BJScreen screen; //the BJScreen that this BJClient will update

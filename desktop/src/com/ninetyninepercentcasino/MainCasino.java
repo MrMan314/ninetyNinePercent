@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.ninetyninepercentcasino.audio.MusicManager;
 import com.ninetyninepercentcasino.audio.SFXManager;
 import com.ninetyninepercentcasino.screens.CasinoScreen;
-import com.ninetyninepercentcasino.screens.MainMenu;
 import com.ninetyninepercentcasino.screens.SplashScreen;
 
 /**
@@ -15,7 +14,7 @@ import com.ninetyninepercentcasino.screens.SplashScreen;
 public class MainCasino extends Game {
 	public MusicManager music; //the music manager for the game
 	public CasinoScreen menu;
-	public int balance;
+	public int balance; //the amount of money the client has
 	/**
 	 * creates a new game, delegating immediately to a new MainMenu screen
 	 */
@@ -25,9 +24,7 @@ public class MainCasino extends Game {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); //set the game to fullscreen
 		music = new MusicManager(); //music manager that will be accessible to all screens
 		SFXManager.loadSFX();
-		menu = new MainMenu(this);
-		SplashScreen splashScreen = new SplashScreen(this);
-		setScreen(splashScreen);
+		setScreen(new SplashScreen(this)); //set the screen to a new splash screen
 	}
 
 	/**

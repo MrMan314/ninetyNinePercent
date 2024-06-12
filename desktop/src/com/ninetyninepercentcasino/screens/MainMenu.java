@@ -37,7 +37,6 @@ public class MainMenu extends CasinoScreen {
 		stage = new Stage(new ExtendViewport(1920, 1080, 1920, 1080));
 		Gdx.input.setInputProcessor(stage); //set the input processor to be the stage of the current screen so inputs are handled by the visible screen first
 
-		stage.addActor(globalUI);
 
 		Skin skins = new Skin();
 		skins.add("titleBanner", new Texture("Menus/TitleBanner.png"));
@@ -59,19 +58,20 @@ public class MainMenu extends CasinoScreen {
 		root.add(middleMenu).padBottom(160);
 
 		stage.addActor(root);
+		stage.addActor(globalUI);
 
 		background = new Texture("Menus/Background.jpg");
 
-		/*
-		 * adding change listeners to the buttons on the main menu
-		 * this gives them their functionality to switch the game over to another screen when clicked
-		 */
-		settingsButton.addListener(new ChangeListener(){
-			public void changed (ChangeEvent event, Actor actor) {
-				nextScreen = new AccountMenu(game, getThis());
-				game.setScreen(nextScreen);
-			}
-		});
+//		/*
+//		 * adding change listeners to the buttons on the main menu
+//		 * this gives them their functionality to switch the game over to another screen when clicked
+//		 */
+//		settingsButton.addListener(new ChangeListener(){
+//			public void changed (ChangeEvent event, Actor actor) {
+//				nextScreen = new AccountMenu(game, getThis());
+//				game.setScreen(nextScreen);
+//			}
+//		});
 		settingsButton.addListener(new ClickListener() {
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 				(event.getTarget()).setColor(65, 65, 65, 0.7f); //fades the button slightly when the cursor enters

@@ -46,7 +46,6 @@ public class SplashScreen implements Screen {
 		time += delta;
 		if(time < 1){ //
 			alpha += delta; //fade in effect
-			System.out.println(alpha);
 		}
 		else if(time > 3){ //begin fading out once 3 seconds have passed
 			alpha -= delta; //fade out effect

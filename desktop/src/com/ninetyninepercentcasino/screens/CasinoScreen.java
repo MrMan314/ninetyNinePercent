@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.ninetyninepercentcasino.MainCasino;
+import com.ninetyninepercentcasino.text.HelpDisplay;
 import com.ninetyninepercentcasino.text.LabelStyleGenerator;
 
 /**
@@ -34,6 +35,7 @@ public abstract class CasinoScreen implements Screen {
 		globalUI = new Table();
 		globalUI.setFillParent(true);
 		globalUI.top().left();
+		globalUI.add(new HelpDisplay()).right().top();
 		globalUI.add(balanceDisplay).padTop(balanceDisplay.getHeight()/12f).padLeft(balanceDisplay.getHeight()/8f);
 	}
 
@@ -77,7 +79,7 @@ public abstract class CasinoScreen implements Screen {
 		Label text;
 		Label.LabelStyle labelStyle = LSG.getLeagueGothicLabelStyle(60);
 		text = new Label(message, labelStyle);
-		text.setPosition(500, 500);
+		text.setPosition(700, 200);
 
 		stage.addActor(text);
 	}
