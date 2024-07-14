@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * class that will display a help menu for the user
+ * @author Grant Liang
+ */
 public class HelpDisplay extends Actor{
 	private Sprite sprite; //the sprite that will model the visuals of the actor
 	private Label helpText;

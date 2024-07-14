@@ -49,7 +49,7 @@ public class MainMenu extends CasinoScreen {
 
 		VerticalGroup middleMenu = new VerticalGroup(); //the group that will hold the buttons and banner in the center of the screen
 		middleMenu.addActor(playButton);
-		middleMenu.addActor(settingsButton);
+		//middleMenu.addActor(settingsButton);
 
 		Table root = new Table();
 		root.setFillParent(true);

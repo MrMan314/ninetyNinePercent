@@ -1,3 +1,11 @@
+/**
+ * 99% Casino Project
+ * Multiplayer casino game with a blockchain to handle transactions
+ * Grant, Luke, and Felix
+ * ICS4Ud
+ * Mr. Gonzalez
+ * June 12 2024
+ */
 package com.ninetyninepercentcasino.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
