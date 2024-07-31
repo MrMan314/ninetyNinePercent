@@ -3,7 +3,7 @@
 Multiplayer casino with blackjack, poker, and a blockchain to handle transactions.  
 No real money is used.
 
-[![Demo video](https://img.youtube.com/idnHqoDVcrE&t=1s/0.jpg)](https://www.youtube.com/watch?v=idnHqoDVcrE&t=1s)
+[![Demo video](https://img.youtube.com/idnHqoDVcrE/0.jpg)](https://www.youtube.com/watch?v=idnHqoDVcrE)
 ## CREDITS
 
 Built with libGDX.
