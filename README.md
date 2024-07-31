@@ -3,16 +3,9 @@
 Multiplayer casino with blackjack, poker, and a blockchain to handle transactions.  
 No real money is used.
 
-
-
-## WORK IN PROGRESS
-
-![img.png](img.png)
-
-
+<iframe width="560" height="315" src="https://youtu.be/idnHqoDVcrE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ## CREDITS
 
-Built with libGDX
-
-Thanks to Kenney Vleugels (www.kenney.nl) for the game audio.    
-Thanks to Vecteezy.com and Screaming Brain Studios for many game assets
+Built with libGDX.
+Game audio by Kenney Vleugels (www.kenney.nl)
+Game assets by Vecteezy.com and Screaming Brain Studios
