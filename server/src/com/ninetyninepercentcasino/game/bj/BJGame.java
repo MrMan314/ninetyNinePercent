@@ -233,7 +233,7 @@ public class BJGame extends Thread {
 	/**
 	 * sends the available BJActions to the player
 	 * it is guaranteed that after this method is called setAction() will be called to resume the thread
-	 * @param availableActions the
+	 * @param availableActions the available actions
 	 */
 	private void sendOptions(HashMap<BJAction, Boolean> availableActions, boolean handOver) {
 		BJAvailActionUpdate update = new BJAvailActionUpdate(availableActions);

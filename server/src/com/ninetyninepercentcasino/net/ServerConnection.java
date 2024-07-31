@@ -5,21 +5,17 @@
 
 package com.ninetyninepercentcasino.net;
 
-import com.ninetyninepercentcasino.database.Database;
-import com.ninetyninepercentcasino.database.UserAlreadyExists;
-import com.ninetyninepercentcasino.database.PasswordIncorrect;
-import com.ninetyninepercentcasino.database.AccountNonExistent;
-import com.ninetyninepercentcasino.database.Account;
+import com.ninetyninepercentcasino.database.*;
 import com.ninetyninepercentcasino.game.bj.BJGame;
 import com.ninetyninepercentcasino.game.bj.BJPlayer;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.OptionalDataException;
-import java.io.EOFException;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.List;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ServerConnection extends Connection {
 	private BJGame bjGame;
@@ -73,7 +69,7 @@ public class ServerConnection extends Connection {
 								// Read content of message
 								Object content = message.getContent();
 								if (content instanceof BJBeginGame) {
-									bjGame = new BJGame(new BJPlayer(new Account("REPLACE"), this)); //TODO accounts
+									bjGame = new BJGame(new BJPlayer(new Account("REPLACE", "REPLACE"), this)); //TODO accounts
 									bjGame.start();
 								}
 								else if (content instanceof BJBetMessage) {

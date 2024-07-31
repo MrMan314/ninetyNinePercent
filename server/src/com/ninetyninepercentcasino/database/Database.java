@@ -1,13 +1,9 @@
 package com.ninetyninepercentcasino.database;
 
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.security.MessageDigest;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.security.SecureRandom;
+import java.sql.*;
 
 /**
  * Class: Database
@@ -34,9 +30,9 @@ public class Database {
 	public Account loadUser(String username, String password) throws SQLException, AccountNonExistent, PasswordIncorrect {
 		PreparedStatement loadUser=database.prepareStatement("SELECT * FROM Accounts");
 		ResultSet result=loadUser.executeQuery();
-		if (userExists(result, username)) { //User does exist
-			if (result.getString("Hash").equals(Base64Utils.byteArrayTobase64(hash(password, Base64Utils.base64ToByteArray(result.getString("Salt")))))) { //Compares the password provided to the password in the database
-				Account user=new Account(result.getString("Username"));
+		if(userExists(result, username)) { //User does exist
+			if(result.getString("Hash").equals(Base64Utils.byteArrayTobase64(hash(password, Base64Utils.base64ToByteArray(result.getString("Salt")))))) { //Compares the password provided to the password in the database
+				Account user=new Account(result.getString("Username"), password);
 				return user;
 			} else {
 				throw new PasswordIncorrect(); //Password wrong

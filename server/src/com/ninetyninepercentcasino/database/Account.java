@@ -6,14 +6,34 @@ package com.ninetyninepercentcasino.database;
 public class Account {
 	String username;
 	byte[] address;
-
-	public Account(String username) {
+	Database database;
+	/**
+	 * initializes a new account
+	 * @param username the user's username
+	 */
+	public Account(String username, String password) {
 		this.username=username;
+		try {
+			database=new Database();
+			database.loadUser(username, password);
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 	}
+
+	/**
+	 * adds money to the account
+	 * @param amountAdded the amount added
+	 */
 	public void addBalance(int amountAdded) {
-
+		//database.addBalance(this, amountAdded);
 	}
-	public void withdraw(int withdrawAmount) {
 
+	/**
+	 * withdraws money from the account
+	 * @param withdrawAmount the amount withdrawn
+	 */
+	public void withdraw(int withdrawAmount) {
+		//database.withdraw(this, amountAdded);
 	}
 }
