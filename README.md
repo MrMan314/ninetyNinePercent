@@ -7,5 +7,5 @@ No real money is used.
 ## CREDITS
 
 Built with libGDX.
-Game audio by Kenney Vleugels (www.kenney.nl)
+Game audio by Kenney Vleugels (www.kenney.nl).    
 Game assets by Vecteezy.com and Screaming Brain Studios
